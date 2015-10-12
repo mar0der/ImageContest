@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{FF7107D1-4333-4B69-94B0-B398A3EBB6F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{45B39186-2140-4E9B-A6FE-CD5CDA2D1AD3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{C2FE7B0F-8A5F-4FB8-85A4-83DC582CB7F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External Libraries", "External Libraries", "{3299FEE7-678E-4DD9-B8F4-5003BC3F39CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageContest.App", "ImageContest.App\ImageContest.App.csproj", "{0D181958-891B-42A9-AD03-D34C88CC05AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageContest.Data", "ImageContest.Data\ImageContest.Data.csproj", "{A9C1DAB8-5D26-47D9-A07E-C35EB096B2FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageContest.Models", "ImageContest.Models\ImageContest.Models.csproj", "{930476C9-B6F7-4F6E-B528-A1F2312F4D3E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D181958-891B-42A9-AD03-D34C88CC05AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D181958-891B-42A9-AD03-D34C88CC05AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D181958-891B-42A9-AD03-D34C88CC05AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D181958-891B-42A9-AD03-D34C88CC05AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9C1DAB8-5D26-47D9-A07E-C35EB096B2FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9C1DAB8-5D26-47D9-A07E-C35EB096B2FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9C1DAB8-5D26-47D9-A07E-C35EB096B2FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9C1DAB8-5D26-47D9-A07E-C35EB096B2FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{930476C9-B6F7-4F6E-B528-A1F2312F4D3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{930476C9-B6F7-4F6E-B528-A1F2312F4D3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{930476C9-B6F7-4F6E-B528-A1F2312F4D3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{930476C9-B6F7-4F6E-B528-A1F2312F4D3E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0D181958-891B-42A9-AD03-D34C88CC05AE} = {45B39186-2140-4E9B-A6FE-CD5CDA2D1AD3}
+		{A9C1DAB8-5D26-47D9-A07E-C35EB096B2FB} = {FF7107D1-4333-4B69-94B0-B398A3EBB6F1}
+		{930476C9-B6F7-4F6E-B528-A1F2312F4D3E} = {FF7107D1-4333-4B69-94B0-B398A3EBB6F1}
+	EndGlobalSection
+EndGlobal
