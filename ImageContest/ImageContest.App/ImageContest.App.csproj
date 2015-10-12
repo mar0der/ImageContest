@@ -39,16 +39,70 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Glimpse.Ado">
+      <HintPath>..\packages\Glimpse.Ado.1.7.3\lib\net45\Glimpse.Ado.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.AspNet">
+      <HintPath>..\packages\Glimpse.AspNet.1.8.0\lib\net45\Glimpse.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Core">
+      <HintPath>..\packages\Glimpse.1.8.6\lib\net45\Glimpse.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.EF6">
+      <HintPath>..\packages\Glimpse.EF6.1.6.5\lib\net45\Glimpse.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Mvc5">
+      <HintPath>..\packages\Glimpse.Mvc5.1.5.3\lib\net45\Glimpse.Mvc5.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.2.0.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Extensions.ContextPreservation">
+      <HintPath>..\packages\Ninject.Extensions.ContextPreservation.3.2.0.0\lib\net45-full\Ninject.Extensions.ContextPreservation.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Extensions.NamedScope">
+      <HintPath>..\packages\Ninject.Extensions.NamedScope.3.2.0.0\lib\net45-full\Ninject.Extensions.NamedScope.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common">
+      <HintPath>..\packages\Ninject.Web.Common.3.2.0.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common.OwinHost">
+      <HintPath>..\packages\Ninject.Web.Common.OwinHost.3.0.2-unstable-9021\lib\net45-full\Ninject.Web.Common.OwinHost.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc">
+      <HintPath>..\packages\Ninject.MVC5.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.WebApi">
+      <HintPath>..\packages\Ninject.Web.WebApi.3.2.0.0\lib\net45-full\Ninject.Web.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.WebApi.OwinHost">
+      <HintPath>..\packages\Ninject.Web.WebApi.OwinHost.3.2.4.0\lib\net45-full\Ninject.Web.WebApi.OwinHost.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.0.0\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.0.0\lib\net45\System.Web.Http.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.0.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -92,6 +146,9 @@
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivator">
+      <HintPath>..\packages\WebActivator.1.5\lib\net40\WebActivator.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -156,12 +213,15 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Content\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ContestsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -226,6 +286,7 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Contests\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

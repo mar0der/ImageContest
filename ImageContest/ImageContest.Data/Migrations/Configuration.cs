@@ -6,7 +6,7 @@ namespace ImageContest.Data.Migrations
 
     #endregion
 
-    public sealed class Configuration : DbMigrationsConfiguration<ImageContextDbContext>
+    public sealed class Configuration : DbMigrationsConfiguration<ImageContestDbContext>
     {
         public Configuration()
         {
@@ -14,7 +14,7 @@ namespace ImageContest.Data.Migrations
             this.AutomaticMigrationDataLossAllowed = true;
         }
 
-        protected override void Seed(ImageContextDbContext context)
+        protected override void Seed(ImageContestDbContext context)
         {
         }
     }

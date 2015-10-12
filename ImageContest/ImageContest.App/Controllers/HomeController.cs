@@ -8,12 +8,14 @@
     using Data;
     using Data.Repositories;
 
+    using ImageContest.Data.Interfaces;
+
     #endregion
 
     public class HomeController : BaseController
     {
-        public HomeController()
-            : base (new ImageContestData(new ImageContextDbContext()))
+        public HomeController(IImageContestData data)
+            : base(data)
         {
         }
 

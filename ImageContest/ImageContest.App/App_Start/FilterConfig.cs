@@ -1,8 +1,11 @@
-﻿using System.Web;
-using System.Web.Mvc;
-
-namespace ImageContest.App
+﻿namespace ImageContest.App
 {
+    #region
+
+    using System.Web.Mvc;
+
+    #endregion
+
     public class FilterConfig
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)

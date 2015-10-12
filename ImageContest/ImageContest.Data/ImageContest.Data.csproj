@@ -54,7 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ImageContextDbContext.cs" />
+    <Compile Include="ImageContestDbContext.cs" />
     <Compile Include="Interfaces\IImageContestData.cs" />
     <Compile Include="Interfaces\IImageContestDbContext.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
