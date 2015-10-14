@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoContest.Data", "PhotoC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoContest.Models", "PhotoContest.Models\PhotoContest.Models.csproj", "{930476C9-B6F7-4F6E-B528-A1F2312F4D3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageContest.App", "PhotoContest.App\ImageContest.App.csproj", "{0D181958-891B-42A9-AD03-D34C88CC05AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoContest.App", "PhotoContest.App\PhotoContest.App.csproj", "{0D181958-891B-42A9-AD03-D34C88CC05AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
