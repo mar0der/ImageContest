@@ -3,6 +3,7 @@
     public enum ContestStatus
     {
         Active,
+        Dismissed,
         Ended
     }
 }

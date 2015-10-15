@@ -20,11 +20,14 @@
 
         private ICollection<Vote> votes;
 
+        private ICollection<User> judges;
+
         public Contest()
         {
             this.participants = new HashSet<User>();
             this.photos = new HashSet<Photo>();
             this.votes = new HashSet<Vote>();
+            this.judges = new HashSet<User>();
         }
 
         [Key]
@@ -51,7 +54,7 @@
         public DeadlineStrategy DeadlineStrategy { get; set; }
 
         [ForeignKey("Creator")]
-        public string UserId { get; set; }
+        public string CreatorId { get; set; }
 
         public virtual User Creator { get; set; }
 
@@ -93,5 +96,19 @@
                 this.votes = value;
             }
         }
+
+        public virtual ICollection<User> Judges
+        {
+            get
+            {
+                return this.judges;
+            }
+
+            set
+            {
+                this.judges = value;
+            }
+        }
+
     }
 }

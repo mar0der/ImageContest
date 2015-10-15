@@ -15,9 +15,18 @@
     {
         private ICollection<Vote> votes;
 
+        private ICollection<Contest> contests;
+
+        private ICollection<Contest> ownContests;
+
+        private ICollection<Contest> judgeContests; 
+
         public User()
         {
             this.votes = new HashSet<Vote>();
+            this.contests = new HashSet<Contest>();
+            this.ownContests = new HashSet<Contest>();
+            this.judgeContests = new HashSet<Contest>();
         }
 
         public virtual ICollection<Vote> Votes
@@ -32,6 +41,48 @@
                 this.votes = value;
             }
         }
+
+        public virtual ICollection<Contest> Contests
+        {
+            get
+            {
+                return this.contests;
+            }
+
+            set
+            {
+                this.contests = value;
+            }
+        }
+
+        public virtual ICollection<Contest> OwnContests
+        {
+            get
+            {
+                return this.ownContests;
+            }
+
+            set
+            {
+                this.ownContests = value;
+            }
+        }
+
+        public virtual ICollection<Contest> JudgeContests
+        {
+            get
+            {
+                return this.judgeContests;
+            }
+
+            set
+            {
+                this.judgeContests = value;
+            }
+        }
+
+
+
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
         {
