@@ -29,12 +29,14 @@
             this.votes = new HashSet<Vote>();
             this.judges = new HashSet<User>();
         }
-
+        
         [Key]
         public int Id { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; }
+
+        public DateTime Deadline { get; set; }
 
         [Required]
         public string Title { get; set; }
