@@ -4,7 +4,7 @@
 using Glimpse.AspNet.Extensions;
 using Glimpse.Core.Extensibility;
 
-namespace ImageContest.App
+namespace PhotoContest.App
 {
     public class GlimpseSecurityPolicy:IRuntimePolicy
     {

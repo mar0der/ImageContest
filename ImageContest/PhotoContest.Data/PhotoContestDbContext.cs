@@ -15,7 +15,7 @@ namespace PhotoContest.Data
     public class PhotoContestDbContext : IdentityDbContext<User>, IPhotoContestDbContext
     {
         public PhotoContestDbContext()
-            : base("ImageContest", false)
+            : base("PhotoContest", false)
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<PhotoContestDbContext, Configuration>());
         }
