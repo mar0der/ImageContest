@@ -1,14 +1,14 @@
 ﻿#region
 
-using ImageContest.App;
-
 using Microsoft.Owin;
+
+using PhotoContest.App;
 
 #endregion
 
 [assembly: OwinStartup(typeof(Startup))]
 
-namespace ImageContest.App
+namespace PhotoContest.App
 {
     #region
 

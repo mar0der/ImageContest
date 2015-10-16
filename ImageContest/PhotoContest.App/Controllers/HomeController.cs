@@ -1,4 +1,4 @@
-﻿namespace ImageContest.App.Controllers
+﻿namespace PhotoContest.App.Controllers
 {
     #region
 

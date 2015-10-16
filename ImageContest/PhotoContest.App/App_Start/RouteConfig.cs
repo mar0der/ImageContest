@@ -1,4 +1,4 @@
-﻿namespace ImageContest.App
+﻿namespace PhotoContest.App
 {
     #region
 

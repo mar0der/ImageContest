@@ -1,4 +1,4 @@
-﻿namespace ImageContest.App.Controllers
+﻿namespace PhotoContest.App.Controllers
 {
     #region
 
@@ -6,9 +6,6 @@
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
-
-    using ImageContest.App.Content;
-    using ImageContest.App.Models;
 
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;

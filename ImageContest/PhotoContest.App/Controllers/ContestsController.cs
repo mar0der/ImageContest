@@ -1,10 +1,10 @@
-﻿namespace ImageContest.App.Controllers
+﻿namespace PhotoContest.App.Controllers
 {
     #region
 
-    using System;
     using System.Web.Mvc;
 
+    using PhotoContest.App.Contests;
     using PhotoContest.Data.Interfaces;
 
     #endregion
@@ -21,8 +21,13 @@
             return this.Redirect("/contests/viewall");
         }
 
-        public ActionResult Add()
+        [HttpPost]
+        public ActionResult Add(AddContestBindingModel model)
         {
+            if (!this.ModelState.IsValid)
+            {
+                // do something
+            }
             return this.View();
         }
 

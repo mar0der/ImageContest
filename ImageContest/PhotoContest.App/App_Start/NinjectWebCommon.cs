@@ -1,6 +1,6 @@
 #region
 
-using ImageContest.App;
+using PhotoContest.App;
 
 using WebActivator;
 
@@ -9,7 +9,7 @@ using WebActivator;
 [assembly: PreApplicationStartMethod(typeof(NinjectWebCommon), "Start")]
 [assembly: ApplicationShutdownMethod(typeof(NinjectWebCommon), "Stop")]
 
-namespace ImageContest.App
+namespace PhotoContest.App
 {
     #region
 
