@@ -18,7 +18,7 @@
 
         public ActionResult Index()
         {
-            return this.Redirect("/Photos/View");
+            return this.Redirect("/Photos/ViewPicture");
         }
 
         public ActionResult Add()

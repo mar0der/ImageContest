@@ -1,24 +1,28 @@
 ﻿namespace PhotoContest.App.Areas.Admin
 {
+    #region
+
     using System.Web.Mvc;
 
-    public class AdminAreaRegistration : AreaRegistration 
+    #endregion
+
+    public class AdminAreaRegistration : AreaRegistration
     {
-        public override string AreaName 
+        public override string AreaName
         {
-            get 
+            get
             {
                 return "Admin";
             }
         }
 
-        public override void RegisterArea(AreaRegistrationContext context) 
+        public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
-                "Admin_default",
-                "Admin/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
-            );
+                "Admin_default", 
+                "Admin/{controller}/{action}/{id}", 
+                new { action = "Index", id = UrlParameter.Optional }, 
+                new[] { "PhotoContest.App.Areas.Admin.Controllers" });
         }
     }
 }
