@@ -1,0 +1,49 @@
+﻿namespace PhotoContest.App.Areas.Admin.Controllers
+{
+    #region
+
+    using System.Web.Mvc;
+
+    using PhotoContest.Data.Interfaces;
+
+    #endregion
+
+    public class ContestsController : BaseAdminController
+    {
+        public ContestsController(IPhotoContestData data)
+            : base(data)
+        {
+        }
+
+        // GET: Contests
+        public ActionResult Index()
+        {
+            return this.Redirect("/admin/contests/viewall");
+        }
+
+        public ActionResult ViewAll()
+        {
+            return this.View();
+        }
+
+        public ActionResult Edit()
+        {
+            return this.View();
+        }
+
+        public ActionResult Delete()
+        {
+            return this.View();
+        }
+
+        public ActionResult Finalize()
+        {
+            return this.View();
+        }
+
+        public ActionResult RemovePicture()
+        {
+            return this.View();
+        }
+    }
+}
