@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Net;
+using System.Web;
+using System.Web.Http;
 using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity;
+using PhotoContest.Models.Enumerations;
+using PhotoContest.Models.Models;
 
 namespace PhotoContest.App.Controllers
 {
@@ -30,7 +35,30 @@ namespace PhotoContest.App.Controllers
         [HttpPost]
         public void Add(AddContestBindingModel model)
         {
-            Console.WriteLine();
+            if (!ModelState.IsValid || model == null)
+            {
+                throw new ArgumentException("Invalid model");
+            }
+
+            var contest = new Contest()
+            {
+                RewardStrategy = model.RewardStrategy,
+                VotingStrategy = model.VotingStrategy,
+                ParticipationStrategy = model.ParticipationStrategy,
+                DeadlineStrategy = model.DeadlineStrategy,
+                Description = model.Description,
+                CreatedAt = DateTime.Now,
+                Deadline = model.Deadline,
+                MaxNumberOfParticipants = model.MaxParticipations,
+                Status = ContestStatus.Active,
+                Title = model.Title,
+                CreatorId = this.User.Identity.GetUserId()
+            };
+
+            this.Data.Contests.Add(contest);
+            this.Data.SaveChanges();
+
+            // TODO: redirect to the contest
         }
 
         [Route("contests")]
