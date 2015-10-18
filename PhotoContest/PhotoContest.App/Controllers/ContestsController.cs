@@ -19,7 +19,7 @@ namespace PhotoContest.App.Controllers
 
     #endregion
 
-    public class ContestsController : BaseController 
+    public class ContestsController : BaseController
     {
         public ContestsController(IPhotoContestData data)
             : base(data)
@@ -33,7 +33,7 @@ namespace PhotoContest.App.Controllers
         }
 
         [HttpPost]
-        public void Add(AddContestBindingModel model)
+        public ActionResult Add(AddContestBindingModel model)
         {
             if (!ModelState.IsValid || model == null)
             {
@@ -58,7 +58,7 @@ namespace PhotoContest.App.Controllers
             this.Data.Contests.Add(contest);
             this.Data.SaveChanges();
 
-            // TODO: redirect to the contest
+            return this.RedirectToAction("View", "Contests", new { id = contest.Id });
         }
 
         [Route("contests")]
@@ -66,6 +66,13 @@ namespace PhotoContest.App.Controllers
         {
             var contests = this.Data.Contests.All().OrderBy(c => c.CreatedAt);
             return this.View(contests);
+        }
+
+        [Route("Contest/{id}")]
+        public ActionResult View(int id)
+        {
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
+            return this.View(contest);
         }
 
         public ActionResult Edit()

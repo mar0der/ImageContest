@@ -1,11 +1,11 @@
-﻿@model IEnumerable<PhotoContest.Models.Models.Contest>
+﻿@model System.Collections.Generic.IEnumerable<PhotoContest.Models.Models.Contest>
 @{
     ViewBag.Title = "ViewAll";
 }
 
 @foreach (var contest in Model)
 {
-    <h2>@contest.Title</h2>
+    @Html.ActionLink(@contest.Title, "View", "Contests", new {id = @contest.Id}, null);
 }
 
 
