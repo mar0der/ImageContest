@@ -3,20 +3,31 @@
     ViewBag.Title = "Profile";
 }
 <h2>Profile</h2>
+<div class="input-group col">
+    <div class="input-group-addon" id="basic-addon1">Username</div>
+    @Html.TextBox("Username", Model.Username, new { @class = "form-control", disabled = "disabled" })
+</div><br />
 <div class="input-group">
-    <span class="input-group-addon" id="basic-addon1">Username</span>
-    <input type="text" class="form-control" disabled value="@Model.Username" aria-describedby="basic-addon1">
-</div><br/>
+    <div class="input-group-addon" id="basic-addon1">Email</div>
+    @Html.TextBox("Email", Model.Email, new { @class = "form-control", disabled = "disabled" })
+</div><br />
 <div class="input-group">
-    <span class="input-group-addon" id="basic-addon1">Email</span>
-    <input type="text" class="form-control" disabled value="@Model.Email" aria-describedby="basic-addon1">
+    <div class="input-group-addon">Phone number</div>
+    @Html.TextBox("PhoneNumber", Model.PhoneNumber ?? "none", new { @class = "form-control", disabled = "disabled" })
 </div>
+<br />
+@if (this.User.Identity.Name == Model.Username)
+{
+    @Html.ActionLink("Edit", "Edit", "Users", null, new { @class = "btn btn-default btn-lg" })
+    @: 
+    @Html.ActionLink("Change password", "ChangePassword", "Manage", null, new { @class = "btn btn-default btn-lg" });
+}
 <h4>Own contests</h4>
 @if (Model.OwnContests.Count() > 0)
 {
     foreach (var contest in Model.OwnContests)
     {
-        <p>@contest.Title - @contest.Status</p>
+        <p>@Html.ActionLink(@contest.Title, "View", "Contests", new { id = @contest.Id }, null) - @contest.Status</p>
     }
 }
 else
@@ -28,16 +39,10 @@ else
 {
     foreach (var contest in Model.JudgeContests)
     {
-        <p>@contest.Title - @contest.Status</p>
+        <p>@Html.ActionLink(@contest.Title, "View", "Contests", new { id = @contest.Id }, null) - @contest.Status</p>
     }
 }
 else
 {
     <p>No contests.</p>
-}
-@if (this.User.Identity.Name == Model.Username)
-{
-    <button type="button" class="btn btn-default btn-lg">
-        Edit
-    </button>
 }

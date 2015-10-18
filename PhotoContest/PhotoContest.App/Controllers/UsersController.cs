@@ -9,6 +9,7 @@
     using PhotoContest.App.Models.ViewModels;
     using PhotoContest.Models.Models;
     using AutoMapper;
+    using PhotoContest.App.Models.BindingModels.Users;
 
     #endregion
 
@@ -43,6 +44,27 @@
             var viewModel = Mapper.Map<User,ProfileViewModel>(user);
 
             return this.View(viewModel);
+        }
+
+        [HttpGet]
+        public ActionResult Edit()
+        {
+            var model = Mapper.Map<User, EditProfileModel>(this.CurrentUser);
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(EditProfileModel model)
+        {
+            if (model != null && this.ModelState.IsValid)
+            {
+                this.CurrentUser.PhoneNumber = model.PhoneNumber;
+                this.CurrentUser.Email = model.Email;
+                this.Data.SaveChanges();
+            }
+
+            return this.View(model);
         }
     }
 }
