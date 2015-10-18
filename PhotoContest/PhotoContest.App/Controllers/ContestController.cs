@@ -1,4 +1,13 @@
-﻿namespace PhotoContest.App.Controllers
+﻿using System;
+using System.Net;
+using System.Web;
+using System.Web.Http;
+using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity;
+using PhotoContest.Models.Enumerations;
+using PhotoContest.Models.Models;
+
+namespace PhotoContest.App.Controllers
 {
     #region
 
@@ -17,9 +26,39 @@
         {
         }
 
-        public ActionResult Add(AddContestBindingModel model)
+        [HttpGet]
+        public ActionResult Add()
         {
             return this.View();
+        }
+
+        [HttpPost]
+        public void Add(AddContestBindingModel model)
+        {
+            if (!ModelState.IsValid || model == null)
+            {
+                throw new ArgumentException("Invalid model");
+            }
+
+            var contest = new Contest()
+            {
+                RewardStrategy = model.RewardStrategy,
+                VotingStrategy = model.VotingStrategy,
+                ParticipationStrategy = model.ParticipationStrategy,
+                DeadlineStrategy = model.DeadlineStrategy,
+                Description = model.Description,
+                CreatedAt = DateTime.Now,
+                Deadline = model.Deadline,
+                MaxNumberOfParticipants = model.MaxParticipations,
+                Status = ContestStatus.Active,
+                Title = model.Title,
+                CreatorId = this.User.Identity.GetUserId()
+            };
+
+            this.Data.Contests.Add(contest);
+            this.Data.SaveChanges();
+
+            // TODO: redirect to the contest
         }
 
         [Route("contests")]
