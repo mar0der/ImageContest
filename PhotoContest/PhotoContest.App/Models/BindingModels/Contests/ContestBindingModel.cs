@@ -5,7 +5,7 @@
 
     using PhotoContest.Models.Enumerations;
 
-    public class AddContestBindingModel
+    public class ContestBindingModel
     {
         [Key]
         public int Id { get; set; }
@@ -32,6 +32,6 @@
 
         public DeadlineStrategy DeadlineStrategy { get; set; }
 
-        public int MaxParticipations { get; set; }
+        public int MaxNumberOfParticipants { get; set; }
     }
 }

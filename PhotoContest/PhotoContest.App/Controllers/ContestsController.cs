@@ -2,6 +2,7 @@
 using System.Net;
 using System.Web;
 using System.Web.Http;
+using AutoMapper;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using PhotoContest.Models.Enumerations;
@@ -33,27 +34,16 @@ namespace PhotoContest.App.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(AddContestBindingModel model)
+        public ActionResult Add(ContestBindingModel model)
         {
             if (!ModelState.IsValid || model == null)
             {
                 throw new ArgumentException("Invalid model");
             }
 
-            var contest = new Contest()
-            {
-                RewardStrategy = model.RewardStrategy,
-                VotingStrategy = model.VotingStrategy,
-                ParticipationStrategy = model.ParticipationStrategy,
-                DeadlineStrategy = model.DeadlineStrategy,
-                Description = model.Description,
-                CreatedAt = DateTime.Now,
-                Deadline = model.Deadline,
-                MaxNumberOfParticipants = model.MaxParticipations,
-                Status = ContestStatus.Active,
-                Title = model.Title,
-                CreatorId = this.User.Identity.GetUserId()
-            };
+            var contest = Mapper.Map<ContestBindingModel, Contest>(model);
+            contest.CreatedAt = DateTime.Now;
+            contest.CreatorId = this.User.Identity.GetUserId();
 
             this.Data.Contests.Add(contest);
             this.Data.SaveChanges();
@@ -75,19 +65,86 @@ namespace PhotoContest.App.Controllers
             return this.View(contest);
         }
 
-        public ActionResult Edit()
+        [Route("Contest/Edit/{id}")]
+        [HttpGet]
+        public ActionResult Edit(int id)
         {
-            return this.View();
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
+            return this.View(contest);
         }
 
-        public ActionResult Delete()
+        [HttpPost]
+        [Route("Contest/Edit")]
+        public ActionResult EditContest(ContestBindingModel contest)
         {
-            return this.View();
+            if (!ModelState.IsValid || contest == null)
+            {
+                throw new ArgumentException("Invalid model");
+            }
+
+            var contestDb = this.Data.Contests.All().First(a => a.Id == contest.Id);
+            // With mapper did not work database save
+            //contestDb = Mapper.Map<ContestBindingModel, Contest>(contest);
+
+            contestDb.Description = contest.Description;
+            contestDb.MaxNumberOfParticipants = contest.MaxNumberOfParticipants;
+            contestDb.Status = contest.Status;
+            contestDb.Title = contest.Title;
+            contestDb.RewardStrategy = contest.RewardStrategy;
+            contestDb.Deadline = contest.Deadline;
+            contestDb.DeadlineStrategy = contest.DeadlineStrategy;
+            contestDb.VotingStrategy = contest.VotingStrategy;
+
+            this.Data.SaveChanges();
+
+            return this.RedirectToAction("View", "Contests", new { id = contestDb.Id });
         }
 
-        public ActionResult Join()
+        [HttpPost]
+        [Route("Contests/Delete/{id}")]
+        public ActionResult Delete(int id)
         {
-            return this.View();
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
+
+            if (contest == null)
+            {
+                throw new ApplicationException("Invalid contest id");
+            }
+
+            if (contest.Creator.Id != this.User.Identity.GetUserId())
+            {
+                throw new ApplicationException("You are not the owner of the contest");
+            }
+
+            this.Data.Contests.Delete(contest);
+            this.Data.SaveChanges();
+
+            return this.RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public ActionResult Join(int id)
+        {
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
+
+            if (contest == null)
+            {
+                throw new ApplicationException("Invalid contest id");
+            }
+
+            string userId = this.User.Identity.GetUserId();
+
+            if (contest.Participants.Any(p => p.Id == userId))
+            {
+                throw new ApplicationException("You are already a member of this contest");
+            }
+
+            var user = this.Data.Users.All().First(u => u.Id == userId);
+
+            contest.Participants.Add(user);
+            this.Data.SaveChanges();
+
+            return this.RedirectToAction("View", "Contests", new { id = contest.Id});
         }
 
         public ActionResult Invite()
