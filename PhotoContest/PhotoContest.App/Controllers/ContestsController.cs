@@ -122,9 +122,29 @@ namespace PhotoContest.App.Controllers
             return this.RedirectToAction("Index", "Home");
         }
 
-        public ActionResult Join()
+        [HttpGet]
+        public ActionResult Join(int id)
         {
-            return this.View();
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
+
+            if (contest == null)
+            {
+                throw new ApplicationException("Invalid contest id");
+            }
+
+            string userId = this.User.Identity.GetUserId();
+
+            if (contest.Participants.Any(p => p.Id == userId))
+            {
+                throw new ApplicationException("You are already a member of this contest");
+            }
+
+            var user = this.Data.Users.All().First(u => u.Id == userId);
+
+            contest.Participants.Add(user);
+            this.Data.SaveChanges();
+
+            return this.RedirectToAction("View", "Contests", new { id = contest.Id});
         }
 
         public ActionResult Invite()
