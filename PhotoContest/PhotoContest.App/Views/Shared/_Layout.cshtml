@@ -24,6 +24,10 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Contests", "Index", "Contests")</li>
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Profile", "Profile", "Users", new { username = this.User.Identity.Name }, null)</li>
+                    }
                     @if (this.User.IsInRole("Admin"))
                     {
                         <li>@Html.ActionLink("Admin", "Index", "Users", new { area = "Admin" }, null)</li>

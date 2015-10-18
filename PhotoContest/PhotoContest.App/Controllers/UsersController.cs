@@ -2,9 +2,13 @@
 {
     #region
 
+    using System.Linq;
     using System.Web.Mvc;
-
     using PhotoContest.Data.Interfaces;
+    using System.Web;
+    using PhotoContest.App.Models.ViewModels;
+    using PhotoContest.Models.Models;
+    using AutoMapper;
 
     #endregion
 
@@ -15,14 +19,30 @@
         {
         }
 
+        [AllowAnonymous]
         public ActionResult Index()
         {
-            return this.Redirect("/users/profile");
+            if (this.User.Identity.IsAuthenticated)
+            {
+                return this.RedirectToAction("profile", "users", new { username = this.User.Identity.Name });
+            }
+
+            return this.HttpNotFound();
         }
 
-        public ActionResult Profile()
+        [Route("users/profile/{username}")]
+        [AllowAnonymous]
+        public ActionResult Profile(string username)
         {
-            return this.View();
+            var user = this.Data.Users.All().FirstOrDefault(u => u.UserName == username);
+            if (user == null)
+            {
+                return this.HttpNotFound();
+            }
+
+            var viewModel = Mapper.Map<User,ProfileViewModel>(user);
+
+            return this.View(viewModel);
         }
     }
 }
