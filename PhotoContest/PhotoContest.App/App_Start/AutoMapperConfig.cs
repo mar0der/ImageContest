@@ -1,12 +1,14 @@
 ﻿namespace PhotoContest.App
 {
     using AutoMapper;
+    using PhotoContest.App.Models.ViewModels;
+    using PhotoContest.Models.Models;
 
     public class AutoMapperConfig
     {
         public static void RegisterMappings()
         {
-            //Mapper.CreateMap()
+            Mapper.CreateMap<User, ProfileViewModel>();
         }
     }
 }
