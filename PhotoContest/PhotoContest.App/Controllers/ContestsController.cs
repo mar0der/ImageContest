@@ -101,8 +101,25 @@ namespace PhotoContest.App.Controllers
         }
 
         [HttpPost]
-        public void Delete()
+        [Route("Contests/Delete/{id}")]
+        public ActionResult Delete(int id)
         {
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
+
+            if (contest == null)
+            {
+                throw new ApplicationException("Invalid contest id");
+            }
+
+            if (contest.Creator.Id != this.User.Identity.GetUserId())
+            {
+                throw new ApplicationException("You are not the owner of the contest");
+            }
+
+            this.Data.Contests.Delete(contest);
+            this.Data.SaveChanges();
+
+            return this.RedirectToAction("Index", "Home");
         }
 
         public ActionResult Join()
