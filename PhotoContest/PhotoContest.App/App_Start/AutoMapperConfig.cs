@@ -1,4 +1,7 @@
-﻿namespace PhotoContest.App
+﻿using System;
+using PhotoContest.App.Models.BindingModels.Contests;
+
+namespace PhotoContest.App
 {
     using AutoMapper;
     using PhotoContest.App.Models.ViewModels;
@@ -9,6 +12,7 @@
         public static void RegisterMappings()
         {
             Mapper.CreateMap<User, ProfileViewModel>();
+            Mapper.CreateMap<ContestBindingModel, Contest>();
         }
     }
 }
