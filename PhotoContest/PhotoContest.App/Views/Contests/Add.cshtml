@@ -1,23 +1,26 @@
 ﻿@using System
-@using System.Collections.Generic
 @using PhotoContest.Models.Enumerations
 @{
-    ViewBag.Title = "Add";
-    
     var rewardStaregyArray = Enum.GetValues(typeof(RewardStrategy));
     var rewardStaregy = new SelectList(rewardStaregyArray);
 
     var votingStaregyArray = Enum.GetValues(typeof(VotingStrategy));
     var votingStaregy = new SelectList(votingStaregyArray);
+
+    var participationStrategyArray = Enum.GetValues(typeof(ParticipationStrategy));
+    var participationStrategy = new SelectList(participationStrategyArray);
+    
+    var deadlineStrategyArray = Enum.GetValues(typeof(DeadlineStrategy));
+    var deadlineStrategy = new SelectList(deadlineStrategyArray);
 }
 
 <h2>Add</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Add", "Contests"))
 {
     <div>
-        @Html.Label("Title", "Title: ")
-        @Html.TextBox("Title")
+        @Html.Label("title", "Title: ")
+        @Html.TextBox("title")
     </div>
     <div>
         @Html.Label("description", "Description: ")
@@ -25,39 +28,27 @@
     </div>
     <div>
         <b>Reward Strategy: </b>
-        <select name="reward-strategy">
-            <option value="0">Single Winner</option>
-            <option value="1">Top 5 Prizes</option>
-        </select>
+        @Html.DropDownList("rewardstrategy", rewardStaregy)
     </div>
     <div>
         <b>Voting Strategy: </b>
-        <select name="voting-strategy">
-            <option value="0">Open</option>
-            <option value="1">Closed</option>
-        </select>
+        @Html.DropDownList("votingstrategy", votingStaregy)
     </div>
     <div>
         <b>Participation Strategy: </b>
-        <select name="participation-strategy">
-            <option value="0">Open</option>
-            <option value="1">Closed</option>
-        </select>
+        @Html.DropDownList("participationstrategy", participationStrategy)
     </div>
     <div>
         <b>Deadline Strategy: </b>
-        <select name="deadline-strategy">
-            <option value="0">By Time</option>
-            <option value="1">By Number Of Participants</option>
-        </select>
+        @Html.DropDownList("deadlinestrategy", deadlineStrategy)
     </div>
     <div>
         @Html.Label("deadline", "Deadline: ")
         @Html.TextBox("deadline")
     </div>
     <div>
-        @Html.Label("max-participations", "Max Participations: ")
-        @Html.TextBox("max-participations")
+        @Html.Label("maxParticipations", "Max Participations: ")
+        @Html.TextBox("maxParticipations")
     </div>
     <div>
         <input type="submit" value="Add Contest" />

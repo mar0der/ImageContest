@@ -31,5 +31,7 @@
         public ParticipationStrategy ParticipationStrategy { get; set; }
 
         public DeadlineStrategy DeadlineStrategy { get; set; }
+
+        public int MaxParticipations { get; set; }
     }
 }
