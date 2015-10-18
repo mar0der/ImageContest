@@ -1,4 +1,8 @@
-﻿namespace PhotoContest.App.Controllers
+﻿using System;
+using System.Net;
+using Microsoft.Ajax.Utilities;
+
+namespace PhotoContest.App.Controllers
 {
     #region
 
@@ -17,9 +21,16 @@
         {
         }
 
-        public ActionResult Add(AddContestBindingModel model)
+        [HttpGet]
+        public ActionResult Add()
         {
             return this.View();
+        }
+
+        [HttpPost]
+        public void Add(AddContestBindingModel model)
+        {
+            Console.WriteLine();
         }
 
         [Route("contests")]

@@ -1,7 +1,66 @@
-﻿
+﻿@using System
+@using System.Collections.Generic
+@using PhotoContest.Models.Enumerations
 @{
     ViewBag.Title = "Add";
+    
+    var rewardStaregyArray = Enum.GetValues(typeof(RewardStrategy));
+    var rewardStaregy = new SelectList(rewardStaregyArray);
+
+    var votingStaregyArray = Enum.GetValues(typeof(VotingStrategy));
+    var votingStaregy = new SelectList(votingStaregyArray);
 }
 
 <h2>Add</h2>
 
+@using (Html.BeginForm())
+{
+    <div>
+        @Html.Label("Title", "Title: ")
+        @Html.TextBox("Title")
+    </div>
+    <div>
+        @Html.Label("description", "Description: ")
+        @Html.TextBox("description")
+    </div>
+    <div>
+        <b>Reward Strategy: </b>
+        <select name="reward-strategy">
+            <option value="0">Single Winner</option>
+            <option value="1">Top 5 Prizes</option>
+        </select>
+    </div>
+    <div>
+        <b>Voting Strategy: </b>
+        <select name="voting-strategy">
+            <option value="0">Open</option>
+            <option value="1">Closed</option>
+        </select>
+    </div>
+    <div>
+        <b>Participation Strategy: </b>
+        <select name="participation-strategy">
+            <option value="0">Open</option>
+            <option value="1">Closed</option>
+        </select>
+    </div>
+    <div>
+        <b>Deadline Strategy: </b>
+        <select name="deadline-strategy">
+            <option value="0">By Time</option>
+            <option value="1">By Number Of Participants</option>
+        </select>
+    </div>
+    <div>
+        @Html.Label("deadline", "Deadline: ")
+        @Html.TextBox("deadline")
+    </div>
+    <div>
+        @Html.Label("max-participations", "Max Participations: ")
+        @Html.TextBox("max-participations")
+    </div>
+    <div>
+        <input type="submit" value="Add Contest" />
+    </div>
+
+}
