@@ -38,6 +38,8 @@
 
         public DateTime Deadline { get; set; }
 
+        public int MaxNumberOfParticipants { get; set; }
+
         [Required]
         public string Title { get; set; }
 

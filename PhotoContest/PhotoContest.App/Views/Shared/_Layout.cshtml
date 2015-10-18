@@ -23,6 +23,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Contests", "Index", "Contests")</li>
                     @if (this.User.IsInRole("Admin"))
                     {
                         <li>@Html.ActionLink("Admin", "Index", "Users", new { area = "Admin" }, null)</li>

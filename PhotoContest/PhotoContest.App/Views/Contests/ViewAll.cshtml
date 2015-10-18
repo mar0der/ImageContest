@@ -1,7 +1,11 @@
-﻿
+﻿@model IEnumerable<PhotoContest.Models.Models.Contest>
 @{
     ViewBag.Title = "ViewAll";
 }
 
-<h2>ViewAll</h2>
+@foreach (var contest in Model)
+{
+    <h2>@contest.Title</h2>
+}
+
 

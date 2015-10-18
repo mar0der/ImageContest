@@ -30,6 +30,23 @@
             }
         }
 
+        public IRepository<Contest> Contests
+        {
+            get
+            {
+                return this.GetRepository<Contest>();
+            }
+        }
+
+        public IRepository<Photo> Photos
+        {
+            get
+            {
+                return this.GetRepository<Photo>();
+            }
+        }
+
+
         public int SaveChanges()
         {
             return this.context.SaveChanges();

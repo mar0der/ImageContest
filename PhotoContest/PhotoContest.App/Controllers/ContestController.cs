@@ -2,39 +2,31 @@
 {
     #region
 
+    using System.Linq;
     using System.Web.Mvc;
 
-    using PhotoContest.App.Contests;
+    using PhotoContest.App.Models.BindingModels.Contests;
     using PhotoContest.Data.Interfaces;
 
     #endregion
 
-    public class ContestsController : BaseController
+    public class ContestsController : BaseController 
     {
         public ContestsController(IPhotoContestData data)
             : base(data)
         {
         }
 
-        public ActionResult Index()
-        {
-            return this.Redirect("/contests/viewall");
-        }
-
-        [HttpPost]
         public ActionResult Add(AddContestBindingModel model)
         {
-            if (!this.ModelState.IsValid)
-            {
-                // do something
-            }
             return this.View();
         }
 
-        //add custom url and view template
+        [Route("contests")]
         public ActionResult ViewAll()
         {
-            return this.View();
+            var contests = this.Data.Contests.All().OrderBy(c => c.CreatedAt);
+            return this.View(contests);
         }
 
         public ActionResult Edit()
@@ -52,10 +44,9 @@
             return this.View();
         }
 
-        //this should not return result. Json maybe
         public ActionResult Invite()
         {
-            return this.HttpNotFound();
+            return this.Content("invite");
         }
 
         public ActionResult InviteJudge()
@@ -63,11 +54,9 @@
             return this.View();
         }
 
-        public ActionResult Finalize()
+        public ActionResult FinalizeContest()
         {
             return this.View();
         }
-
-
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace PhotoContest.App.Contests
+﻿namespace PhotoContest.App.Models.BindingModels.Contests
 {
     using System;
     using System.ComponentModel.DataAnnotations;
