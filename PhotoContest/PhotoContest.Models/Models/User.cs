@@ -5,7 +5,8 @@
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
-
+    using Enumerations;
+    using System;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -29,6 +30,9 @@
             this.judgeContests = new HashSet<Contest>();
         }
 
+        public Gender Gender { get; set; }
+        public string Address { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public virtual ICollection<Vote> Votes
         {
             get

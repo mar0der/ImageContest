@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Enumerations\ContestStatus.cs" />
     <Compile Include="Enumerations\DeadlineStrategy.cs" />
+    <Compile Include="Enumerations\Gender.cs" />
     <Compile Include="Enumerations\ParticipationStrategy.cs" />
     <Compile Include="Enumerations\RewardStrategy.cs" />
     <Compile Include="Enumerations\VotingStrategy.cs" />

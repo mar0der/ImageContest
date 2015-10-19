@@ -3,25 +3,74 @@
     ViewBag.Title = "Profile";
 }
 <h2>Profile</h2>
-<div class="input-group col">
-    <div class="input-group-addon" id="basic-addon1">Username</div>
-    @Html.TextBox("Username", Model.Username, new { @class = "form-control", disabled = "disabled" })
-</div><br />
-<div class="input-group">
-    <div class="input-group-addon" id="basic-addon1">Email</div>
-    @Html.TextBox("Email", Model.Email, new { @class = "form-control", disabled = "disabled" })
-</div><br />
-<div class="input-group">
-    <div class="input-group-addon">Phone number</div>
-    @Html.TextBox("PhoneNumber", Model.PhoneNumber ?? "none", new { @class = "form-control", disabled = "disabled" })
-</div>
-<br />
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col-xs-24 col-sm-24 col-md-12 col-lg-12 col-xs-offset-0 col-sm-offset-0 col-md-offset-6 col-lg-offset-6 toppad">
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Sheena Kristin A.Eschor</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 " align="center"> <img alt="User Pic" src="http://showdown.gg/wp-content/uploads/2014/05/default-user.png" class="img-circle img-responsive"> </div>
+
+                        <div class=" col-md-18 col-lg-18 ">
+                            <table class="table table-user-information">
+                                <tbody>
+                                    <tr>
+                                        <td>Username</td>
+                                        <td>@(Model.Username)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date of Birth</td>
+                                        <td>@(Model.DateOfBirth.ToString("d") == "1/1/1900" ? "Not set" : Model.DateOfBirth.ToString("d"))</td>
+                                    </tr>
+
+                                    <tr>
+                                    <tr>
+                                        <td>Gender</td>
+                                        <td>@(Model.Gender)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Home Address</td>
+                                        <td>@(Model.Address ?? "Not set")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email</td>
+                                        <td>@(Model.Email)</td>
+                                    </tr>
+                                <tr>
+                                    <td>Phone Number</td>
+                                    <td>@(Model.PhoneNumber == "none" ? "Not set" : Model.PhoneNumber)</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+
+                            <a href="#" class="btn btn-primary">My Sales Performance</a>
+                            <a href="#" class="btn btn-primary">Team Sales Performance</a>
+                        </div>
+                    </div>
+                </div>
 @if (this.User.Identity.Name == Model.Username)
 {
-    @Html.ActionLink("Edit", "Edit", "Users", null, new { @class = "btn btn-default btn-lg" })
-    @: 
-    @Html.ActionLink("Change password", "ChangePassword", "Manage", null, new { @class = "btn btn-default btn-lg" });
+                @:<div class="panel-footer">
+                    @Html.ActionLink("Change password", "ChangePassword", "Manage", null, new { @class = "btn btn-sm btn-primary" })
+                  @:<span class="pull-right">
+                        @Html.ActionLink("Edit Profile", "Edit", "Users", null, new { @class = "btn btn-sm btn-primary" })
+                    @:</span>
+               @:</div>
 }
+
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
 <h4>Own contests</h4>
 @if (Model.OwnContests.Count() > 0)
 {
