@@ -132,6 +132,11 @@ namespace PhotoContest.App.Controllers
                 throw new ApplicationException("Invalid contest id");
             }
 
+            if (contest.ParticipationStrategy != ParticipationStrategy.Open)
+            {
+                throw new ApplicationException("You should be invited to this contest");
+            }
+
             string userId = this.User.Identity.GetUserId();
 
             if (contest.Participants.Any(p => p.Id == userId))
@@ -207,6 +212,41 @@ namespace PhotoContest.App.Controllers
             this.Data.SaveChanges();
 
             return this.RedirectToAction("View", "Contests", new { id = contest.Id });
+        }
+
+        // TODO: adding binding model and change to httpPost
+        // This action did not work, because there are no photos
+        [HttpGet]
+        [Route("Contest/Vote/{stars}/{photoId}/{contestId}")]
+        public void Vote(int stars, int photoId, int contestId)
+        {
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == contestId);
+
+            if (contest == null)
+            {
+                throw new ApplicationException("Invalid contest id");
+            }
+
+            var userId = this.User.Identity.GetUserId();
+            var user = this.Data.Users.All().Single(u => u.Id == userId);
+
+            if (!contest.Participants.Contains(user))
+            {
+                throw new ApplicationException("You are not participant to this contest");
+            }
+
+            var vote = new Vote()
+            {
+                Contest = contest,
+                PhotoId = photoId,
+                Stars = stars,
+                User = user
+            };
+
+            contest.Votes.Add(vote);
+            this.Data.SaveChanges();
+
+            // TODO: redirect or message for successfuly voting
         }
 
         public ActionResult FinalizeContest()

@@ -237,6 +237,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BindingModels\Contests\VoteBindingModel.cs" />
     <Compile Include="Models\BindingModels\Users\EditProfileModel.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\BindingModels\Contests\ContestBindingModel.cs" />
