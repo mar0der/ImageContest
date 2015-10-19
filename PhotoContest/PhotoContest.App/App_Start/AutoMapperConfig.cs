@@ -4,6 +4,7 @@ using PhotoContest.App.Models.BindingModels.Contests;
 namespace PhotoContest.App
 {
     using AutoMapper;
+    using PhotoContest.App.Models.BindingModels.Users;
     using PhotoContest.App.Models.ViewModels;
     using PhotoContest.Models.Models;
 
@@ -13,6 +14,7 @@ namespace PhotoContest.App
         {
             Mapper.CreateMap<User, ProfileViewModel>();
             Mapper.CreateMap<ContestBindingModel, Contest>();
+            Mapper.CreateMap<User, EditProfileModel>();
         }
     }
 }

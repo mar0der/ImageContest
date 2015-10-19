@@ -237,6 +237,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BindingModels\Users\EditProfileModel.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\BindingModels\Contests\ContestBindingModel.cs" />
     <Compile Include="Controllers\ManageViewModels.cs" />
@@ -330,6 +331,7 @@
     <Content Include="Views\Contests\Join.cshtml" />
     <Content Include="Views\Contests\ViewAll.cshtml" />
     <Content Include="Views\Contests\View.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -342,6 +344,7 @@
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\BaseAdmin\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

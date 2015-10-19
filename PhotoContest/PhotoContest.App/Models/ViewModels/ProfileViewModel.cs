@@ -8,7 +8,9 @@
         public string Username { get; set; }
 
         public string Email { get; set; }
-        
+
+        public string PhoneNumber { get; set; }
+
         public IEnumerable<Contest> OwnContests { get; set; }
 
         public IEnumerable<Contest> JudgeContests { get; set; }

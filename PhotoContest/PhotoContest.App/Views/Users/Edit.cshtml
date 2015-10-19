@@ -1,0 +1,26 @@
+﻿@model PhotoContest.App.Models.BindingModels.Users.EditProfileModel
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+@Html.AntiForgeryToken()
+@using (Html.BeginForm("Edit", "Users"))
+{
+    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+    <div class="input-group">
+        <div class="input-group-addon" id="basic-addon1">Email</div>
+        @Html.TextBox("Email", Model.Email, new { @class = "form-control" })
+    </div><br />
+    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+    <div class="input-group">
+        <div class="input-group-addon">Phone number</div>
+        @Html.TextBox("PhoneNumber", Model.PhoneNumber ?? "none", new { @class = "form-control" })
+    </div>
+    <br />
+    <input type="submit" class="btn btn-success" value="Edit" />
+    <a href="/users/" class="btn btn-danger">Cancel</a>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
