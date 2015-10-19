@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Invite";
+    ViewBag.asd = "asd";
+}
+
+<h2>Invite</h2>
+
+@Html.TextBox("sendername", null, new { onkeyup = "GetSenderName(this.value);" })
+
+<div id="users"></div>
+
+<script type="text/javascript">
+    function GetSenderName(value) {
+        if (value == "") {
+            $("#users").empty();
+        } else {
+            $.ajax({
+                type: "GET",
+                url: "/Contests/SearchForUser/" + value,
+                success: function (msg) {
+                    $("#users").empty();
+                    var obj = JSON.parse(msg);
+                    for (var user in obj) {
+                        console.log(obj[user].Username);
+                        $("#users").append("<div>" + obj[user].Username + "</div>");
+                    }
+                }
+            });
+        }
+    }
+</script>

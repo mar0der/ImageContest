@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Net;
-using System.Web;
-using System.Web.Http;
+using System.Collections.Generic;
+using System.Web.Script.Serialization;
+using System.Web.UI;
+using System.Web.WebPages;
 using AutoMapper;
-using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using PhotoContest.Models.Enumerations;
 using PhotoContest.Models.Models;
+using WebGrease.Css.Extensions;
 
 namespace PhotoContest.App.Controllers
 {
@@ -132,6 +133,11 @@ namespace PhotoContest.App.Controllers
                 throw new ApplicationException("Invalid contest id");
             }
 
+            if (contest.ParticipationStrategy != ParticipationStrategy.Open)
+            {
+                throw new ApplicationException("You should be invited to this contest");
+            }
+
             string userId = this.User.Identity.GetUserId();
 
             if (contest.Participants.Any(p => p.Id == userId))
@@ -147,19 +153,137 @@ namespace PhotoContest.App.Controllers
             return this.RedirectToAction("View", "Contests", new { id = contest.Id});
         }
 
+        [HttpGet]
         public ActionResult Invite()
         {
-            return this.Content("invite");
+            return this.View();
         }
 
-        public ActionResult InviteJudge()
+        [Route("Contests/Invite/{username}/{contestId}")]
+        public ActionResult Invite(string username, int contestId)
         {
-            return this.View();
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == contestId);
+            if (contest == null)
+            {
+                throw new ApplicationException("Invalid contest id");
+            }
+
+            var user = this.Data.Users.All().SingleOrDefault(u => u.UserName == username);
+            if (user == null)
+            {
+                throw new ApplicationException("Invalid user id");
+            }
+
+            if (contest.CreatorId != this.User.Identity.GetUserId())
+            {
+                throw new ApplicationException("You are not owner of the contest");
+            }
+
+            if (contest.Participants.Contains(user))
+            {
+                throw new ApplicationException("The user already participants in the contest");
+            }
+
+            contest.Participants.Add(user);
+            this.Data.SaveChanges();
+
+            return this.RedirectToAction("View", "Contests", new { id = contest.Id });
+        }
+
+        [Route("Contests/InviteJudge/{username}/{contestId}")]
+        public ActionResult InviteJudge(string username, int contestId)
+        {
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == contestId);
+            if (contest == null)
+            {
+                throw new ApplicationException("Invalid contest id");
+            }
+
+            var user = this.Data.Users.All().SingleOrDefault(u => u.UserName == username);
+            if (user == null)
+            {
+                throw new ApplicationException("Invalid user id");
+            }
+
+            if (contest.CreatorId != this.User.Identity.GetUserId())
+            {
+                throw new ApplicationException("You are not owner of the contest");
+            }
+
+            if (contest.Judges.Contains(user))
+            {
+                throw new ApplicationException("The user is already a judge");
+            }
+
+            contest.Judges.Add(user);
+            this.Data.SaveChanges();
+
+            return this.RedirectToAction("View", "Contests", new { id = contest.Id });
+        }
+
+        // TODO: adding binding model and change to httpPost
+        // This action did not work, because there are no photos
+        [HttpGet]
+        [Route("Contest/Vote/{stars}/{photoId}/{contestId}")]
+        public void Vote(int stars, int photoId, int contestId)
+        {
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == contestId);
+
+            if (contest == null)
+            {
+                throw new ApplicationException("Invalid contest id");
+            }
+
+            var userId = this.User.Identity.GetUserId();
+            var user = this.Data.Users.All().Single(u => u.Id == userId);
+
+            if (!contest.Participants.Contains(user))
+            {
+                throw new ApplicationException("You are not participant to this contest");
+            }
+
+            var vote = new Vote()
+            {
+                Contest = contest,
+                PhotoId = photoId,
+                Stars = stars,
+                User = user
+            };
+
+            contest.Votes.Add(vote);
+            this.Data.SaveChanges();
+
+            // TODO: redirect or message for successfuly voting
         }
 
         public ActionResult FinalizeContest()
         {
             return this.View();
         }
+
+        [HttpGet]
+        [Route("Contests/SearchForUser/{user}")]
+        public string SearchForUser(string user)
+        {
+            var users = this.Data.Users.All().Where(u => u.UserName.Contains(user));
+            var userList = new List<User>();
+            if (users.Any())
+            {
+                users.ForEach(u =>
+                {
+                    var newUser = new User()
+                    {
+                        Id = u.Id,
+                        Username = u.UserName
+                    };
+
+                    userList.Add(newUser);
+                });
+            }
+
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            return serializer.Serialize(userList);
+        }
+
     }
 }
