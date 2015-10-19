@@ -147,9 +147,35 @@ namespace PhotoContest.App.Controllers
             return this.RedirectToAction("View", "Contests", new { id = contest.Id});
         }
 
-        public ActionResult Invite()
+        [Route("Contests/Invite/{username}/{contestId}")]
+        public ActionResult Invite(string username, int contestId)
         {
-            return this.Content("invite");
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == contestId);
+            if (contest == null)
+            {
+                throw new ApplicationException("Invalid contest id");
+            }
+
+            var user = this.Data.Users.All().SingleOrDefault(u => u.UserName == username);
+            if (user == null)
+            {
+                throw new ApplicationException("Invalid user id");
+            }
+
+            if (contest.CreatorId != this.User.Identity.GetUserId())
+            {
+                throw new ApplicationException("You are not owner of the contest");
+            }
+
+            if (contest.Participants.Contains(user))
+            {
+                throw new ApplicationException("The user already participants in the contest");
+            }
+
+            contest.Participants.Add(user);
+            this.Data.SaveChanges();
+
+            return this.RedirectToAction("View", "Contests", new { id = contest.Id });
         }
 
         public ActionResult InviteJudge()
