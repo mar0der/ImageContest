@@ -22,3 +22,7 @@ select,
 textarea {
     max-width: 280px;
 }
+#uploadPhotoPreview {
+    max-width: 150px;
+    max-height: 150px;
+}

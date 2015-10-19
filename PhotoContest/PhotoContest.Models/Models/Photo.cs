@@ -26,7 +26,7 @@
         public string Title { get; set; }
 
         [Required]
-        public string Url { get; set; }
+        public string PhotoFileName { get; set; }
 
         public virtual ICollection<Contest> Contests
         {

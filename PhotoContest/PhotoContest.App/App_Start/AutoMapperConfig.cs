@@ -7,6 +7,7 @@ namespace PhotoContest.App
     using PhotoContest.App.Models.BindingModels.Users;
     using PhotoContest.App.Models.ViewModels;
     using PhotoContest.Models.Models;
+    using PhotoContest.App.Models.BindingModels;
 
     public class AutoMapperConfig
     {
@@ -15,6 +16,7 @@ namespace PhotoContest.App
             Mapper.CreateMap<User, ProfileViewModel>();
             Mapper.CreateMap<ContestBindingModel, Contest>();
             Mapper.CreateMap<User, EditProfileModel>();
+            Mapper.CreateMap<AddPhotoBindingModel, Photo>();
         }
     }
 }
