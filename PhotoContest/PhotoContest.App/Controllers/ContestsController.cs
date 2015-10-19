@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Net;
-using System.Web;
-using System.Web.Http;
+using System.Collections.Generic;
+using System.Web.Script.Serialization;
+using System.Web.UI;
+using System.Web.WebPages;
 using AutoMapper;
-using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using PhotoContest.Models.Enumerations;
 using PhotoContest.Models.Models;
+using WebGrease.Css.Extensions;
 
 namespace PhotoContest.App.Controllers
 {
@@ -152,6 +153,12 @@ namespace PhotoContest.App.Controllers
             return this.RedirectToAction("View", "Contests", new { id = contest.Id});
         }
 
+        [HttpGet]
+        public ActionResult Invite()
+        {
+            return this.View();
+        }
+
         [Route("Contests/Invite/{username}/{contestId}")]
         public ActionResult Invite(string username, int contestId)
         {
@@ -253,5 +260,30 @@ namespace PhotoContest.App.Controllers
         {
             return this.View();
         }
+
+        [HttpGet]
+        [Route("Contests/SearchForUser/{user}")]
+        public string SearchForUser(string user)
+        {
+            var users = this.Data.Users.All().Where(u => u.UserName.Contains(user));
+            var userList = new List<User>();
+            if (users.Any())
+            {
+                users.ForEach(u =>
+                {
+                    var newUser = new User()
+                    {
+                        Id = u.Id,
+                        Username = u.UserName
+                    };
+
+                    userList.Add(newUser);
+                });
+            }
+
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            return serializer.Serialize(userList);
+        }
+
     }
 }

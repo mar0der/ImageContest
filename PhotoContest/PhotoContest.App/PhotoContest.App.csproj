@@ -237,7 +237,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\BindingModels\Contests\VoteBindingModel.cs" />
+    <Compile Include="Models\BindingModels\Contests\User.cs" />
     <Compile Include="Models\BindingModels\Users\EditProfileModel.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\BindingModels\Contests\ContestBindingModel.cs" />
@@ -333,6 +333,7 @@
     <Content Include="Views\Contests\ViewAll.cshtml" />
     <Content Include="Views\Contests\View.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
+    <Content Include="Views\Contests\Invite.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
