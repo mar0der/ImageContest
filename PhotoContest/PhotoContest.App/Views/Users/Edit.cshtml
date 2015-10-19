@@ -1,13 +1,24 @@
 ﻿@model PhotoContest.App.Models.BindingModels.Users.EditProfileModel
 @{
     ViewBag.Title = "Edit";
+    var rewardGenderArray = Enum.GetValues(typeof(PhotoContest.Models.Enumerations.Gender));
+    var rewardGender = new System.Web.Mvc.SelectList(rewardGenderArray);
 }
-
-<h2>Edit</h2>
+<h2 class="text-right">Edit Profile</h2>
+<hr>
 @Html.AntiForgeryToken()
-@using (Html.BeginForm("Edit", "Users"))
+@using (Html.BeginForm("Edit", "Users", new { @class = "form-horizontal" }))
 {
-    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+    <div class="col-md-6">
+        <div class="text-center">
+            <img src="http://showdown.gg/wp-content/uploads/2014/05/default-user.png" class="editProfileImg" alt="avatar">
+            <h6>Change Profile image</h6>
+
+            <h6 class="">LIMIT: 128kb</h6>
+            <input type="file" fileread="userInfo.currentAvatarImg" class="form-control">
+        </div>
+    </div>
+    @*@Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
     <div class="input-group">
         <div class="input-group-addon" id="basic-addon1">Email</div>
         @Html.TextBox("Email", Model.Email, new { @class = "form-control" })
@@ -18,8 +29,52 @@
         @Html.TextBox("PhoneNumber", Model.PhoneNumber ?? "none", new { @class = "form-control" })
     </div>
     <br />
-    <input type="submit" class="btn btn-default btn-lg" value="Edit" />
+    <input type="submit" class="btn btn-success" value="Edit" />
+    <a href="/users/" class="btn btn-danger">Cancel</a>*@
+    
+    <div class="col-md-18 personal-info">
+        <div class="form-group">
+            <label class="col-lg-6 control-label text-right editProfileFields">Email:</label>
+            <div class="col-lg-16">
+                @Html.TextBox("Email", Model.Email, new { @class = "form-control" })
+            </div>
+        </div><br /><br />  
+        <div class="form-group">
+            <label class="col-lg-6 control-label text-right editProfileFields">Phone Number:</label>
+            <div class="col-lg-16">
+                @Html.TextBox("PhoneNumber", Model.PhoneNumber ?? "none", new { @class = "form-control" })  
+            </div>
+        </div><br /><br />  
+
+        <div class="form-group">
+            <label class="col-lg-6 control-label text-right editProfileFields">Gender:</label>
+            <div class="col-lg-16">
+                @Html.DropDownList("Gender", rewardGender, new { @class = "form-control" })
+            </div>
+        </div><br /><br />
+        <div class="form-group">
+            <label class="col-lg-6 control-label text-right editProfileFields">Address:</label>
+            <div class="col-lg-16">
+                @Html.TextBox("Address", Model.Address ?? "Not set", new { @class = "form-control" })
+            </div>
+        </div><br /><br />
+        <div class="form-group">
+            <label class="col-lg-6 control-label text-right editProfileFields">Date of Birth:</label>
+            <div class="col-lg-16">
+                @Html.TextBox("DateOfBirth", Model.DateOfBirth.ToString("d"), new { @class = "form-control" })
+            </div>
+        </div><br /><br />
+        <div class="form-group text-right">
+            <div class="">
+                <input type="submit" class="btn btn-success" value="Save Changes">
+                <span></span>
+                <a href="/users/" class="btn btn-danger">Cancel</a>
+            </div>
+        </div>
+</div>
 }
+
+    </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

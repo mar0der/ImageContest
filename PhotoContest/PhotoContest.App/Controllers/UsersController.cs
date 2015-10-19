@@ -61,7 +61,11 @@
             {
                 this.CurrentUser.PhoneNumber = model.PhoneNumber;
                 this.CurrentUser.Email = model.Email;
+                this.CurrentUser.Gender = model.Gender;
+                this.CurrentUser.DateOfBirth = model.DateOfBirth;
+                this.CurrentUser.Address = model.Address;
                 this.Data.SaveChanges();
+                return RedirectToAction("profile", "users", new { username = this.User.Identity.Name });
             }
 
             return this.View(model);
