@@ -171,14 +171,14 @@
             var photo = this.CurrentUser.Photos.FirstOrDefault(p => p.Id == photoId);
             if (photo == null)
             {
-                return this.RedirectToAction("All", "Photos");
+                return new HttpNotFoundResult();
             }
 
             this.Data.Photos.All().Update(p => p.UserId == this.CurrentUser.Id, p => new Photo() { IsProfile = false });
             photo.IsProfile = true;
             this.Data.SaveChanges();
 
-            return this.RedirectToAction("Profile", "Users", new { username = this.CurrentUser.UserName });
+            return new HttpStatusCodeResult(200, "Avatar was changed.");
         }
     }
 }

@@ -22,3 +22,10 @@ $("#uploadPhoto").change(function () {
     readURL(this);
 });
 
+function completedChangingPhoto(a) {
+    $("#changedAvatar").slideDown(200);
+
+    setTimeout(function () {
+        $("#changedAvatar").slideUp(200);
+    },2000)
+}

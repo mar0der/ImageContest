@@ -31,6 +31,7 @@ textarea {
 }
 .photoContainer{
     text-align:center;
+    margin-top: 20px;
 }
 .photoContainer img {
     max-width: 100%;
@@ -66,4 +67,10 @@ textarea {
     margin: auto;
     max-width: 100%;
     max-height: 100%;
+}
+#loading {
+    display: none;
+}
+#changedAvatar {
+    display: none;
 }
