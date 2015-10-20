@@ -16,7 +16,7 @@ namespace PhotoContest.App.Controllers
     using System.Linq;
     using System.Web.Mvc;
 
-    using PhotoContest.App.Models.BindingModels.Contests;
+    using PhotoContest.App.Models.Photos.Contests;
     using PhotoContest.Data.Interfaces;
 
     #endregion

@@ -1,4 +1,4 @@
-﻿namespace PhotoContest.App.Models.BindingModels.Contests
+﻿namespace PhotoContest.App.Models.Photos.Contests
 {
     public class User
     {

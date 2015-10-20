@@ -20,7 +20,9 @@
 
         private ICollection<Contest> ownContests;
 
-        private ICollection<Contest> judgeContests; 
+        private ICollection<Contest> judgeContests;
+
+        private ICollection<Photo> photos; 
 
         public User()
         {
@@ -28,11 +30,15 @@
             this.contests = new HashSet<Contest>();
             this.ownContests = new HashSet<Contest>();
             this.judgeContests = new HashSet<Contest>();
+            this.photos = new HashSet<Photo>();
         }
 
         public Gender Gender { get; set; }
+
         public string Address { get; set; }
-        public DateTime DateOfBirth { get; set; }
+
+        public DateTime? DateOfBirth { get; set; }
+
         public virtual ICollection<Vote> Votes
         {
             get
@@ -43,6 +49,18 @@
             set
             {
                 this.votes = value;
+            }
+        }
+        public virtual ICollection<Photo> Photos
+        {
+            get
+            {
+                return this.photos;
+            }
+
+            set
+            {
+                this.photos = value;
             }
         }
 

@@ -19,6 +19,11 @@ namespace PhotoContest.App.Helpers.CustomValidationAttributes
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            if (value == null)
+            {
+                return null;
+            }
+
             var imageFile = value as HttpPostedFileWrapper;
             if (!allowedTypes.Contains(imageFile.ContentType))
             {

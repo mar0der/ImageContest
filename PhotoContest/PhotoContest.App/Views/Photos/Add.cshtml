@@ -1,10 +1,9 @@
-﻿@model PhotoContest.App.Models.BindingModels.AddPhotoBindingModel
+﻿@model PhotoContest.App.Models.Photos.BindingModels.AddPhotoBindingModel
 @{
     ViewBag.Title = "Add";
 }
 
 <h2>Add</h2>
-
 @using (Html.BeginForm("Add", "Photos", FormMethod.Post, new { enctype = "multipart/form-data" }))
 { 
     @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })

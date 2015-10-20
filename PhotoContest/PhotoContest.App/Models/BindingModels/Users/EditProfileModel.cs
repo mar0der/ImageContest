@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace PhotoContest.App.Models.BindingModels.Users
+namespace PhotoContest.App.Models.Photos.Users
 {
     public class EditProfileModel
     {

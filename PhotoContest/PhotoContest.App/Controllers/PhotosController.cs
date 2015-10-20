@@ -5,13 +5,15 @@
     using System.Web.Mvc;
 
     using PhotoContest.Data.Interfaces;
-    using PhotoContest.App.Models.BindingModels;
+    using PhotoContest.App.Models.Photos;
     using System.Threading.Tasks;
     using PhotoContest.App.Helpers;
     using System;
     using System.Linq;
     using AutoMapper;
     using PhotoContest.Models.Models;
+    using PhotoContest.App.Models.ViewModels;
+    using PhotoContest.App.Models.Photos.BindingModels;
 
     #endregion
 
@@ -25,7 +27,7 @@
 
         public ActionResult Index()
         {
-            return this.Redirect("/Photos/ViewPicture");
+            return this.Redirect("/Photos/All");
         }
 
         public ActionResult Add()
@@ -44,38 +46,121 @@
             var fileExtension = model.PhotoFile.FileName.Split('.').Last();
             var uniqueName = this.CurrentUser.Id + Guid.NewGuid() + "." + fileExtension;
 
-            byte[] buffer = null;
-            using (var fs = model.PhotoFile.InputStream)
-            {
-                buffer = new byte[fs.Length];
-                fs.Read(buffer, 0, (int)fs.Length);
-            }
-
-            var task = Task.Run(() => DropBoxManager.Upload(uniqueName, buffer));
+            var task = Task.Run(() => DropBoxManager.Upload(model.PhotoFile.InputStream, uniqueName));
             task.Wait();
+            var photoLink = task.Result;
 
             var photo = Mapper.Map<AddPhotoBindingModel, Photo>(model);
-            photo.PhotoFileName = uniqueName;
-            this.Data.Photos.Add(photo);
+            photo.PhotoLink = photoLink.Url.Substring(0, photoLink.Url.IndexOf("?")) + "?raw=1";
+            this.CurrentUser.Photos.Add(photo);
             this.Data.SaveChanges();
 
-            return this.RedirectToAction("ViewPicture", "Photos");
+            return this.RedirectToAction("ViewPicture", "Photos", new { id = photo.Id });
         }
 
         //change this to custom route /view and custom view template. because view is reserved word
-        public ActionResult ViewPicture()
+        public ActionResult ViewPicture(int id)
         {
-            return this.View();
+            var photo = this.Data.Photos.Find(id);
+            if (photo == null)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            var photoModel = Mapper.Map<Photo, PhotoViewModel>(photo);
+            photoModel.PhotoLink = photo.PhotoLink;
+
+            return this.View(photoModel);
         }
 
-        public ActionResult Edit()
+        [HttpGet]
+        [Route("photos/edit/{id}")]
+        public ActionResult Edit(int id)
         {
-            return this.View();
+            var photo = this.CurrentUser.Photos.FirstOrDefault(p => p.Id == id);
+            if (photo == null)
+            {
+                return this.RedirectToAction("All", "Photos");
+            }
+
+            var photoViewModel = Mapper.Map<Photo, EditPhotoModel>(photo);
+
+            return this.View(photoViewModel);
         }
 
-        public ActionResult Delete()
+        [HttpPost]
+        [Route("photos/edit/{id}")]
+        public ActionResult Edit(EditPhotoModel model)
         {
-            return this.View();
+            if (model == null || !this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            var photo = this.CurrentUser.Photos.FirstOrDefault(p => p.Id == model.Id);
+            if (photo == null)
+            {
+                return this.RedirectToAction("All", "Photos");
+            }
+
+            if (model.PhotoFile != null)
+            {
+                var fileName = photo.PhotoLink
+                .Split('/')
+                .Last()
+                .Split('?')
+                .First();
+
+                var taskDelete = Task.Run(() => DropBoxManager.Delete(fileName));
+                taskDelete.Wait();
+
+                var fileExtension = model.PhotoFile.FileName.Split('.').Last();
+                var uniqueName = this.CurrentUser.Id + Guid.NewGuid() + "." + fileExtension;
+
+                var taskUpload = Task.Run(() => DropBoxManager.Upload(model.PhotoFile.InputStream, uniqueName));
+                taskUpload.Wait();
+                var fileMetadata = taskUpload.Result;
+
+                photo.PhotoLink = fileMetadata.Url.Substring(0, fileMetadata.Url.IndexOf("?")) + "?raw=1"; ;
+            }
+
+            photo.Title = model.Title;
+            this.Data.SaveChanges();
+
+            return this.RedirectToAction("ViewPicture", "Photos", new { id = photo.Id });
+
+        }
+
+        public ActionResult All()
+        {
+            var photos = this.CurrentUser.Photos;
+
+            return this.View(photos);
+        }
+
+        [Route("photos/delete/{id}")]
+        public ActionResult Delete(int id)
+        {
+            var photo = this.CurrentUser.Photos.FirstOrDefault(p => p.Id == id);
+
+            if (photo == null)
+            {
+                return this.RedirectToAction("All", "Photos");
+            }
+
+            var fileName = photo.PhotoLink
+                .Split('/')
+                .Last()
+                .Split('?')
+                .First();
+
+            this.Data.Photos.Delete(photo);
+            this.Data.SaveChanges();
+
+            var task = Task.Run(() => DropBoxManager.Delete(fileName));
+            task.Wait();
+
+            return this.RedirectToAction("All", "Photos");
         }
 
     }

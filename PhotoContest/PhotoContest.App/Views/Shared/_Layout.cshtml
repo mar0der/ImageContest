@@ -26,6 +26,7 @@
                     <li>@Html.ActionLink("Contests", "Index", "Contests")</li>
                     @if (this.User.Identity.IsAuthenticated)
                     {
+                        <li>@Html.ActionLink("Photos", "All", "Photos", new { username = this.User.Identity.Name }, null)</li>
                         <li>@Html.ActionLink("Profile", "Profile", "Users", new { username = this.User.Identity.Name }, null)</li>
                     }
                     @if (this.User.IsInRole("Admin"))

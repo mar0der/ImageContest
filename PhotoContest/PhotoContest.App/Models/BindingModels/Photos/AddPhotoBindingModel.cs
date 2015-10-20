@@ -1,4 +1,4 @@
-﻿namespace PhotoContest.App.Models.BindingModels
+﻿namespace PhotoContest.App.Models.Photos.BindingModels
 {
     using PhotoContest.App.Helpers.CustomValidationAttributes;
     using System.ComponentModel.DataAnnotations;

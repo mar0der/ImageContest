@@ -1,7 +1,18 @@
-﻿
+﻿@model PhotoContest.App.Models.ViewModels.PhotoViewModel
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "ViewPicture";
 }
 
-<h2>ViewPicture</h2>
-
+<h2>@Model.Title</h2>
+@if(@Model.UserId == this.User.Identity.GetUserId())
+{
+    @Html.ActionLink("Delete", "Delete", "Photos", new { id = Model.Id }, new { @class = "btn btn-danger confirmDelete" })
+    @Html.ActionLink("Edit", "Edit", "Photos", new { id = Model.Id }, new { @class = "btn btn-success" })
+}
+<div class="photoContainer">
+    <img src="@Model.PhotoLink" alt="@Model.Title" />
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/main")
+}

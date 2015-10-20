@@ -9,7 +9,7 @@
     using PhotoContest.App.Models.ViewModels;
     using PhotoContest.Models.Models;
     using AutoMapper;
-    using PhotoContest.App.Models.BindingModels.Users;
+    using PhotoContest.App.Models.Photos.Users;
 
     #endregion
 

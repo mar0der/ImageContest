@@ -2,6 +2,7 @@
 {
     using Dropbox.Api;
     using Dropbox.Api.Files;
+    using Dropbox.Api.Sharing;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -11,29 +12,35 @@
 
     public static class DropBoxManager
     {
-        private const string AccessToken = "uBxMwG9GRMAAAAAAAAAAJcfW-hr-_v1HHK7aV3G77VYepqERXmAUpahgHhqou1Bl";
+        private const string path = "/PhotoContest/";
+        private const string AccessToken = "uBxMwG9GRMAAAAAAAAAANriZN5WkqGOEpcPMFA2JXhv0hrKaHMbXzBV82gu4SWZ7";
 
-        public static async Task Upload(string fileName, byte[] file)
+        public static async Task<PathLinkMetadata> Upload(Stream stream, string fileName)
         {
+            byte[] buffer = null;
+            using (var fs = stream)
+            {
+                buffer = new byte[fs.Length];
+                fs.Read(buffer, 0, (int)fs.Length);
+            }
+
             using (var dbx = new DropboxClient(AccessToken))
             {
-                using (var mem = new MemoryStream(file))
+                using (var mem = new MemoryStream(buffer))
                 {
-                    var updated = await dbx.Files.UploadAsync("/" + fileName,
+                    var updated = await dbx.Files.UploadAsync(path + fileName,
                         WriteMode.Overwrite.Instance,
                         body: mem);
                 }
+
+                return await dbx.Sharing.CreateSharedLinkAsync(path + fileName);
             }
         }
-
-        public static async Task<byte[]> Download(string file)
+        public static async Task Delete(string fileName)
         {
             using (var dbx = new DropboxClient(AccessToken))
             {
-                using (var response = await dbx.Files.DownloadAsync("/" + file))
-                {
-                    return await response.GetContentAsByteArrayAsync();
-                }
+                await dbx.Files.DeleteAsync(path + fileName);
             }
         }
     }

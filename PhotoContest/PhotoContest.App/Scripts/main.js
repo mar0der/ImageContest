@@ -1,4 +1,12 @@
-﻿function readURL(input) {
+﻿$(".confirmDelete").on("click", function (e) {
+    e.preventDefault();
+
+    if (confirm("Are you sure?")) {
+        window.location.href = $(this).attr("href");
+    }
+})
+
+function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
 
@@ -13,3 +21,4 @@
 $("#uploadPhoto").change(function () {
     readURL(this);
 });
+
