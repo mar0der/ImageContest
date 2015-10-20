@@ -51,6 +51,7 @@
                 this.votes = value;
             }
         }
+
         public virtual ICollection<Photo> Photos
         {
             get

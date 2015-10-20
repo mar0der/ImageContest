@@ -9,6 +9,7 @@
 {
     @Html.ActionLink("Delete", "Delete", "Photos", new { id = Model.Id }, new { @class = "btn btn-danger confirmDelete" })
     @Html.ActionLink("Edit", "Edit", "Photos", new { id = Model.Id }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Set as profile photo", "SetAsProfile", "Photos", new { id = Model.Id }, new { @class = "btn btn-success" })
 }
 <div class="photoContainer">
     <img src="@Model.PhotoLink" alt="@Model.Title" />

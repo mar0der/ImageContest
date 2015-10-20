@@ -8,12 +8,14 @@
     using PhotoContest.App.Models.Photos;
     using System.Threading.Tasks;
     using PhotoContest.App.Helpers;
-    using System;
+    using EntityFramework.Extensions;
     using System.Linq;
     using AutoMapper;
     using PhotoContest.Models.Models;
     using PhotoContest.App.Models.ViewModels;
     using PhotoContest.App.Models.Photos.BindingModels;
+    using System.Linq.Expressions;
+    using System;
 
     #endregion
 
@@ -163,5 +165,20 @@
             return this.RedirectToAction("All", "Photos");
         }
 
+        [Route("photos/setAsProfile/{photoId}")]
+        public ActionResult SetAsProfile(int photoId)
+        {
+            var photo = this.CurrentUser.Photos.FirstOrDefault(p => p.Id == photoId);
+            if (photo == null)
+            {
+                return this.RedirectToAction("All", "Photos");
+            }
+
+            this.Data.Photos.All().Update(p => p.UserId == this.CurrentUser.Id, p => new Photo() { IsProfile = false });
+            photo.IsProfile = true;
+            this.Data.SaveChanges();
+
+            return this.RedirectToAction("ViewPicture", "Photos", new { id = photoId });
+        }
     }
 }

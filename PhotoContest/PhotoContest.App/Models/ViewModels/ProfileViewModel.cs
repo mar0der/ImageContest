@@ -16,6 +16,8 @@
         public DateTime DateOfBirth { get; set; }
         public string Address { get; set; }
 
+        public string PhotoLink { get; set; }
+
         public IEnumerable<Contest> OwnContests { get; set; }
 
         public IEnumerable<Contest> JudgeContests { get; set; }

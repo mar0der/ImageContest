@@ -40,8 +40,11 @@
             {
                 return this.HttpNotFound();
             }
-
+            var defaultAvatarLink = "http://showdown.gg/wp-content/uploads/2014/05/default-user.png";
             var viewModel = Mapper.Map<User,ProfileViewModel>(user);
+            var profilePhoto = user.Photos.FirstOrDefault(p => p.IsProfile == true);
+
+            viewModel.PhotoLink = profilePhoto != null ? profilePhoto.PhotoLink : defaultAvatarLink;
 
             return this.View(viewModel);
         }

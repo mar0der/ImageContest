@@ -32,6 +32,8 @@
 
         public User User { get; set; }
 
+        public bool IsProfile { get; set; }
+
         public virtual ICollection<Contest> Contests
         {
             get
