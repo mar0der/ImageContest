@@ -20,6 +20,9 @@ namespace PhotoContest.App.Models.Photos.Users
         
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
+
+        public string PhotoLink { get; set; }
+
         public string Address { get; set; }
     }
 }

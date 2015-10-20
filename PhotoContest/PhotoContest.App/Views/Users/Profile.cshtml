@@ -7,8 +7,6 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-24 col-sm-24 col-md-12 col-lg-12 col-xs-offset-0 col-sm-offset-0 col-md-offset-6 col-lg-offset-6 toppad">
-
-
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <h3 class="panel-title">Sheena Kristin A.Eschor</h3>
@@ -26,7 +24,7 @@
                                     </tr>
                                     <tr>
                                         <td>Date of Birth</td>
-                                        <td>@(Model.DateOfBirth.ToString("d") == "1/1/1900" ? "Not set" : Model.DateOfBirth.ToString("d"))</td>
+                                        <td>@(Model.DateOfBirth == null ? "Not set" : Model.DateOfBirth.ToString("dd MMMM yyyy"))</td>
                                     </tr>
 
                                     <tr>

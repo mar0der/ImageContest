@@ -178,7 +178,7 @@
             photo.IsProfile = true;
             this.Data.SaveChanges();
 
-            return this.RedirectToAction("ViewPicture", "Photos", new { id = photoId });
+            return this.RedirectToAction("Profile", "Users", new { username = this.CurrentUser.UserName });
         }
     }
 }

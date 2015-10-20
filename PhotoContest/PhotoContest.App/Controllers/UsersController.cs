@@ -53,6 +53,9 @@
         public ActionResult Edit()
         {
             var model = Mapper.Map<User, EditProfileModel>(this.CurrentUser);
+            var profilePhoto = this.CurrentUser.Photos.FirstOrDefault(p => p.IsProfile == true);
+            var defaultAvatar = "http://showdown.gg/wp-content/uploads/2014/05/default-user.png";
+            model.PhotoLink = profilePhoto != null ? profilePhoto.PhotoLink : defaultAvatar;
 
             return this.View(model);
         }

@@ -56,3 +56,14 @@ textarea {
 .bottom {
     margin-bottom: 0px;
 }
+.profilePhotoContainer {
+    width: 300px;
+    height: 300px;
+    display: flex;
+}
+.profilePhotoContainer img {
+    display:block;
+    margin: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
