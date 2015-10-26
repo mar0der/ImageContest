@@ -63,6 +63,10 @@ namespace PhotoContest.App.Controllers
         public ActionResult View(int id)
         {
             var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
+            if (contest == null)
+            {
+                return this.RedirectToAction("ViewAll", "Contests");
+            }
             return this.View(contest);
         }
 
@@ -71,6 +75,10 @@ namespace PhotoContest.App.Controllers
         public ActionResult Edit(int id)
         {
             var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
+            if (contest == null)
+            {
+                return this.RedirectToAction("ViewAll", "Contests");
+            }
             return this.View(contest);
         }
 
@@ -100,10 +108,21 @@ namespace PhotoContest.App.Controllers
 
             return this.RedirectToAction("View", "Contests", new { id = contestDb.Id });
         }
+        [HttpGet]
+        [Route("Contests/Delete/{id}")]
+        public ActionResult Delete(int id)
+        {
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
+            if (contest == null)
+            {
+                return this.RedirectToAction("ViewAll", "Contests");
+            }
+            return this.View(contest);
+        }
 
         [HttpPost]
         [Route("Contests/Delete/{id}")]
-        public ActionResult Delete(int id)
+        public ActionResult DeleteContest(int id)
         {
             var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
 

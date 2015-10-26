@@ -3,7 +3,8 @@
     ViewBag.Title = "All photos";
 }
 <h2>All photos</h2>
-@Html.ActionLink("Add photo", "Add", "Photos", null, new { @class = "btn btn-success" })
+<hr />
+@Html.ActionLink("Add photo", "Add", "Photos", null, new { @class = "btn btn-success pull-right" })
 <div class="allPhotos">
     @if (Model.Count > 0)
     {

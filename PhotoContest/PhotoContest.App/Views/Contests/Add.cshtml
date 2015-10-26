@@ -14,44 +14,93 @@
     var deadlineStrategy = new SelectList(deadlineStrategyArray);
 }
 
-<h2>Add</h2>
+<h2 class="text-right">Add</h2>
+<div class="col-md-8 col-md-offset-8">
+    @using (Html.BeginForm("Add", "Contests", FormMethod.Post))
+    {
+        <div class="row">
+            <div class="panel panel-primary">
+                <div class="panel-heading"><h3>Information</h3></div>
+                <div class="panel-body">
+                    <div class="container-fluid">
 
-@using (Html.BeginForm("Add", "Contests"))
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                @Html.Label("title", "Title: ")
+                                @Html.TextBox("title", null, new { @class = "form-control" })
+                            </div>
+                            <div class="list-group-item">
+                                @Html.Label("description", "Description: ")
+                                @Html.TextBox("description", null, new { @class = "form-control" })
+                            </div>
+                            <div class="list-group-item">
+                                <b>Reward Strategy: </b>
+                                @Html.DropDownList("rewardstrategy", rewardStaregy, new { @class = "form-control" })
+                            </div>
+                            <div class="list-group-item">
+                                <b>Voting Strategy: </b>
+                                @Html.DropDownList("votingstrategy", votingStaregy, new { @class = "form-control" })
+                            </div>
+                            <div class="list-group-item">
+                                <b>Participation Strategy: </b>
+                                @Html.DropDownList("participationstrategy", participationStrategy, new { @class = "form-control" })
+                            </div>
+                            <div class="list-group-item">
+                                <b>Deadline Strategy: </b>
+                                @Html.DropDownList("deadlinestrategy", deadlineStrategy, new { @class = "form-control" })
+                            </div>
+                            <div class="list-group-item">
+                                @Html.Label("deadline", "Deadline: ")
+                                @Html.TextBox("deadline", null, new { @class = "form-control", type="date" })
+                            </div>
+                            <div class="list-group-item">
+                                @Html.Label("MaxNumberOfParticipants", "Max Participations: ")
+                                @Html.TextBox("MaxNumberOfParticipants", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" value="Add" class="btn btn-success pull-left" />
+            @Html.ActionLink("Cansel", "ViewAll", "Contests", null, new { @class = "btn btn-danger pull-right" })
+        </div>
+    }
+</div>
+
+
+
+
+
+
+
+@*@using (Html.BeginForm("Add", "Contests"))
 {
     <div>
-        @Html.Label("title", "Title: ")
-        @Html.TextBox("title")
+
     </div>
     <div>
-        @Html.Label("description", "Description: ")
-        @Html.TextBox("description")
+
     </div>
     <div>
-        <b>Reward Strategy: </b>
-        @Html.DropDownList("rewardstrategy", rewardStaregy)
+
     </div>
     <div>
-        <b>Voting Strategy: </b>
-        @Html.DropDownList("votingstrategy", votingStaregy)
+
     </div>
     <div>
-        <b>Participation Strategy: </b>
-        @Html.DropDownList("participationstrategy", participationStrategy)
+
     </div>
     <div>
-        <b>Deadline Strategy: </b>
-        @Html.DropDownList("deadlinestrategy", deadlineStrategy)
+
     </div>
     <div>
-        @Html.Label("deadline", "Deadline: ")
-        @Html.TextBox("deadline")
+
     </div>
     <div>
-        @Html.Label("MaxNumberOfParticipants", "Max Participations: ")
-        @Html.TextBox("MaxNumberOfParticipants")
+
     </div>
     <div>
         <input type="submit" value="Add Contest" />
     </div>
 
-}
+}*@

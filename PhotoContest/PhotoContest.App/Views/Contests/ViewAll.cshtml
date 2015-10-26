@@ -2,10 +2,13 @@
 @{
     ViewBag.Title = "ViewAll";
 }
-
+<h2>Contests</h2>
+<hr />
+@Html.ActionLink("Add contest", "Add", "Contests", null, new { @class = "btn btn-success pull-right" })
 @foreach (var contest in Model)
 {
     @Html.ActionLink(@contest.Title, "View", "Contests", new {id = @contest.Id}, null);
+    <br />
 }
 
 
