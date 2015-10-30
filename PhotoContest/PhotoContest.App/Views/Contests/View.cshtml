@@ -1,4 +1,6 @@
-﻿@model PhotoContest.Models.Models.Contest
+﻿@using System.ServiceModel
+@using Microsoft.AspNet.Identity
+@model PhotoContest.Models.Models.Contest
 @{
     ViewBag.Title = "View Contest";
 }
@@ -53,7 +55,9 @@
 
             <div class="row">
                 <div class="panel panel-primary">
-                    <div class="panel-heading"><h3 class="text-right">Status: @Model.Status</h3></div>
+                    <div class="panel-heading">
+                        <h3 class="text-right">Status: @Model.Status</h3>
+                    </div>
                     <div class="panel-body">
                         <div class="container-fluid">
 
@@ -82,6 +86,10 @@
                         </div>
                     </div>
                 </div>
+                @if (User.Identity.GetUserId() == @Model.Creator.Id)
+                {
+                    @Html.ActionLink("Invite", "Invite", "Contests", new { id = @Model.Id }, new { @class = "btn btn-success pull-left" })
+                }
                 @Html.ActionLink("Delete", "Delete", "Contests", null, new { @class = "btn btn-danger pull-right" })
                 @Html.ActionLink("Edit", "Edit", "Contests", null, new { @class = "btn btn-success pull-left" })
             </div>

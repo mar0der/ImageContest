@@ -177,29 +177,39 @@ namespace PhotoContest.App.Controllers
             return this.View();
         }
 
-        [Route("Contests/Invite/{username}/{contestId}")]
-        public ActionResult Invite(string username, int contestId)
+        [Route("Contests/Invite/{contestId}/{username}")]
+        public ActionResult Invite(int contestId, string username)
         {
             var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == contestId);
             if (contest == null)
             {
-                throw new ApplicationException("Invalid contest id");
+                ModelState.AddModelError(string.Empty, "Invalid contest id");
             }
 
             var user = this.Data.Users.All().SingleOrDefault(u => u.UserName == username);
             if (user == null)
             {
-                throw new ApplicationException("Invalid user id");
+                ModelState.AddModelError(string.Empty, "Invalid user id");
             }
 
             if (contest.CreatorId != this.User.Identity.GetUserId())
             {
-                throw new ApplicationException("You are not owner of the contest");
+                ModelState.AddModelError(string.Empty, "You are not owner of the contest");
+            }
+
+            if (contest.CreatorId == user.Id)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid invitation");
             }
 
             if (contest.Participants.Contains(user))
             {
-                throw new ApplicationException("The user already participants in the contest");
+                ModelState.AddModelError(string.Empty, "The user already participants in the contest");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View();
             }
 
             contest.Participants.Add(user);
@@ -280,8 +290,8 @@ namespace PhotoContest.App.Controllers
         }
 
         [HttpGet]
-        [Route("Contests/SearchForUser/{user}")]
-        public string SearchForUser(string user)
+        [Route("Contests/SearchForUser/{contestId}/{user}")]
+        public string SearchForUser(int contestId, string user)
         {
             var users = this.Data.Users.All().Where(u => u.UserName.Contains(user));
             var userList = new List<User>();
@@ -302,6 +312,5 @@ namespace PhotoContest.App.Controllers
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             return serializer.Serialize(userList);
         }
-
     }
 }
