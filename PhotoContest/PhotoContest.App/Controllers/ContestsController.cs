@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using AutoMapper;
 using Microsoft.AspNet.Identity;
+using PhotoContest.App.Models.BindingModels.Contests;
 using PhotoContest.Models.Enumerations;
 using PhotoContest.Models.Models;
 using WebGrease.Css.Extensions;
@@ -153,6 +154,11 @@ namespace PhotoContest.App.Controllers
 
             if (contest.ParticipationStrategy != ParticipationStrategy.Open)
             {
+                throw new ApplicationException("The participation feature is closed");
+            }
+
+            if (contest.ParticipationStrategy != ParticipationStrategy.Open)
+            {
                 throw new ApplicationException("You should be invited to this contest");
             }
 
@@ -251,11 +257,10 @@ namespace PhotoContest.App.Controllers
 
         // TODO: adding binding model and change to httpPost
         // This action did not work, because there are no photos
-        [HttpGet]
-        [Route("Contest/Vote/{stars}/{photoId}/{contestId}")]
-        public void Vote(int stars, int photoId, int contestId)
+        [HttpPost]
+        public void Vote(VoteBindingModel model)
         {
-            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == contestId);
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == model.ContestId);
 
             if (contest == null)
             {
@@ -273,8 +278,8 @@ namespace PhotoContest.App.Controllers
             var vote = new Vote()
             {
                 Contest = contest,
-                PhotoId = photoId,
-                Stars = stars,
+                PhotoId = model.PhotoId,
+                Stars = model.Stars,
                 User = user
             };
 
@@ -340,9 +345,9 @@ namespace PhotoContest.App.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid photo id");
             }
 
-            if (contest != null && contest.CreatorId != this.CurrentUser.Id)
+            if (contest != null && !contest.Participants.Contains(this.CurrentUser))
             {
-                ModelState.AddModelError(string.Empty, "You are not creator of this contest");
+                return this.RedirectToAction("Index", "Home");
             }
 
             if (contest != null && contest.Photos.Contains(photo))

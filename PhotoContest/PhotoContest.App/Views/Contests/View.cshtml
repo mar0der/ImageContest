@@ -1,5 +1,6 @@
 ﻿@using System.ServiceModel
 @using Microsoft.AspNet.Identity
+@using PhotoContest.Models.Enumerations
 @model PhotoContest.Models.Models.Contest
 @{
     ViewBag.Title = "View Contest";
@@ -89,11 +90,18 @@
                 @if (User.Identity.GetUserId() == @Model.Creator.Id)
                 {
                     @Html.ActionLink("Invite", "Invite", "Contests", new { id = @Model.Id }, new { @class = "btn btn-success pull-left" })
+                    @Html.ActionLink("Delete", "Delete", "Contests", null, new { @class = "btn btn-danger pull-right" })
+                    @Html.ActionLink("Edit", "Edit", "Contests", null, new { @class = "btn btn-success pull-left" })
+                }
+                @if (@Model.Participants.Any(p => p.Id == User.Identity.GetUserId()) || User.Identity.GetUserId() == @Model.Creator.Id)
+                {
                     @Html.ActionLink("Add Photo", "AddPhoto", "Contests", new { id = @Model.Id }, new { @class = "btn btn-success pull-left" })
                 }
-                @Html.ActionLink("Delete", "Delete", "Contests", null, new { @class = "btn btn-danger pull-right" })
-                @Html.ActionLink("Edit", "Edit", "Contests", null, new { @class = "btn btn-success pull-left" })
-            </div>
+                @if (@Model.ParticipationStrategy == ParticipationStrategy.Open && !@Model.Participants.Any(p => p.Id == User.Identity.GetUserId()))
+                {
+                    @Html.ActionLink("Join", "Join", "Contests", new { id = @Model.Id }, new { @class = "btn btn-success pull-left" })
+                }
+                </div>
 
         </div>
 
