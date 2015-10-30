@@ -312,5 +312,53 @@ namespace PhotoContest.App.Controllers
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             return serializer.Serialize(userList);
         }
+
+
+        [HttpGet]
+        public ActionResult AddPhoto()
+        {
+            var photos = this.CurrentUser.Photos;
+
+            return this.View(photos);
+        }
+
+        [HttpGet]
+        [Route("Contests/AddPhoto/{contestId}/{photoId}")]
+        public ActionResult AddPhoto(int contestId, int photoId)
+        {
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == contestId);
+
+            if (contest == null)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid contest id");
+            }
+
+            var photo = this.CurrentUser.Photos.SingleOrDefault(p => p.Id == photoId);
+
+            if (photo == null)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid photo id");
+            }
+
+            if (contest != null && contest.CreatorId != this.CurrentUser.Id)
+            {
+                ModelState.AddModelError(string.Empty, "You are not creator of this contest");
+            }
+
+            if (contest != null && contest.Photos.Contains(photo))
+            {
+                ModelState.AddModelError(string.Empty, "The photo is already in the contest");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var photos = this.CurrentUser.Photos;
+                return View(photos);
+            }
+
+            contest.Photos.Add(photo);
+            this.Data.SaveChanges();
+            return this.RedirectToAction("View", "Contests", new { id = contest.Id });
+        }
     }
 }

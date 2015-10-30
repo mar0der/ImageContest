@@ -89,6 +89,7 @@
                 @if (User.Identity.GetUserId() == @Model.Creator.Id)
                 {
                     @Html.ActionLink("Invite", "Invite", "Contests", new { id = @Model.Id }, new { @class = "btn btn-success pull-left" })
+                    @Html.ActionLink("Add Photo", "AddPhoto", "Contests", new { id = @Model.Id }, new { @class = "btn btn-success pull-left" })
                 }
                 @Html.ActionLink("Delete", "Delete", "Contests", null, new { @class = "btn btn-danger pull-right" })
                 @Html.ActionLink("Edit", "Edit", "Contests", null, new { @class = "btn btn-success pull-left" })

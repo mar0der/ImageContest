@@ -374,6 +374,7 @@
     <Content Include="Views\Contests\View.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Contests\Invite.cshtml" />
+    <Content Include="Views\Contests\AddPhoto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
