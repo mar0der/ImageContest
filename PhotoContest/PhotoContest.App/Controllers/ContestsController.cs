@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
-using System.Web.UI;
-using System.Web.WebPages;
 using AutoMapper;
 using Microsoft.AspNet.Identity;
 using PhotoContest.Models.Enumerations;
@@ -39,7 +37,8 @@ namespace PhotoContest.App.Controllers
         {
             if (!ModelState.IsValid || model == null)
             {
-                throw new ArgumentException("Invalid model");
+                ModelState.AddModelError(string.Empty, "Invalid model");
+                return View();
             }
 
             var contest = Mapper.Map<ContestBindingModel, Contest>(model);

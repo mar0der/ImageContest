@@ -277,6 +277,7 @@
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\BindingModels\Contests\ContestBindingModel.cs" />
     <Compile Include="Controllers\ManageViewModels.cs" />
+    <Compile Include="Models\ViewModels\Contests\ContestViewModel.cs" />
     <Compile Include="Models\ViewModels\PhotoViewModel.cs" />
     <Compile Include="Models\ViewModels\ProfileViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
