@@ -365,5 +365,27 @@ namespace PhotoContest.App.Controllers
             this.Data.SaveChanges();
             return this.RedirectToAction("View", "Contests", new { id = contest.Id });
         }
+
+        [Route("Contests/ViewPhoto/{contestId}/{photoId}")]
+        public ActionResult ViewPhoto(int contestId, int photoId)
+        {
+            var contest = this.Data.Contests.Find(contestId);
+            if (contest == null)
+            {
+                return this.RedirectToAction("ViewAll", "Contests");
+            }
+
+            var photo = contest.Photos.FirstOrDefault(p => p.Id == photoId);
+            if (photo == null)
+            {
+                return this.RedirectToAction("View", "Contests", new { id = contestId });
+            }
+
+            var viewModel = Mapper.Map<Photo, ViewPhotoModel>(photo);
+            viewModel.ContestTitle = contest.Title;
+            viewModel.ContestId = contest.Id;
+
+            return this.View(viewModel);
+        }
     }
 }

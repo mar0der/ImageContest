@@ -270,6 +270,7 @@
     </Compile>
     <Compile Include="Helpers\CustomValidationAttributes\Image.cs" />
     <Compile Include="Helpers\DropBoxManager.cs" />
+    <Compile Include="Models\BindingModels\Contests\ViewPhotoModel.cs" />
     <Compile Include="Models\BindingModels\Contests\VoteBindingModel.cs" />
     <Compile Include="Models\BindingModels\Photos\EditPhotoModel.cs" />
     <Compile Include="Models\BindingModels\Photos\AddPhotoBindingModel.cs" />
@@ -376,6 +377,7 @@
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Contests\Invite.cshtml" />
     <Content Include="Views\Contests\AddPhoto.cshtml" />
+    <Content Include="Views\Contests\ViewPhoto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

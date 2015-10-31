@@ -9,7 +9,7 @@
 @if (@Model.UserId == this.User.Identity.GetUserId())
 {
     <div id="loading" class="alert alert-info">Loading...</div>
-    <div id="changedAvatar" class="alert alert-success">Your profile photo was changed.</div>
+    <div id="changedAvatar" class="alert alert-success hidden">Your profile photo was changed.</div>
     @Html.ActionLink("Delete", "Delete", "Photos", new { id = Model.Id }, new { @class = "btn btn-danger confirmDelete" })
     @Html.ActionLink("Edit", "Edit", "Photos", new { id = Model.Id }, new { @class = "btn btn-success" })
 
