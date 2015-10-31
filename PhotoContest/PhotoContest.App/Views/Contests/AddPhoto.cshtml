@@ -1,0 +1,31 @@
+﻿@model ICollection<PhotoContest.Models.Models.Photo>
+@{
+    ViewBag.Title = "All photos";
+    string contestId = this.Request.RawUrl.Split('/')[3];
+}
+<h2>All photos</h2>
+<hr />
+@Html.ActionLink("Add photo", "Add", "Photos", null, new { @class = "btn btn-success pull-right" })
+<div class="allPhotos">
+    @Html.ValidationSummary(true)
+    @if (Model.Count > 0)
+    {
+        foreach (PhotoContest.Models.Models.Photo photo in Model)
+        {
+            <div class="image">
+                <a href="@Url.Action("ViewPicture", "Photos", new {id = photo.Id})">
+                    <div>@photo.Title</div>
+                    <img src="@photo.PhotoLink" alt="@photo.Title"/>
+                </a>
+                <a href="@Url.Action("AddPhoto", "Contests", new {contestId = contestId, photoId = photo.Id})" class="btn btn-success">Add</a>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No photos.</p>
+    }
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/main")
+}

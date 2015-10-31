@@ -8,6 +8,7 @@ namespace PhotoContest.App
     using PhotoContest.App.Models.ViewModels;
     using PhotoContest.Models.Models;
     using PhotoContest.App.Models.Photos.BindingModels;
+    using PhotoContest.App.Models.BindingModels.Contests;
 
     public class AutoMapperConfig
     {
@@ -20,6 +21,7 @@ namespace PhotoContest.App
             Mapper.CreateMap<Photo, PhotoViewModel>();
             Mapper.CreateMap<Photo, EditPhotoModel>();
             Mapper.CreateMap<EditPhotoModel, Photo>();
+            Mapper.CreateMap<Photo, ViewPhotoModel>();
         }
     }
 }

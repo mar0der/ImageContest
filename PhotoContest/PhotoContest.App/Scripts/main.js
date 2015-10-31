@@ -29,3 +29,10 @@ function completedChangingPhoto(a) {
         $("#changedAvatar").slideUp(200);
     },2000)
 }
+function voteSuccessfully() {
+    $("#voteSuccessfully").slideDown(200);
+
+    setTimeout(function () {
+        $("#voteSuccessfully").slideUp(200);
+    }, 2000)
+}

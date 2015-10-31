@@ -1,0 +1,35 @@
+﻿@model PhotoContest.App.Models.BindingModels.Contests.ViewPhotoModel
+<h2>@Model.ContestTitle: @Model.Title</h2>
+<div class="photoContainer">
+    <img src="@Model.PhotoLink" alt="@Model.Title" />
+</div>
+<div id="loading" class="alert alert-info">Loading...</div>
+<div id="voteSuccessfully" class="alert alert-success hidden">You vote successfully.</div>
+@Html.AntiForgeryToken()
+<p>@using (Ajax.BeginForm("Vote", new AjaxOptions()
+{
+    HttpMethod = "post",
+    LoadingElementId = "loading",
+    OnSuccess = "voteSuccessfully"
+}))
+{
+    <input type="hidden" name="contestId" value="@Model.ContestId" />
+    <input type="hidden" name="photoId" value="@Model.Id" />
+    <input type="number" name="stars" min="1" max="5" value="5" />    
+    <input type="submit" name="submit" value="Vote" />
+}</p>
+<p>Rating: 
+    @if (@Model.Votes.Count > 0)
+    {
+        @Model.Votes.Average(v => v.Stars)
+    }
+    else
+    {
+        @:No votes yet.    
+    }
+    </p>
+@section Scripts {
+
+    @Scripts.Render("~/bundles/main")
+    @Scripts.Render("~/bundles/unobtrusive-ajax")
+}

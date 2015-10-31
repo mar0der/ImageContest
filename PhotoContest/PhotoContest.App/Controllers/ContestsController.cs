@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using AutoMapper;
 using Microsoft.AspNet.Identity;
+using PhotoContest.App.Models.BindingModels.Contests;
 using PhotoContest.Models.Enumerations;
 using PhotoContest.Models.Models;
 using WebGrease.Css.Extensions;
@@ -153,6 +154,11 @@ namespace PhotoContest.App.Controllers
 
             if (contest.ParticipationStrategy != ParticipationStrategy.Open)
             {
+                throw new ApplicationException("The participation feature is closed");
+            }
+
+            if (contest.ParticipationStrategy != ParticipationStrategy.Open)
+            {
                 throw new ApplicationException("You should be invited to this contest");
             }
 
@@ -251,11 +257,10 @@ namespace PhotoContest.App.Controllers
 
         // TODO: adding binding model and change to httpPost
         // This action did not work, because there are no photos
-        [HttpGet]
-        [Route("Contest/Vote/{stars}/{photoId}/{contestId}")]
-        public void Vote(int stars, int photoId, int contestId)
+        [HttpPost]
+        public void Vote(VoteBindingModel model)
         {
-            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == contestId);
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == model.ContestId);
 
             if (contest == null)
             {
@@ -273,8 +278,8 @@ namespace PhotoContest.App.Controllers
             var vote = new Vote()
             {
                 Contest = contest,
-                PhotoId = photoId,
-                Stars = stars,
+                PhotoId = model.PhotoId,
+                Stars = model.Stars,
                 User = user
             };
 
@@ -311,6 +316,76 @@ namespace PhotoContest.App.Controllers
 
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             return serializer.Serialize(userList);
+        }
+
+
+        [HttpGet]
+        public ActionResult AddPhoto()
+        {
+            var photos = this.CurrentUser.Photos;
+
+            return this.View(photos);
+        }
+
+        [HttpGet]
+        [Route("Contests/AddPhoto/{contestId}/{photoId}")]
+        public ActionResult AddPhoto(int contestId, int photoId)
+        {
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == contestId);
+
+            if (contest == null)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid contest id");
+            }
+
+            var photo = this.CurrentUser.Photos.SingleOrDefault(p => p.Id == photoId);
+
+            if (photo == null)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid photo id");
+            }
+
+            if (contest != null && !contest.Participants.Contains(this.CurrentUser))
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            if (contest != null && contest.Photos.Contains(photo))
+            {
+                ModelState.AddModelError(string.Empty, "The photo is already in the contest");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var photos = this.CurrentUser.Photos;
+                return View(photos);
+            }
+
+            contest.Photos.Add(photo);
+            this.Data.SaveChanges();
+            return this.RedirectToAction("View", "Contests", new { id = contest.Id });
+        }
+
+        [Route("Contests/ViewPhoto/{contestId}/{photoId}")]
+        public ActionResult ViewPhoto(int contestId, int photoId)
+        {
+            var contest = this.Data.Contests.Find(contestId);
+            if (contest == null)
+            {
+                return this.RedirectToAction("ViewAll", "Contests");
+            }
+
+            var photo = contest.Photos.FirstOrDefault(p => p.Id == photoId);
+            if (photo == null)
+            {
+                return this.RedirectToAction("View", "Contests", new { id = contestId });
+            }
+
+            var viewModel = Mapper.Map<Photo, ViewPhotoModel>(photo);
+            viewModel.ContestTitle = contest.Title;
+            viewModel.ContestId = contest.Id;
+
+            return this.View(viewModel);
         }
     }
 }

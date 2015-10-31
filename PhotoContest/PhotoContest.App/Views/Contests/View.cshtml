@@ -1,55 +1,26 @@
 ﻿@using System.ServiceModel
 @using Microsoft.AspNet.Identity
+@using PhotoContest.Models.Enumerations
 @model PhotoContest.Models.Models.Contest
 @{
     ViewBag.Title = "View Contest";
 }
 <div class="container">
     <div class="row" style="border:solid black">
-        <div class="col-md-14 ">
-            <div class="row" style="border:solid red">
-
-                <div class="container-fluid">
-                    <ul class="row" style="border:dotted black">
-
-                        <li class="col-lg-8 col-md-8">
-                            <img class="img-responsive" src="http://www.texturequalitypro.com/assets/files/content_files/TextureQualityPro_Large_Sample.jpg">
-                        </li>
-                        <li class="col-lg-8 col-md-8">
-                            <img class="img-responsive" src="http://www.texturequalitypro.com/assets/files/content_files/TextureQualityPro_Large_Sample.jpg">
-                        </li>
-
-                        <li class="col-lg-16 col-md-16" style="border:solid margin-bottom:none">
-                            <img class="img-responsive" src="http://www.texturequalitypro.com/assets/files/content_files/TextureQualityPro_Large_Sample.jpg">
-                        </li>
-
-
-
-                    </ul>
-                    <div class="col-md-8">
-                        fdfdfd
-                    </div>
-                </div>
-                <div class="container-fluid">
-                    <ul class="row">
-
-                        <li class="col-lg-8 col-md-8">
-                            <img class="img-responsive" src="http://www.texturequalitypro.com/assets/files/content_files/TextureQualityPro_Large_Sample.jpg">
-                        </li>
-                        <li class="col-lg-8 col-md-8">
-                            <img class="img-responsive" src="http://www.texturequalitypro.com/assets/files/content_files/TextureQualityPro_Large_Sample.jpg">
-                        </li>
-
-                        <li class="col-lg-8 col-md-8" style="border:solid margin-bottom:none">
-                            <img class="img-responsive" src="http://www.texturequalitypro.com/assets/files/content_files/TextureQualityPro_Large_Sample.jpg">
-                        </li>
-
-
-
-                    </ul>
-                </div>
-            </div>
-
+        <div class="col-md-14 photoContestContainer">
+                @if (Model.Photos.Count > 0)
+                {
+                    foreach (var photo in Model.Photos)
+                    {
+                        <a href="@Url.Action("ViewPhoto", "Contests", new { contestId = Model.Id, photoId = photo.Id })" >
+                            <img src="@photo.PhotoLink" />
+                        </a>
+                    }
+                }
+                else
+                {
+                    @:<p>No photos</p>
+                }
         </div>
         <div class="col-md-8 col-md-offset-2">
 
@@ -89,10 +60,18 @@
                 @if (User.Identity.GetUserId() == @Model.Creator.Id)
                 {
                     @Html.ActionLink("Invite", "Invite", "Contests", new { id = @Model.Id }, new { @class = "btn btn-success pull-left" })
+                    @Html.ActionLink("Delete", "Delete", "Contests", null, new { @class = "btn btn-danger pull-right" })
+                    @Html.ActionLink("Edit", "Edit", "Contests", null, new { @class = "btn btn-success pull-left" })
                 }
-                @Html.ActionLink("Delete", "Delete", "Contests", null, new { @class = "btn btn-danger pull-right" })
-                @Html.ActionLink("Edit", "Edit", "Contests", null, new { @class = "btn btn-success pull-left" })
-            </div>
+                @if (@Model.Participants.Any(p => p.Id == User.Identity.GetUserId()) || User.Identity.GetUserId() == @Model.Creator.Id)
+                {
+                    @Html.ActionLink("Add Photo", "AddPhoto", "Contests", new { id = @Model.Id }, new { @class = "btn btn-success pull-left" })
+                }
+                @if (@Model.ParticipationStrategy == ParticipationStrategy.Open && !@Model.Participants.Any(p => p.Id == User.Identity.GetUserId()))
+                {
+                    @Html.ActionLink("Join", "Join", "Contests", new { id = @Model.Id }, new { @class = "btn btn-success pull-left" })
+                }
+                </div>
 
         </div>
 
