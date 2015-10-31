@@ -12,7 +12,6 @@ namespace PhotoContest.App.Models.Photos.BindingModels
         [Required]
         [Display(Name = "Title")]
         [StringLength(100, ErrorMessage = "Title must be at least 2 characters.", MinimumLength = 2)]
-
         public string Title { get; set; }
         [Image(2097152)]
         public HttpPostedFileBase PhotoFile { get; set; }

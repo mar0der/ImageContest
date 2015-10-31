@@ -129,7 +129,7 @@
             photo.Title = model.Title;
             this.Data.SaveChanges();
 
-            return this.RedirectToAction("ViewPicture", "Photos", new { id = photo.Id });
+            return this.RedirectToAction("ViewAll", "Photos", new { id = photo.Id });
 
         }
 

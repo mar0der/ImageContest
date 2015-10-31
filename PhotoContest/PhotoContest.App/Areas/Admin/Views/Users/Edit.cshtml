@@ -1,7 +1,59 @@
-﻿
+﻿@model PhotoContest.App.Models.Photos.Users.EditProfileModel
 @{
     ViewBag.Title = "Edit";
+    var rewardGenderArray = Enum.GetValues(typeof(PhotoContest.Models.Enumerations.Gender));
+    var rewardGender = new System.Web.Mvc.SelectList(rewardGenderArray);
+}
+<h2 class="text-right">Edit Profile</h2>
+<hr>
+@Html.AntiForgeryToken()
+@using (Html.BeginForm("EditUser", "Users", new { id = ViewData["id"] }, FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.ValidationSummary(null, new { @class = "alert" });
+    <div class="col-md-18 personal-info">
+       
+        <div class="form-group">
+            <label class="col-lg-6 control-label text-right editProfileFields">Email:</label>
+            <div class="col-lg-16">
+                @Html.TextBox("Email", Model.Email, new {@class = "form-control"})
+            </div>
+        </div><br/><br/>
+        <div class="form-group">
+            <label class="col-lg-6 control-label text-right editProfileFields">Phone Number:</label>
+            <div class="col-lg-16">
+                @Html.TextBox("PhoneNumber", Model.PhoneNumber ?? "none", new {@class = "form-control"})
+            </div>
+        </div><br/><br/>
+
+        <div class="form-group">
+            <label class="col-lg-6 control-label text-right editProfileFields">Gender:</label>
+            <div class="col-lg-16">
+                @Html.DropDownList("Gender", rewardGender, new {@class = "form-control"})
+            </div>
+        </div><br/><br/>
+        <div class="form-group">
+            <label class="col-lg-6 control-label text-right editProfileFields">Address:</label>
+            <div class="col-lg-16">
+                @Html.TextBox("Address", Model.Address ?? "Not set", new {@class = "form-control"})
+            </div>
+        </div><br/><br/>
+        <div class="form-group">
+            <label class="col-lg-6 control-label text-right editProfileFields">Date of Birth:</label>
+            <div class="col-lg-16">
+                @Html.TextBox("DateOfBirth", Model.DateOfBirth == null ? "Not set" : Model.DateOfBirth.ToString("yyyy-MM-dd"), new {@class = "form-control", type = "date"})
+            </div>
+        </div><br/><br/>
+        <div class="form-group text-right">
+            <div class="">
+                <input type="submit" class="btn btn-success" value="Save Changes">
+                <span></span>
+                <a href="/Admin/Users/ViewAll" class="btn btn-danger">Cancel</a>
+            </div>
+        </div>
+    </div>
 }
 
-<h2>Edit</h2>
-
+    </div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

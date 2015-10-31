@@ -1,7 +1,16 @@
-﻿
-@{
-    ViewBag.Title = "ViewAll";
-}
+﻿@model System.Collections.Generic.IEnumerable<PhotoContest.Models.Models.User>
+    @{
+        ViewBag.Title = "ViewAll";
+    }
 
-<h2>admin users ViewAll</h2>
+    <h2>admin users ViewAll</h2>
 
+    @foreach (var user in Model)
+    {
+        <div>
+            <span>@user.UserName</span>
+            @Html.ActionLink("Edit Profile", "Edit", "Users", new {id = @user.Id}, new {@class = "btn btn-success"})
+            @Html.ActionLink("View Photo", "ViewAll", "Photos", new { id = @user.Id }, new { @class = "btn btn-success" })
+        </div>
+        <br />
+    }

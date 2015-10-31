@@ -10,8 +10,8 @@
 {
     <div id="loading" class="alert alert-info">Loading...</div>
     <div id="changedAvatar" class="alert alert-success">Your profile photo was changed.</div>
-    @Html.ActionLink("Delete", "Delete", "Photos", new { id = Model.Id }, new { @class = "btn btn-danger confirmDelete" })
-    @Html.ActionLink("Edit", "Edit", "Photos", new { id = Model.Id }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Delete", "Delete", "Photos", new { id = Model.Id, userId = ViewData["id"] }, new { @class = "btn btn-danger confirmDelete" })
+    @Html.ActionLink("Edit", "Edit", "Photos", new { id = Model.Id, userId = ViewData["id"] }, new { @class = "btn btn-success" })
 
     @Ajax.ActionLink("Set as profile photo", "SetAsProfile", new { id = Model.Id }, new AjaxOptions()
     {
