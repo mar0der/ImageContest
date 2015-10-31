@@ -5,12 +5,46 @@
 
     <h2>admin users ViewAll</h2>
 
-    @foreach (var user in Model)
-    {
-        <div>
-            <span>@user.UserName</span>
-            @Html.ActionLink("Edit Profile", "Edit", "Users", new {id = @user.Id}, new {@class = "btn btn-success"})
-            @Html.ActionLink("View Photo", "ViewAll", "Photos", new { id = @user.Id }, new { @class = "btn btn-success" })
+
+
+    <div class="container">
+        <div class="row">
+            <tr class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        View All Users :) 
+                    </h4>
+                </div>
+                <table class="table table-fixed">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-2">Username</th>
+                            <th class="col-xs-2">Email</th>
+                            <th class="col-xs-2">Phone number</th>
+                            <th class="col-xs-2">Address</th>
+                            <th class="col-xs-2">Gender</th>
+                            <th class="col-xs-2">Date of birth</th>
+                            <th class="col-xs-2">Edit user</th>
+                            <th class="col-xs-2">User photos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>@user.UserName</td>
+                                <td>@user.Email</td>
+                                <td>@(user.PhoneNumber ?? "none")</td>
+                                <td>@(user.Address ?? "Not Set")</td>
+                                <td>@user.Gender</td>
+                                <td>@(user.DateOfBirth)</td>
+                                <td>@Html.ActionLink("Edit Profile", "Edit", "Users", new { id = @user.Id }, new { @class = "btn btn-success" })</td>
+                                <td>@Html.ActionLink("View Photo", "ViewAll", "Photos", new { id = @user.Id }, new { @class = "btn btn-success" })</td>
+                            </tr>
+                        }
+                    
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <br />
-    }
+    </div>
