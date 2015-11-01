@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Web.Script.Serialization;
 using AutoMapper;
 using Microsoft.AspNet.Identity;
@@ -7,6 +8,7 @@ using PhotoContest.App.Models.BindingModels.Contests;
 using PhotoContest.Models.Enumerations;
 using PhotoContest.Models.Models;
 using WebGrease.Css.Extensions;
+using PhotoContest.Models.Models;
 
 namespace PhotoContest.App.Controllers
 {
@@ -174,7 +176,7 @@ namespace PhotoContest.App.Controllers
             contest.Participants.Add(user);
             this.Data.SaveChanges();
 
-            return this.RedirectToAction("View", "Contests", new { id = contest.Id});
+            return this.RedirectToAction("View", "Contests", new { id = contest.Id });
         }
 
         [HttpGet]
@@ -255,38 +257,47 @@ namespace PhotoContest.App.Controllers
             return this.RedirectToAction("View", "Contests", new { id = contest.Id });
         }
 
-        // TODO: adding binding model and change to httpPost
-        // This action did not work, because there are no photos
         [HttpPost]
-        public void Vote(VoteBindingModel model)
+        public ActionResult Vote(VoteBindingModel model)
         {
             var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == model.ContestId);
-
+            var user = this.CurrentUser;
             if (contest == null)
             {
-                throw new ApplicationException("Invalid contest id");
+                ModelState.AddModelError(string.Empty, "Invalid contest id");
+            }
+            else
+            {
+                if (!contest.Participants.Contains(user))
+                {
+                    ModelState.AddModelError(String.Empty, "You are not participant to this contest");
+                }
+
+                if (contest.Votes.Any(v => v.User == user))
+                {
+                    ModelState.AddModelError(string.Empty, "You already vote for this picture");
+                }
             }
 
-            var userId = this.User.Identity.GetUserId();
-            var user = this.Data.Users.All().Single(u => u.Id == userId);
-
-            if (!contest.Participants.Contains(user))
+            if (ModelState.IsValid)
             {
-                throw new ApplicationException("You are not participant to this contest");
+                var vote = new Vote()
+                {
+                    Contest = contest,
+                    PhotoId = model.PhotoId,
+                    Stars = model.Stars,
+                    User = user
+                };
+
+                contest.Votes.Add(vote);
+                this.Data.SaveChanges();
+
+                var voteAvg = string.Format("{0:F2}",contest.Votes.Average(v => v.Stars));
+                return new HttpStatusCodeResult(HttpStatusCode.Created, voteAvg);
             }
 
-            var vote = new Vote()
-            {
-                Contest = contest,
-                PhotoId = model.PhotoId,
-                Stars = model.Stars,
-                User = user
-            };
-
-            contest.Votes.Add(vote);
-            this.Data.SaveChanges();
-
-            // TODO: redirect or message for successfuly voting
+            var errors = new JavaScriptSerializer().Serialize(ModelState);
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, errors);
         }
 
         public ActionResult FinalizeContest()

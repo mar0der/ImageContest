@@ -18,19 +18,16 @@
         [ForeignKey("User")]
         public string UserId { get; set; }
 
-        [Required]
         public virtual User User { get; set; }
 
         [ForeignKey("Photo")]
         public int PhotoId { get; set; }
-
-        [Required]
+        
         public virtual Photo Photo { get; set; }
 
         [ForeignKey("Contest")]
         public int ContestId { get; set; }
 
-        [Required]
         public virtual Contest Contest { get; set; }
     }
 }
