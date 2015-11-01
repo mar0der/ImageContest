@@ -38,6 +38,14 @@
             }
         }
 
+        public IRepository<ContestWinner> ContestWinners
+        {
+            get
+            {
+                return this.GetRepository<ContestWinner>();
+            }
+        }
+
         public IRepository<Photo> Photos
         {
             get

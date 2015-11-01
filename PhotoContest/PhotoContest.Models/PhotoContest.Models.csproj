@@ -58,9 +58,11 @@
     <Compile Include="Enumerations\DeadlineStrategy.cs" />
     <Compile Include="Enumerations\Gender.cs" />
     <Compile Include="Enumerations\ParticipationStrategy.cs" />
+    <Compile Include="Enumerations\Places.cs" />
     <Compile Include="Enumerations\RewardStrategy.cs" />
     <Compile Include="Enumerations\VotingStrategy.cs" />
     <Compile Include="Models\Contest.cs" />
+    <Compile Include="Models\ContestWinner.cs" />
     <Compile Include="Models\Photo.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Vote.cs" />
