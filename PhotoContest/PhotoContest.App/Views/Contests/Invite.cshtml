@@ -17,7 +17,7 @@
         } else {
             $.ajax({
                 type: "GET",
-                url: "/Contests/SearchForUser/" + @contestId + "/" + value,
+                url: "/Contests/SearchForUser/" + value,
                 success: function(msg) {
                     $("#users").empty();
                     var obj = JSON.parse(msg);
