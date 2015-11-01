@@ -1,7 +1,31 @@
-﻿
-@{
-    ViewBag.Title = "InviteJudge";
+﻿@{
+    ViewBag.Title = "Invite Judge";
+    string contestId = this.Request.RawUrl.Split('/')[3];
 }
 
-<h2>InviteJudge</h2>
+<h2>Invite</h2>
+@Html.ValidationSummary(true, null, new { @class = "text-danger" })
 
+@Html.TextBox("sendername", null, new { onkeyup = "GetUsers(this.value);" })
+
+<div id="users"></div>
+
+<script type="text/javascript">
+    function GetUsers(value) {
+        if (value == "") {
+            $("#users").empty();
+        } else {
+            $.ajax({
+                type: "GET",
+                url: "/Contests/SearchForUser/" + value,
+                success: function (msg) {
+                    $("#users").empty();
+                    var obj = JSON.parse(msg);
+                    for (var user in obj) {
+                        $("#users").append("<div><a href='/Contests/InviteJudge/" + @contestId + "/" + obj[user].Username + "'>" + obj[user].Username + "</a></div>");
+                    }
+                }
+            });
+        }
+    }
+</script>

@@ -41,17 +41,26 @@ namespace PhotoContest.App.Controllers
             if (!ModelState.IsValid || model == null)
             {
                 ModelState.AddModelError(string.Empty, "Invalid model");
-                return View();
             }
 
-            var contest = Mapper.Map<ContestBindingModel, Contest>(model);
-            contest.CreatedAt = DateTime.Now;
-            contest.CreatorId = this.User.Identity.GetUserId();
+            if (model != null && model.Deadline <= DateTime.Now)
+            {
+                ModelState.AddModelError("Deadline", "Invalid deadline");
+            }
 
-            this.Data.Contests.Add(contest);
-            this.Data.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                var contest = Mapper.Map<ContestBindingModel, Contest>(model);
+                contest.CreatedAt = DateTime.Now;
+                contest.CreatorId = this.User.Identity.GetUserId();
 
-            return this.RedirectToAction("View", "Contests", new { id = contest.Id });
+                this.Data.Contests.Add(contest);
+                this.Data.SaveChanges();
+
+                return this.RedirectToAction("View", "Contests", new { id = contest.Id });
+            }
+
+            return View();
         }
 
         [Route("contests")]
@@ -226,35 +235,60 @@ namespace PhotoContest.App.Controllers
             return this.RedirectToAction("View", "Contests", new { id = contest.Id });
         }
 
-        [Route("Contests/InviteJudge/{username}/{contestId}")]
-        public ActionResult InviteJudge(string username, int contestId)
+
+        [HttpGet]
+        public ActionResult InviteJudge()
         {
-            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == contestId);
+            return View();
+        }
+
+        [HttpGet]
+        [Route("Contests/InviteJudge/{constestId}/{username}")]
+        public ActionResult InviteJudge(int constestId, string username)
+        {
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == constestId);
             if (contest == null)
             {
-                throw new ApplicationException("Invalid contest id");
+                ModelState.AddModelError(string.Empty, "Invalid contest id");
             }
 
             var user = this.Data.Users.All().SingleOrDefault(u => u.UserName == username);
             if (user == null)
             {
-                throw new ApplicationException("Invalid user id");
+                ModelState.AddModelError(string.Empty, "Invalid user id");
             }
-
-            if (contest.CreatorId != this.User.Identity.GetUserId())
+            else
             {
-                throw new ApplicationException("You are not owner of the contest");
+                if (user.Id == this.CurrentUser.Id)
+                {
+                    ModelState.AddModelError(string.Empty, "You cannot invite youself as judge");
+                }
+                
             }
 
-            if (contest.Judges.Contains(user))
+            if (contest != null)
             {
-                throw new ApplicationException("The user is already a judge");
+                if (contest.CreatorId != this.User.Identity.GetUserId())
+                {
+                    ModelState.AddModelError(string.Empty, "You are not owner of the contest");
+                }
+
+                if (contest.Judges.Contains(user))
+                {
+                    ModelState.AddModelError(string.Empty, "The user is already a judge");
+                } 
             }
 
-            contest.Judges.Add(user);
-            this.Data.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                contest.Judges.Add(user);
+                this.Data.SaveChanges();
 
-            return this.RedirectToAction("View", "Contests", new { id = contest.Id });
+                return this.RedirectToAction("View", "Contests", new {id = contest.Id});
+
+            }
+
+            return View(ModelState);
         }
 
         [HttpPost]
@@ -292,7 +326,7 @@ namespace PhotoContest.App.Controllers
                 contest.Votes.Add(vote);
                 this.Data.SaveChanges();
 
-                var voteAvg = string.Format("{0:F2}",contest.Votes.Average(v => v.Stars));
+                var voteAvg = string.Format("{0:F2}", contest.Votes.Average(v => v.Stars));
                 return this.Content(voteAvg);
             }
 
@@ -305,8 +339,8 @@ namespace PhotoContest.App.Controllers
         }
 
         [HttpGet]
-        [Route("Contests/SearchForUser/{contestId}/{user}")]
-        public string SearchForUser(int contestId, string user)
+        [Route("Contests/SearchForUser/{user}")]
+        public string SearchForUser(string user)
         {
             var users = this.Data.Users.All().Where(u => u.UserName.Contains(user));
             var userList = new List<User>();
@@ -327,7 +361,6 @@ namespace PhotoContest.App.Controllers
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             return serializer.Serialize(userList);
         }
-
 
         [HttpGet]
         public ActionResult AddPhoto()

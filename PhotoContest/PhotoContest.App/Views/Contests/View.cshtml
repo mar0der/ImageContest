@@ -8,18 +8,18 @@
 <div class="container">
     <div class="row" style="border:solid black">
         <div class="col-md-14 photoContestContainer">
-                @if (Model.Photos.Count > 0)
+            @if (Model.Photos.Count > 0)
+            {
+                foreach (var photo in Model.Photos)
                 {
-                    foreach (var photo in Model.Photos)
-                    {
-                        <a href="@Url.Action("ViewPhoto", "Contests", new { contestId = Model.Id, photoId = photo.Id })" >
-                            <img src="@photo.PhotoLink" />
-                        </a>
-                    }
+                    <a href="@Url.Action("ViewPhoto", "Contests", new { contestId = Model.Id, photoId = photo.Id })">
+                        <img src="@photo.PhotoLink" />
+                    </a>
                 }
-                else
-                {
-                    @:<p>No photos</p>
+            }
+            else
+            {
+                @:<p>No photos</p>
                 }
         </div>
         <div class="col-md-8 col-md-offset-2">
@@ -60,6 +60,7 @@
                 @if (User.Identity.GetUserId() == @Model.Creator.Id)
                 {
                     @Html.ActionLink("Invite", "Invite", "Contests", new { id = @Model.Id }, new { @class = "btn btn-success pull-left" })
+                    @Html.ActionLink("Invite Judge", "InviteJudge", "Contests", new {id = @Model.Id}, new { @class = "btn btn-success pull-left" })
                     @Html.ActionLink("Delete", "Delete", "Contests", null, new { @class = "btn btn-danger pull-right" })
                     @Html.ActionLink("Edit", "Edit", "Contests", null, new { @class = "btn btn-success pull-left" })
                 }
@@ -67,11 +68,12 @@
                 {
                     @Html.ActionLink("Add Photo", "AddPhoto", "Contests", new { id = @Model.Id }, new { @class = "btn btn-success pull-left" })
                 }
-                @if (@Model.ParticipationStrategy == ParticipationStrategy.Open && !@Model.Participants.Any(p => p.Id == User.Identity.GetUserId()))
+                @if (@Model.ParticipationStrategy == ParticipationStrategy.Open && !@Model.Participants.Any(p => p.Id == this.User.Identity.GetUserId())
+                    && @Model.CreatorId != this.User.Identity.GetUserId())
                 {
                     @Html.ActionLink("Join", "Join", "Contests", new { id = @Model.Id }, new { @class = "btn btn-success pull-left" })
                 }
-                </div>
+            </div>
 
         </div>
 
