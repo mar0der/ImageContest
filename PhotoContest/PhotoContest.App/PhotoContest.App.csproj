@@ -306,7 +306,6 @@
     <Content Include="Areas\Admin\Views\Contests\Finalize.cshtml" />
     <Content Include="Areas\Admin\Views\Contests\RemovePicture.cshtml" />
     <Content Include="Areas\Admin\Views\Photos\ViewAll.cshtml" />
-    <Content Include="Areas\Admin\Views\Photos\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Photos\Delete.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

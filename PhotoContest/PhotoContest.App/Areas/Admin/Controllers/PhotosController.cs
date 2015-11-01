@@ -37,62 +37,6 @@ namespace PhotoContest.App.Areas.Admin.Controllers
             return this.View(pictures);
         }
 
-        [HttpGet]
-        public ActionResult Edit(int id, string userId)
-        {
-            ViewData["id"] = userId;
-            var photo = this.Data.Photos.Find(id);
-            if (photo == null)
-            {
-                return this.RedirectToAction("ViewAll", "Users");
-            }
-
-            var photoViewModel = Mapper.Map<Photo, EditPhotoModel>(photo);
-            return this.View(photoViewModel);
-        }
-
-        [HttpPost]
-        public ActionResult Edit(string id, EditPhotoModel model)
-        {
-            if (model == null || !this.ModelState.IsValid)
-            {
-                ViewData["id"] = id;
-                return this.View(model);
-            }
-            var user = this.Data.Users.Find(id);
-            var photo = user.Photos.FirstOrDefault(p => p.Id == model.Id);
-            if (photo == null)
-            {
-                return this.RedirectToAction("ViewAll", "Users");
-            }
-
-            if (model.PhotoFile != null)
-            {
-                var fileName = photo.PhotoLink
-                .Split('/')
-                .Last()
-                .Split('?')
-                .First();
-
-                var taskDelete = Task.Run(() => DropBoxManager.Delete(fileName));
-                taskDelete.Wait();
-
-                var fileExtension = model.PhotoFile.FileName.Split('.').Last();
-                var uniqueName = user.Id + Guid.NewGuid() + "." + fileExtension;
-
-                var taskUpload = Task.Run(() => DropBoxManager.Upload(model.PhotoFile.InputStream, uniqueName));
-                taskUpload.Wait();
-                var fileMetadata = taskUpload.Result;
-
-                photo.PhotoLink = fileMetadata.Url.Substring(0, fileMetadata.Url.IndexOf("?")) + "?raw=1"; ;
-            }
-
-            photo.Title = model.Title;
-            this.Data.SaveChanges();
-
-            return this.RedirectToAction("ViewAll", "Users", new { id = photo.Id });
-        }
-
         public ActionResult Delete(int id, string userId)
         {
             var user = this.Data.Users.Find(userId);

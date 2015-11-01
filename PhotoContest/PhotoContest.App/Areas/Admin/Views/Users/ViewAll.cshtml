@@ -3,29 +3,23 @@
         ViewBag.Title = "ViewAll";
     }
 
-    <h2>admin users ViewAll</h2>
+    <h2>View All Users</h2>
 
-
+    <hr />
 
     <div class="container">
         <div class="row">
-            <tr class="panel panel-default">
-                <div class="panel-heading">
-                    <h4>
-                        View All Users :) 
-                    </h4>
-                </div>
                 <table class="table table-fixed">
                     <thead>
                         <tr>
-                            <th class="col-xs-2">Username</th>
+                            <th class="col-xs-1">Username</th>
                             <th class="col-xs-2">Email</th>
                             <th class="col-xs-2">Phone number</th>
                             <th class="col-xs-2">Address</th>
-                            <th class="col-xs-2">Gender</th>
+                            <th class="col-xs-1">Gender</th>
                             <th class="col-xs-2">Date of birth</th>
-                            <th class="col-xs-2">Edit user</th>
-                            <th class="col-xs-2">User photos</th>
+                            <th class="col-xs-1">Edit user</th>
+                            <th class="col-xs-1">User photos</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,9 +36,8 @@
                                 <td>@Html.ActionLink("View Photo", "ViewAll", "Photos", new { id = @user.Id }, new { @class = "btn btn-success" })</td>
                             </tr>
                         }
-                    
+
                     </tbody>
                 </table>
-            </div>
         </div>
     </div>

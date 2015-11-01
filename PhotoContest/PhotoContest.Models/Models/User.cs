@@ -1,4 +1,6 @@
-﻿namespace PhotoContest.Models.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PhotoContest.Models.Models
 {
     #region
 
@@ -36,7 +38,6 @@
         public Gender Gender { get; set; }
 
         public string Address { get; set; }
-
         public DateTime? DateOfBirth { get; set; }
 
         public virtual ICollection<Vote> Votes
