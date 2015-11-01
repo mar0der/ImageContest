@@ -29,9 +29,14 @@ function completedChangingPhoto(a) {
         $("#changedAvatar").slideUp(200);
     },2000)
 }
-function voteSuccessfully() {
+function voteSuccessfully(avgRating) {
     $("#voteSuccessfully").slideDown(200);
-
+    $("#ratingForm").hide();
+    $(".photoRatingValue").fadeOut(200);
+    setTimeout(function () {
+        $(".photoRatingValue").text(avgRating);
+        $('.photoRatingValue').fadeIn(200);
+    }, 200)
     setTimeout(function () {
         $("#voteSuccessfully").slideUp(200);
     }, 2000)
