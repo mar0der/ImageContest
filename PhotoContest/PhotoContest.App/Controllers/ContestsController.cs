@@ -293,11 +293,10 @@ namespace PhotoContest.App.Controllers
                 this.Data.SaveChanges();
 
                 var voteAvg = string.Format("{0:F2}",contest.Votes.Average(v => v.Stars));
-                return new HttpStatusCodeResult(HttpStatusCode.Created, voteAvg);
+                return this.Content(voteAvg);
             }
 
-            var errors = new JavaScriptSerializer().Serialize(ModelState);
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, errors);
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Invalid voting data");
         }
 
         public ActionResult FinalizeContest()
