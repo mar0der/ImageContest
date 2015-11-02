@@ -4,6 +4,6 @@
     {
         Gold,
         Silver,
-        Bronze1
+        Bronze
     }
 }

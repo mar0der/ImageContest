@@ -333,9 +333,48 @@ namespace PhotoContest.App.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Invalid voting data");
         }
 
-        public ActionResult FinalizeContest()
+        public ActionResult FinalizeContest(int contestId)
         {
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == contestId);
+
+            if (contest == null)
+            {
+                throw new ApplicationException("Invalid contest id");
+            }
+
+            if (contest.CreatorId != this.CurrentUser.Id)
+            {
+                throw new ApplicationException("You cannot finalize contest");
+            }
+
+            contest.Status = ContestStatus.Ended;
+
+            var winners = PickWinners(contest);
+
+            // TODO: Insert winners into database
+            // TODO: Add photo into contest disable
+            // TODO: Rating picture disable
+
             return this.View();
+        }
+
+        private Dictionary<Places, Photo> PickWinners(Contest contest)
+        {
+            var averageVoteCount = contest.Photos.Average(p => p.Votes.Count());
+            var winners =
+                contest
+                    .Photos
+                    .Where(p => p.Votes.Count() >= averageVoteCount)
+                    .OrderByDescending(p => p.Votes.Average(v => v.Stars))
+                    .Take(3)
+                    .ToList();
+
+            var winnersDict = new Dictionary<Places, Photo>();
+            winnersDict.Add(Places.Gold, winners[0]);
+            winnersDict.Add(Places.Silver, winners[1]);
+            winnersDict.Add(Places.Bronze, winners[2]);
+
+            return winnersDict;
         }
 
         [HttpGet]
