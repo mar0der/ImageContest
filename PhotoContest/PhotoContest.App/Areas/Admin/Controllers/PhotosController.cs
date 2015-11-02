@@ -26,7 +26,7 @@ namespace PhotoContest.App.Areas.Admin.Controllers
 
         public ActionResult Index()
         {
-            return this.Redirect("/admin/users/viewall");
+            return this.Redirect("/admin/photos/viewall");
         }
 
         public ActionResult ViewAll(string id)
