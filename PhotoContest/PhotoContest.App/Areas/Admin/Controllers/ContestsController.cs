@@ -2,12 +2,23 @@
 {
     #region
 
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Web.Mvc;
 
+    using AutoMapper;
+
+    using Ninject.Infrastructure.Language;
+
+    using PhotoContest.App.Models.Photos.Users;
+    using PhotoContest.App.Models.ViewModels.Contests;
     using PhotoContest.Data.Interfaces;
+    using PhotoContest.Models.Models;
 
     #endregion
 
+
+    //[Route("Admin")]
     public class ContestsController : BaseAdminController
     {
         public ContestsController(IPhotoContestData data)
@@ -23,7 +34,11 @@
 
         public ActionResult ViewAll()
         {
-            return this.View();
+            var contests = this.Data.Contests.All()
+                .OrderBy(c => c.Status)
+                .ThenByDescending(c => c.CreatedAt)
+                .ToList();
+            return this.View(contests);
         }
 
         public ActionResult Edit()

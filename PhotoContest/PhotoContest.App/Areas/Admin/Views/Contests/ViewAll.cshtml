@@ -1,4 +1,4 @@
-﻿
+﻿@model List<PhotoContest.Models.Models.Contest>
 @{
     ViewBag.Title = "ViewAll";
 }
@@ -12,28 +12,34 @@
         <table class="table table-fixed">
             <thead>
                 <tr>
-                    <th class="col-xs-1">Username</th>
-                    <th class="col-xs-2">Email</th>
-                    <th class="col-xs-2">Phone number</th>
-                    <th class="col-xs-2">Address</th>
-                    <th class="col-xs-1">Gender</th>
-                    <th class="col-xs-2">Date of birth</th>
-                    <th class="col-xs-1">Edit user</th>
-                    <th class="col-xs-1">User photos</th>
+                    <th class="col-xs-1">Title</th>
+                    <th class="col-xs-1">Status</th>
+                    <th class="col-xs-1">Reward Strategy</th>
+                    <th class="col-xs-1">Deadline Strategy</th>
+                    <th class="col-xs-1">Deadline</th>
+                    <th class="col-xs-1">Creator</th>
+                    <th class="col-xs-1">Finalize</th>
+                    <th class="col-xs-1">Remove Photos</th>
+                    <th class="col-xs-1">Edit</th>
+                    <th class="col-xs-1">Delete</th>
+                 
                 </tr>
             </thead>
             <tbody>
-                foreach (var user in Model)
+                @foreach (var contest in Model)
                 {
                     <tr>
-                        <td>user.UserName</td>
-                        <td>user.Email</td>
-                        <td>(user.PhoneNumber ?? "none")</td>
-                        <td>(user.Address ?? "Not Set")</td>
-                        <td>user.Gender</td>
-                        <td>(user.DateOfBirth)</td>
-                        <td>Html.ActionLink("Edit Profile", "Edit", "Users", new { id = user.Id }, new { class = "btn btn-success" })</td>
-                        <td>Html.ActionLink("View Photo", "ViewAll", "Photos", new { id = user.Id }, new { class = "btn btn-success" })</td>
+                        <td>@contest.Title</td>
+                        <td>@contest.Status</td>
+                        <td>@contest.RewardStrategy</td>
+                        <td>@contest.DeadlineStrategy</td>
+                        <td>@contest.Deadline</td>
+                        <td>@contest.Creator.UserName</td>
+                        <td>@Html.ActionLink("Finalize", "Finalize", "Contests", new { id = @contest.Id }, new { @class = "btn btn-success" })</td>
+                        <td>@Html.ActionLink("Remove Photos", "RemovePicture", "Contests", new { id = @contest.Id }, new { @class = "btn btn-success" })</td>
+                        <td>@Html.ActionLink("Edit", "Edit", "Contests", new { id = @contest.Id }, new { @class = "btn btn-success" })</td>
+                        <td>@Html.ActionLink("Delete", "Delete", "Contests", new { id = @contest.Id }, new { @class = "btn btn-success" })</td>
+
                     </tr>
                 }
 

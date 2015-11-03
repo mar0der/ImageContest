@@ -1,6 +1,8 @@
 ﻿namespace PhotoContest.App.Models.ViewModels.Contests
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using PhotoContest.Models.Enumerations;
 
