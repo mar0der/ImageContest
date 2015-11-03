@@ -1,18 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using PhotoContest.App.Helpers;
-using PhotoContest.App.Models.Photos.BindingModels;
-using PhotoContest.App.Models.ViewModels;
-using PhotoContest.Models.Models;
-
-namespace PhotoContest.App.Areas.Admin.Controllers
+﻿namespace PhotoContest.App.Areas.Admin.Controllers
 {
     #region
 
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Web.Http;
     using System.Web.Mvc;
 
+    using PhotoContest.App.Helpers;
     using PhotoContest.Data.Interfaces;
 
     #endregion
@@ -29,12 +24,22 @@ namespace PhotoContest.App.Areas.Admin.Controllers
             return this.Redirect("/admin/photos/viewall");
         }
 
-        public ActionResult ViewAll(string id)
+        public ActionResult ViewAll()
         {
-            ViewData["id"] = id;
-            var user = this.Data.Users.Find(id);
-            var pictures = user.Photos;
+            var pictures = this.Data.Photos.All();
             return this.View(pictures);
+        }
+
+        public ActionResult ForUser([FromUri] string id)
+        {
+            var user = this.Data.Users.Find(id);
+            if (user == null)
+            {
+                return this.HttpNotFound();
+            }
+
+            var pictures = user.Photos;
+            return this.View("~/Areas/Admin/Views/Photos/ViewAll.cshtml", pictures);
         }
 
         public ActionResult Delete(int id, string userId)
@@ -47,11 +52,7 @@ namespace PhotoContest.App.Areas.Admin.Controllers
                 return this.RedirectToAction("ViewAll", "Users");
             }
 
-            var fileName = photo.PhotoLink
-                .Split('/')
-                .Last()
-                .Split('?')
-                .First();
+            var fileName = photo.PhotoLink.Split('/').Last().Split('?').First();
 
             this.Data.Photos.Delete(photo);
             this.Data.SaveChanges();

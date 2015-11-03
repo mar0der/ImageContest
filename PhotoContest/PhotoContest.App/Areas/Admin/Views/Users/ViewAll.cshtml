@@ -18,6 +18,7 @@
                             <th class="col-xs-2">Address</th>
                             <th class="col-xs-1">Gender</th>
                             <th class="col-xs-2">Date of birth</th>
+                            <th class="col-xs-2">Edit Photos</th>
                             <th class="col-xs-1">Edit user</th>
                             <th class="col-xs-1">User photos</th>
                         </tr>
@@ -32,6 +33,7 @@
                                 <td>@(user.Address ?? "Not Set")</td>
                                 <td>@user.Gender</td>
                                 <td>@(user.DateOfBirth)</td>
+                                <td>@Html.ActionLink("Edit Photos", "ForUser", "Photos", new { id = @user.Id }, new { @class = "btn btn-success" })</td>
                                 <td>@Html.ActionLink("Edit Profile", "Edit", "Users", new { id = @user.Id }, new { @class = "btn btn-success" })</td>
                                 <td>@Html.ActionLink("View Photo", "ViewAll", "Photos", new { id = @user.Id }, new { @class = "btn btn-success" })</td>
                             </tr>
