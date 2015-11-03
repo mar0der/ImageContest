@@ -17,6 +17,7 @@ namespace PhotoContest.App
     {
         public static void RegisterMappings()
         {
+            Mapper.CreateMap<Contest, ContestViewModel>();
             Mapper.CreateMap<User, ProfileViewModel>();
             Mapper.CreateMap<ContestBindingModel, Contest>();
             Mapper.CreateMap<User, EditProfileModel>();

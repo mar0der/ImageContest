@@ -1,7 +1,50 @@
-﻿
+﻿@model PhotoContest.App.Models.ViewModels.Contests.ContestViewModel
 @{
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<h2 class="text-right">Delete</h2>
+<hr />
+<div class="col-md-8 col-md-offset-8">
+    @using (Html.BeginForm("Delete", "Contests", new {area = "Admin" }, FormMethod.Post))
+    {
+        <div class="row">
+            <div class="panel panel-primary">
+                <div class="panel-heading"><h3>Information</h3></div>
+                <div class="panel-body">
+                    <div class="container-fluid">
+
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                @Html.Label("title", "Title: ")
+                                @Html.TextBoxFor(c => c.Title, null, new { @class = "form-control", disabled = "disabled" })
+                                @Html.HiddenFor(c => c.Id);
+
+                            </div>
+                            <div class="list-group-item">
+                                @Html.Label("description", "Description: ")
+                                @Html.TextBoxFor(c => c.Description, null, new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                            <div class="list-group-item">
+                                <b>Contest Status: </b>
+                                @Html.TextBoxFor(c => c.Status, null, new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                            <div class="list-group-item">
+                                <b>Reward Strategy: </b>
+                                @Html.TextBoxFor(c => c.RewardStrategy, null, new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                            <div class="list-group-item">
+                                @Html.Label("deadline", "Deadline: ")
+                                @Html.TextBoxFor(c => c.Deadline, null, new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                        </div>
+                        @Html.Hidden("Id", @Model.Id)
+                    </div>
+               </div>
+            </div>
+            <input type="submit" value="Delete Contest" class="btn btn-success pull-left" />
+            @Html.ActionLink("Cancel", "ViewAll", "Contests", new {area = "Admin", id = @Model.Id }, new { @class = "btn btn-danger pull-right" })
+        </div>
+    }
+</div>
 

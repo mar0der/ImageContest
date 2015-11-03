@@ -5,9 +5,13 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Web.Http;
     using System.Web.Mvc;
+    
 
     using AutoMapper;
+
+    using Microsoft.AspNet.Identity;
 
     using Ninject.Infrastructure.Language;
 
@@ -16,11 +20,10 @@
     using PhotoContest.App.Models.ViewModels.Contests;
     using PhotoContest.Data.Interfaces;
     using PhotoContest.Models.Models;
+    
 
     #endregion
 
-
-    //[Route("Admin")]
     public class ContestsController : BaseAdminController
     {
         public ContestsController(IPhotoContestData data)
@@ -53,7 +56,7 @@
             return this.View(contest);
         }
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult SaveContest(ContestBindingModel updatedContest)
         {
             if (!this.ModelState.IsValid || updatedContest == null)
@@ -82,9 +85,33 @@
             return this.RedirectToAction("ViewAll", "Contests", new { area = "Admin" });
         }
 
-        public ActionResult Delete()
+        [System.Web.Mvc.HttpGet]
+        public ActionResult Delete(int id)
         {
-            return this.View();
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
+            var contestViewModel = Mapper.Map<Contest, ContestViewModel>(contest);
+            if (contest == null)
+            {
+                return this.RedirectToAction("ViewAll", "Contests");
+            }
+            return this.View(contestViewModel);
+        }
+
+
+        [System.Web.Mvc.HttpPost]
+        public ActionResult Delete([FromBody] int? id)
+        {
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
+
+            if (contest == null)
+            {
+                throw new ApplicationException("Invalid contest id");
+            }
+
+            this.Data.Contests.Delete(contest);
+            this.Data.SaveChanges();
+
+            return this.RedirectToAction("ViewAll", "Contests", new {area = "Admin"});
         }
 
         public ActionResult Finalize()

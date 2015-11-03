@@ -29,7 +29,7 @@
                 @foreach (var contest in Model)
                 {
                     <tr>
-                        <td>@contest.Title</td>
+                        <td><a href="/Contest/@contest.Id" target="_blank">@contest.Title</a></td>
                         <td>@contest.Status</td>
                         <td>@contest.RewardStrategy</td>
                         <td>@contest.DeadlineStrategy</td>

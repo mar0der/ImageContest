@@ -18,6 +18,7 @@ namespace PhotoContest.App.Controllers
     using System.Web.Mvc;
 
     using PhotoContest.App.Models.Photos.Contests;
+    using PhotoContest.App.Models.ViewModels.Contests;
     using PhotoContest.Data.Interfaces;
 
     #endregion
@@ -124,11 +125,12 @@ namespace PhotoContest.App.Controllers
         public ActionResult Delete(int id)
         {
             var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
+            var contestViewModel = Mapper.Map<Contest, ContestViewModel>(contest);
             if (contest == null)
             {
                 return this.RedirectToAction("ViewAll", "Contests");
             }
-            return this.View(contest);
+            return this.View(contestViewModel);
         }
 
         [HttpPost]
