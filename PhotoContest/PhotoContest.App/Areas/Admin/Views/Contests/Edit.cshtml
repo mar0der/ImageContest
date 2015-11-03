@@ -1,7 +1,80 @@
-﻿
+﻿@model PhotoContest.Models.Models.Contest
+@using System
+@using PhotoContest.Models.Enumerations
+
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.PageTitle = "Edit";
+
+    var contentStatusArray = Enum.GetValues(typeof(ContestStatus));
+    var contentStatus = new SelectList(contentStatusArray);
+
+    var rewardStaregyArray = Enum.GetValues(typeof(RewardStrategy));
+    var rewardStaregy = new SelectList(rewardStaregyArray);
+
+    var votingStaregyArray = Enum.GetValues(typeof(VotingStrategy));
+    var votingStaregy = new SelectList(votingStaregyArray);
+
+    var participationStrategyArray = Enum.GetValues(typeof(ParticipationStrategy));
+    var participationStrategy = new SelectList(participationStrategyArray);
+
+    var deadlineStrategyArray = Enum.GetValues(typeof(DeadlineStrategy));
+    var deadlineStrategy = new SelectList(deadlineStrategyArray);
 }
 
-<h2>Edit</h2>
-
+<h2 class="text-right">Edit</h2>
+<hr />
+<div class="col-md-8 col-md-offset-8">
+    @using (Html.BeginForm("SaveContest", "Contests",new {area = "Admin"} ,  FormMethod.Post))
+    {
+        <div class="row">
+            <div class="panel panel-primary">
+                <div class="panel-heading"><h3>Information</h3></div>
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                @Html.Label("title", "Title: ")
+                                @Html.TextBox("title", null, new { @class = "form-control" })
+                            </div>
+                            <div class="list-group-item">
+                                @Html.Label("description", "Description: ")
+                                @Html.TextBox("description", null, new { @class = "form-control" })
+                            </div>
+                            <div class="list-group-item">
+                                <b>Contest Status: </b>
+                                @Html.DropDownList("status", contentStatus, new { @class = "form-control" })
+                            </div>
+                            <div class="list-group-item">
+                                <b>Reward Strategy: </b>
+                                @Html.DropDownList("rewardstrategy", rewardStaregy, new { @class = "form-control" })
+                            </div>
+                            <div class="list-group-item">
+                                <b>Voting Strategy: </b>
+                                @Html.DropDownList("votingstrategy", votingStaregy, new { @class = "form-control" })
+                            </div>
+                            <div class="list-group-item">
+                                <b>Participation Strategy: </b>
+                                @Html.DropDownList("participationstrategy", participationStrategy, new { @class = "form-control" })
+                            </div>
+                            <div class="list-group-item">
+                                <b>Deadline Strategy: </b>
+                                @Html.DropDownList("deadlinestrategy", deadlineStrategy, new { @class = "form-control" })
+                            </div>
+                            <div class="list-group-item">
+                                @Html.Label("deadline", "Deadline: ")
+                                @Html.TextBox("deadline", Model.Deadline.ToString("yyyy-MM-dd"), new { @class = "form-control", type = "date" })
+                            </div>
+                            <div class="list-group-item">
+                                @Html.Label("MaxNumberOfParticipants", "Max Participations: ")
+                                @Html.TextBox("MaxNumberOfParticipants", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        @Html.Hidden("Id", @Model.Id)
+                    </div>
+                </div>
+            </div>
+            <input type="submit" value="Save" class="btn btn-success pull-left" />
+            @Html.ActionLink("Cancel", "ViewAll", "Contests", new { area = "Admin" }, new { @class = "btn btn-danger pull-right" })
+        </div>
+    }
+</div>
