@@ -1,14 +1,42 @@
-﻿@model System.Collections.Generic.IEnumerable<PhotoContest.Models.Models.Contest>
+﻿@model List<PhotoContest.Models.Models.Contest>
 @{
     ViewBag.Title = "ViewAll";
 }
-<h2>Contests</h2>
+
 <hr />
-@Html.ActionLink("Add contest", "Add", "Contests", null, new { @class = "btn btn-success pull-right" })
-@foreach (var contest in Model)
-{
-    @Html.ActionLink(@contest.Title, "View", "Contests", new {id = @contest.Id}, null);
-    <br />
-}
+
+<div class="container">
+    <div class="row">
+        <table class="table table-fixed">
+            <thead>
+                <tr>
+                    <th class="col-xs-1">Title</th>
+                    <th class="col-xs-1">Status</th>
+                    <th class="col-xs-1">Deadline</th>
+                    <th class="col-xs-1">Creator</th>
 
 
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.Any())
+            {
+                foreach (var contest in Model)
+                {
+                    <tr>
+                        <td><a href="/Contest/@contest.Id">@contest.Title</a></td>
+                        <td>@contest.Status</td>
+                        <td>@contest.Deadline</td>
+                        <td>@contest.Creator.UserName</td>
+                        @*<td>@Html.ActionLink("Finalize", "Finalize", "Contests", new { id = @contest.Id }, new { @class = "btn btn-success" })</td>*@
+                    </tr>
+                }
+            }
+            else
+            {
+                <h3>No contests yet. Maybe you can create the first one</h3>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
