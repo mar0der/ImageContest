@@ -60,7 +60,7 @@
         <div class="form-group">
             <label class="col-lg-6 control-label text-right editProfileFields">Date of Birth:</label>
             <div class="col-lg-16">
-                @Html.TextBox("DateOfBirth", Model.DateOfBirth == null ? "Not set" : Model.DateOfBirth.ToString("yyyy-MM-dd"), new { @class = "form-control", type = "date" })
+                @Html.TextBox("DateOfBirth", Model.DateOfBirth == DateTime.MinValue ? "Not set" : Model.DateOfBirth.ToString("yyyy-MM-dd"), new { @class = "form-control", type = "date" })
             </div>
         </div><br /><br />
         <div class="form-group text-right">

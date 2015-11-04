@@ -9,7 +9,7 @@
         <div class="col-xs-24 col-sm-24 col-md-12 col-lg-12 col-xs-offset-0 col-sm-offset-0 col-md-offset-6 col-lg-offset-6 toppad">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Sheena Kristin A.Eschor</h3>
+                    <h3 class="panel-title">Informaton</h3>
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -24,7 +24,7 @@
                                     </tr>
                                     <tr>
                                         <td>Date of Birth</td>
-                                        <td>@(Model.DateOfBirth == null ? "Not set" : Model.DateOfBirth.ToString("dd MMMM yyyy"))</td>
+                                        <td>@(Model.DateOfBirth == DateTime.MinValue ? "Not set" : Model.DateOfBirth.ToString("dd MMMM yyyy"))</td>
                                     </tr>
 
                                     <tr>
@@ -48,8 +48,30 @@
                                 </tbody>
                             </table>
 
-                            <a href="#" class="btn btn-primary">My Sales Performance</a>
-                            <a href="#" class="btn btn-primary">Team Sales Performance</a>
+                            <div class="btn btn-primary text-center form-control">Own contests</div>
+                            @if (Model.OwnContests.Count() > 0)
+                            {
+                                foreach (var contest in Model.OwnContests)
+                                {
+                                    <p>@Html.ActionLink(@contest.Title, "View", "Contests", new { id = @contest.Id }, null) - @contest.Status</p>
+                                }
+                            }
+                            else
+                            {
+                                <p>No own contests.</p>
+                            }
+                            <div class="btn btn-primary text-center form-control">Judge in contests</div>
+                            @if (Model.JudgeContests.Count() > 0)
+                            {
+                                foreach (var contest in Model.JudgeContests)
+                                {
+                                    <p>@Html.ActionLink(@contest.Title, "View", "Contests", new { id = @contest.Id }, null) - @contest.Status</p>
+                                }
+                            }
+                            else
+                            {
+                                <p>No contests.</p>
+                            }
                         </div>
                     </div>
                 </div>
@@ -69,27 +91,28 @@
 </div>
 <br />
 
-<h4>Own contests</h4>
-@if (Model.OwnContests.Count() > 0)
-{
-    foreach (var contest in Model.OwnContests)
+@*<h4>Own contests</h4>
+    @if (Model.OwnContests.Count() > 0)
     {
-        <p>@Html.ActionLink(@contest.Title, "View", "Contests", new { id = @contest.Id }, null) - @contest.Status</p>
+        foreach (var contest in Model.OwnContests)
+        {
+            <p>@Html.ActionLink(@contest.Title, "View", "Contests", new { id = @contest.Id }, null) - @contest.Status</p>
+        }
+        DateTime.Parse("1900-01-01 12:00:00.000")
     }
-}
-else
-{
-    <p>No own contests.</p>
-}
-<h4>Judge in contests</h4>
-@if (Model.JudgeContests.Count() > 0)
-{
-    foreach (var contest in Model.JudgeContests)
+    else
     {
-        <p>@Html.ActionLink(@contest.Title, "View", "Contests", new { id = @contest.Id }, null) - @contest.Status</p>
+        <p>No own contests.</p>
     }
-}
-else
-{
-    <p>No contests.</p>
-}
+    <h4>Judge in contests</h4>
+    @if (Model.JudgeContests.Count() > 0)
+    {
+        foreach (var contest in Model.JudgeContests)
+        {
+            <p>@Html.ActionLink(@contest.Title, "View", "Contests", new { id = @contest.Id }, null) - @contest.Status</p>
+        }
+    }
+    else
+    {
+        <p>No contests.</p>
+    }*@
