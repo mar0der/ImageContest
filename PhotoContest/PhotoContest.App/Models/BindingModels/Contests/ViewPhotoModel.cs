@@ -1,5 +1,7 @@
 ﻿using PhotoContest.Models.Models;
 using System.Collections.Generic;
+using PhotoContest.Models.Enumerations;
+
 namespace PhotoContest.App.Models.BindingModels.Contests
 {
     public class ViewPhotoModel

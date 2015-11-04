@@ -1,9 +1,10 @@
-﻿@model PhotoContest.App.Models.BindingModels.Contests.ViewPhotoModel
+﻿@using PhotoContest.Models.Enumerations
+@model PhotoContest.App.Models.BindingModels.Contests.ViewPhotoModel
 <h2>@Model.ContestTitle: @Model.Title</h2>
 <div class="photoContainer">
     <img src="@Model.PhotoLink" alt="@Model.Title" />
 </div>
-@if (Model.Votes.Count(v => v.User.UserName == this.User.Identity.Name) == 0)
+@if (Model.Votes.Where(v => v.ContestId == @Model.ContestId).Count(v => v.User.UserName == this.User.Identity.Name) == 0)
 {
     <div id="loading" class="alert alert-info">Loading...</div>
     <div id="voteSuccessfully" class="alert alert-success hidden">You vote successfully.</div>
@@ -24,9 +25,9 @@
     </p>
 }
 <p>Rating: <span class="photoRatingValue">
-    @if (@Model.Votes.Count > 0)
+    @if (@Model.Votes.Where(v => v.ContestId == @Model.ContestId).Any())
     {
-        @(string.Format("{0:F2}", Model.Votes.Average(v => v.Stars)));
+        @(string.Format("{0:F2}", Model.Votes.Where(v => v.ContestId == @Model.ContestId).Average(v => v.Stars)));
     }
     else
     {

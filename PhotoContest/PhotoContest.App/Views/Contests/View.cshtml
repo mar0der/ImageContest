@@ -59,12 +59,20 @@
                 </div>
                 @if (User.Identity.GetUserId() == @Model.Creator.Id)
                 {
-                    @Html.ActionLink("Invite", "Invite", "Contests", new { id = @Model.Id }, new { @class = "btn btn-success pull-left" })
-                    @Html.ActionLink("Invite Judge", "InviteJudge", "Contests", new {id = @Model.Id}, new { @class = "btn btn-success pull-left" })
+                    if (@Model.Status == ContestStatus.Active)
+                    {
+                        @Html.ActionLink("Invite", "Invite", "Contests", new { id = @Model.Id }, new { @class = "btn btn-success pull-left" })
+
+                        if (@Model.VotingStrategy == VotingStrategy.Closed)
+                        {
+                            @Html.ActionLink("Invite Judge", "InviteJudge", "Contests", new { id = @Model.Id }, new { @class = "btn btn-success pull-left" })
+                        }
+                    }
                     @Html.ActionLink("Delete", "Delete", "Contests", null, new { @class = "btn btn-danger pull-right" })
                     @Html.ActionLink("Edit", "Edit", "Contests", null, new { @class = "btn btn-success pull-left" })
                 }
-                @if (@Model.Participants.Any(p => p.Id == User.Identity.GetUserId()) || User.Identity.GetUserId() == @Model.Creator.Id)
+                @if ((@Model.Participants.Any(p => p.Id == User.Identity.GetUserId()) ||
+                    User.Identity.GetUserId() == @Model.Creator.Id) && @Model.Status == ContestStatus.Active)
                 {
                     @Html.ActionLink("Add Photo", "AddPhoto", "Contests", new { id = @Model.Id }, new { @class = "btn btn-success pull-left" })
                 }
@@ -80,4 +88,3 @@
     </div>
 
 </div>
-

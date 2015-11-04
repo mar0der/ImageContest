@@ -83,7 +83,17 @@
             {
                 return this.RedirectToAction("ViewAll", "Contests");
             }
+            this.CheckContestDeadline(contest);
             return this.View(contest);
+        }
+
+        private void CheckContestDeadline(Contest contest)
+        {
+            if (contest.Deadline < DateTime.Now && contest.Status == ContestStatus.Active)
+            {
+                contest.Status = ContestStatus.Ended;
+                this.Data.SaveChanges();
+            }
         }
 
         [Route("Contest/Edit/{id}")]
@@ -280,6 +290,11 @@
                 {
                     this.ModelState.AddModelError(string.Empty, "The user is already a judge");
                 }
+
+                if (contest.VotingStrategy != VotingStrategy.Closed)
+                {
+                    this.ModelState.AddModelError(string.Empty, "You cannot invite judges, because the voting strategy is open.");
+                }
             }
 
             if (this.ModelState.IsValid)
@@ -312,6 +327,14 @@
                 if (contest.Votes.Any(v => v.User == user))
                 {
                     this.ModelState.AddModelError(string.Empty, "You already vote for this picture");
+                }
+
+                if (contest.VotingStrategy == VotingStrategy.Closed)
+                {
+                    if (!contest.Judges.Contains(user))
+                    {
+                        this.ModelState.AddModelError(string.Empty, "You are not judge");
+                    }
                 }
             }
 
@@ -448,14 +471,22 @@
                 this.ModelState.AddModelError(string.Empty, "Invalid photo id");
             }
 
-            if (contest != null && !contest.Participants.Contains(this.CurrentUser))
+            if (contest != null)
             {
-                return this.RedirectToAction("Index", "Home");
-            }
+                if (!contest.Participants.Contains(this.CurrentUser) && contest.CreatorId != this.User.Identity.GetUserId())
+                {
+                    return this.RedirectToAction("Index", "Home");
+                }
 
-            if (contest != null && contest.Photos.Contains(photo))
-            {
-                this.ModelState.AddModelError(string.Empty, "The photo is already in the contest");
+                if (contest.Status == ContestStatus.Ended)
+                {
+                    this.ModelState.AddModelError(string.Empty, "The contests is closed");
+                }
+
+                if (contest.Photos.Contains(photo))
+                {
+                    this.ModelState.AddModelError(string.Empty, "The photo is already in the contest");
+                }
             }
 
             if (!this.ModelState.IsValid)
