@@ -75,6 +75,7 @@
             return this.View(contests);
         }
 
+        [AllowAnonymous]
         [Route("Contest/{id}")]
         public ActionResult View(int id)
         {

@@ -330,6 +330,7 @@
     <Content Include="Areas\Admin\Views\Contests\RemovePicture.cshtml" />
     <Content Include="Areas\Admin\Views\Photos\ViewAll.cshtml" />
     <Content Include="Areas\Admin\Views\Photos\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminSubMenu.cshtml" />
     <None Include="Properties\PublishProfiles\phontest.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="job_scheduling_data_2_0.xsd">
@@ -405,6 +406,7 @@
     <Content Include="Views\Contests\AddPhoto.cshtml" />
     <Content Include="Views\Contests\ViewPhoto.cshtml" />
     <Content Include="Views\Shared\_Messages.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
