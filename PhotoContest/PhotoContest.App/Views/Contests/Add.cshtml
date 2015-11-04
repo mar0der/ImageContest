@@ -16,65 +16,68 @@
 }
 
 <h2 class="text-right">Add</h2>
-<div class="col-md-8 col-md-offset-8">
-    @Html.ValidationSummary(true, null, new { @class = "text-danger" })
-    @using (Html.BeginForm("Add", "Contests", FormMethod.Post))
-    {
-        <div class="row">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3>Information</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="container-fluid">
+<hr />
+<div class="col-md-24">
+    <div class="col-md-8 col-md-offset-8">
+        @Html.ValidationSummary(true, null, new {@class = "text-danger"})
+        @using (Html.BeginForm("Add", "Contests", FormMethod.Post))
+        {
+            <div class="row">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3>Information</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="container-fluid">
 
-                        <div class="list-group">
-                            <div class="list-group-item">
-                                @Html.Label("title", "Title: ")
-                                @Html.TextBoxFor(c => c.Title, null, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(c => c.Title, null, new { @class = "text-danger" })
-                            </div>
-                            <div class="list-group-item">
-                                @Html.Label("description", "Description: ")
-                                @Html.TextBoxFor(c => c.Description, null, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(c => c.Description, null, new { @class = "text-danger" })
-                            </div>
-                            <div class="list-group-item">
-                                <b>Reward Strategy: </b>
-                                @Html.DropDownListFor(c => c.RewardStrategy, rewardStaregy, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(c => c.RewardStrategy, null, new { @class = "text-danger" })
-                            </div>
-                            <div class="list-group-item">
-                                <b>Voting Strategy: </b>
-                                @Html.DropDownListFor(c => c.VotingStrategy, votingStaregy, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(c => c.VotingStrategy, null, new { @class = "text-danger" })
-                            </div>
-                            <div class="list-group-item">
-                                <b>Participation Strategy: </b>
-                                @Html.DropDownListFor(c => c.ParticipationStrategy, participationStrategy, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(c => c.ParticipationStrategy, null, new { @class = "text-danger" })
-                            </div>
-                            <div class="list-group-item">
-                                <b>Deadline Strategy: </b>  
-                                @Html.DropDownListFor(c => c.DeadlineStrategy, deadlineStrategy, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(c => c.DeadlineStrategy, null, new { @class = "text-danger" })
-                            </div>
-                            <div class="list-group-item">
-                                @Html.Label("deadline", "Deadline: ")
-                                @Html.TextBoxFor(c => c.Deadline, null, new { @class = "form-control", type = "date" })
-                                @Html.ValidationMessageFor(c => c.Deadline, null, new { @class = "text-danger" })
-                            </div>
-                            <div class="list-group-item">
-                                @Html.Label("MaxNumberOfParticipants", "Max Participations: ")
-                                @Html.TextBoxFor(c => c.MaxNumberOfParticipants, null, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(c => c.MaxNumberOfParticipants, null, new { @class = "text-danger" })
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    @Html.Label("title", "Title: ")
+                                    @Html.TextBoxFor(c => c.Title, null, new {@class = "form-control"})
+                                    @Html.ValidationMessageFor(c => c.Title, null, new {@class = "text-danger"})
+                                </div>
+                                <div class="list-group-item">
+                                    @Html.Label("description", "Description: ")
+                                    @Html.TextBoxFor(c => c.Description, null, new {@class = "form-control"})
+                                    @Html.ValidationMessageFor(c => c.Description, null, new {@class = "text-danger"})
+                                </div>
+                                <div class="list-group-item">
+                                    <b>Reward Strategy: </b>
+                                    @Html.DropDownListFor(c => c.RewardStrategy, rewardStaregy, new {@class = "form-control"})
+                                    @Html.ValidationMessageFor(c => c.RewardStrategy, null, new {@class = "text-danger"})
+                                </div>
+                                <div class="list-group-item">
+                                    <b>Voting Strategy: </b>
+                                    @Html.DropDownListFor(c => c.VotingStrategy, votingStaregy, new {@class = "form-control"})
+                                    @Html.ValidationMessageFor(c => c.VotingStrategy, null, new {@class = "text-danger"})
+                                </div>
+                                <div class="list-group-item">
+                                    <b>Participation Strategy: </b>
+                                    @Html.DropDownListFor(c => c.ParticipationStrategy, participationStrategy, new {@class = "form-control"})
+                                    @Html.ValidationMessageFor(c => c.ParticipationStrategy, null, new {@class = "text-danger"})
+                                </div>
+                                <div class="list-group-item">
+                                    <b>Deadline Strategy: </b>
+                                    @Html.DropDownListFor(c => c.DeadlineStrategy, deadlineStrategy, new {@class = "form-control"})
+                                    @Html.ValidationMessageFor(c => c.DeadlineStrategy, null, new {@class = "text-danger"})
+                                </div>
+                                <div class="list-group-item">
+                                    @Html.Label("deadline", "Deadline: ")
+                                    @Html.TextBoxFor(c => c.Deadline, null, new {@class = "form-control", type = "date"})
+                                    @Html.ValidationMessageFor(c => c.Deadline, null, new {@class = "text-danger"})
+                                </div>
+                                <div class="list-group-item">
+                                    @Html.Label("MaxNumberOfParticipants", "Max Participations: ")
+                                    @Html.TextBoxFor(c => c.MaxNumberOfParticipants, null, new {@class = "form-control"})
+                                    @Html.ValidationMessageFor(c => c.MaxNumberOfParticipants, null, new {@class = "text-danger"})
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <input type="submit" value="Add" class="btn btn-success pull-left"/>
+                @Html.ActionLink("Cancel", "ViewAll", "Contests", null, new { @class = "btn btn-danger pull-right" })
             </div>
-            <input type="submit" value="Add" class="btn btn-success pull-left" />
-            @Html.ActionLink("Cansel", "ViewAll", "Contests", null, new { @class = "btn btn-danger pull-right" })
-        </div>
-    }
+        }
+    </div>
 </div>
