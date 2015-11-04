@@ -59,7 +59,7 @@ namespace PhotoContest.App.Areas.Admin.Controllers
                 return RedirectToAction("ViewAll", "Users", new { username = this.User.Identity.Name });
             }
 
-            return this.View(model);
+            return RedirectToAction("Edit","Users", new { id = id});
         }
     }
 }

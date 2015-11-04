@@ -173,10 +173,6 @@
                 throw new ApplicationException("The participation feature is closed");
             }
 
-            if (contest.ParticipationStrategy != ParticipationStrategy.Open)
-            {
-                throw new ApplicationException("You should be invited to this contest");
-            }
 
             var userId = this.User.Identity.GetUserId();
 
@@ -202,31 +198,38 @@
         [Route("Contests/Invite/{contestId}/{username}")]
         public ActionResult Invite(int contestId, string username)
         {
-            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == contestId);
-            if (contest == null)
-            {
-                this.ModelState.AddModelError(string.Empty, "Invalid contest id");
-            }
 
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == contestId);
             var user = this.Data.Users.All().SingleOrDefault(u => u.UserName == username);
             if (user == null)
             {
                 this.ModelState.AddModelError(string.Empty, "Invalid user id");
             }
 
-            if (contest.CreatorId != this.User.Identity.GetUserId())
+            if (contest == null)
             {
-                this.ModelState.AddModelError(string.Empty, "You are not owner of the contest");
+                this.ModelState.AddModelError(string.Empty, "Invalid contest id");
             }
-
-            if (contest.CreatorId == user.Id)
+            if (contest != null)
             {
-                this.ModelState.AddModelError(string.Empty, "Invalid invitation");
-            }
 
-            if (contest.Participants.Contains(user))
-            {
-                this.ModelState.AddModelError(string.Empty, "The user already participants in the contest");
+                if (contest.CreatorId != this.User.Identity.GetUserId())
+                {
+                    this.ModelState.AddModelError(string.Empty, "You are not owner of the contest");
+                }
+
+                if (user != null)
+                {
+                    if (contest.CreatorId == user.Id)
+                    {
+                        this.ModelState.AddModelError(string.Empty, "Invalid invitation");
+                    }
+
+                    if (contest.Participants.Contains(user))
+                    {
+                        this.ModelState.AddModelError(string.Empty, "The user already participants in the contest");
+                    }
+                }
             }
 
             if (!this.ModelState.IsValid)
