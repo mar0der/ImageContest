@@ -27,6 +27,7 @@
                     {
                         <li>@Html.ActionLink("Photos", "All", "Photos")</li>
                         <li>@Html.ActionLink("Profile", "Profile", "Users", new { username = this.User.Identity.Name }, null)</li>
+                        <li>@Html.ActionLink("Create Contest", "Add", "Contests", new { username = this.User.Identity.Name }, null)</li>
                     }
                     @if (this.User.IsInRole("Admin"))
                     {
