@@ -31,6 +31,9 @@
             bundles.Add(
                 new ScriptBundle("~/bundles/signalR").Include("~/Scripts/jquery.signalR-2.2.0.min.js", "~/Scripts/signalR.js"));
 
+            bundles.Add(
+                new ScriptBundle("~/bundles/admin").Include("~/Scripts/Custom/admin.js"));
+
 
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/bootstrap.css", "~/Content/site.css", "~/Content/bootstrap-theme-cerulean.css"));
         }

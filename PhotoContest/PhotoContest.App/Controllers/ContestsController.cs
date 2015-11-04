@@ -1,24 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Web.Script.Serialization;
-using AutoMapper;
-using Microsoft.AspNet.Identity;
-using PhotoContest.App.Models.BindingModels.Contests;
-using PhotoContest.Models.Enumerations;
-using PhotoContest.Models.Models;
-using WebGrease.Css.Extensions;
-using PhotoContest.Models.Models;
-
-namespace PhotoContest.App.Controllers
+﻿namespace PhotoContest.App.Controllers
 {
     #region
 
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Web.Mvc;
+    using System.Web.Script.Serialization;
 
+    using AutoMapper;
+
+    using Microsoft.AspNet.Identity;
+
+    using PhotoContest.App.Models.BindingModels.Contests;
     using PhotoContest.App.Models.Photos.Contests;
+    using PhotoContest.App.Models.ViewModels.Contests;
     using PhotoContest.Data.Interfaces;
+    using PhotoContest.Models.Enumerations;
+    using PhotoContest.Models.Models;
+
+    using WebGrease.Css.Extensions;
+
+    using User = PhotoContest.App.Models.Photos.Contests.User;
 
     #endregion
 
@@ -38,17 +42,17 @@ namespace PhotoContest.App.Controllers
         [HttpPost]
         public ActionResult Add(ContestBindingModel model)
         {
-            if (!ModelState.IsValid || model == null)
+            if (!this.ModelState.IsValid || model == null)
             {
-                ModelState.AddModelError(string.Empty, "Invalid model");
+                this.ModelState.AddModelError(string.Empty, "Invalid model");
             }
 
             if (model != null && model.Deadline <= DateTime.Now)
             {
-                ModelState.AddModelError("Deadline", "Invalid deadline");
+                this.ModelState.AddModelError("Deadline", "Invalid deadline");
             }
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 var contest = Mapper.Map<ContestBindingModel, Contest>(model);
                 contest.CreatedAt = DateTime.Now;
@@ -60,13 +64,14 @@ namespace PhotoContest.App.Controllers
                 return this.RedirectToAction("View", "Contests", new { id = contest.Id });
             }
 
-            return View();
+            return this.View();
         }
 
+        [AllowAnonymous]
         [Route("contests")]
         public ActionResult ViewAll()
         {
-            var contests = this.Data.Contests.All().OrderBy(c => c.CreatedAt);
+            var contests = this.Data.Contests.All().OrderBy(c => c.CreatedAt).ToList();
             return this.View(contests);
         }
 
@@ -95,40 +100,40 @@ namespace PhotoContest.App.Controllers
 
         [HttpPost]
         [Route("Contest/Edit")]
-        public ActionResult EditContest(ContestBindingModel contest)
+        public ActionResult EditContest(ContestBindingModel updatedContest)
         {
-            if (!ModelState.IsValid || contest == null)
+            if (!this.ModelState.IsValid || updatedContest == null)
             {
                 throw new ArgumentException("Invalid model");
             }
 
-            var contestDb = this.Data.Contests.All().First(a => a.Id == contest.Id);
-            // With mapper did not work database save
-            //contestDb = Mapper.Map<ContestBindingModel, Contest>(contest);
+            var contest = this.Data.Contests.All().First(a => a.Id == updatedContest.Id);
 
-            contestDb.Description = contest.Description;
-            contestDb.MaxNumberOfParticipants = contest.MaxNumberOfParticipants;
-            contestDb.Status = contest.Status;
-            contestDb.Title = contest.Title;
-            contestDb.RewardStrategy = contest.RewardStrategy;
-            contestDb.Deadline = contest.Deadline;
-            contestDb.DeadlineStrategy = contest.DeadlineStrategy;
-            contestDb.VotingStrategy = contest.VotingStrategy;
+            contest.Description = updatedContest.Description;
+            contest.MaxNumberOfParticipants = updatedContest.MaxNumberOfParticipants;
+            contest.Status = updatedContest.Status;
+            contest.Title = updatedContest.Title;
+            contest.RewardStrategy = updatedContest.RewardStrategy;
+            contest.Deadline = updatedContest.Deadline;
+            contest.DeadlineStrategy = updatedContest.DeadlineStrategy;
+            contest.VotingStrategy = updatedContest.VotingStrategy;
 
             this.Data.SaveChanges();
 
-            return this.RedirectToAction("View", "Contests", new { id = contestDb.Id });
+            return this.RedirectToAction("View", "Contests", new { id = contest.Id });
         }
+
         [HttpGet]
         [Route("Contests/Delete/{id}")]
         public ActionResult Delete(int id)
         {
             var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
+            var contestViewModel = Mapper.Map<Contest, ContestViewModel>(contest);
             if (contest == null)
             {
                 return this.RedirectToAction("ViewAll", "Contests");
             }
-            return this.View(contest);
+            return this.View(contestViewModel);
         }
 
         [HttpPost]
@@ -173,7 +178,7 @@ namespace PhotoContest.App.Controllers
                 throw new ApplicationException("You should be invited to this contest");
             }
 
-            string userId = this.User.Identity.GetUserId();
+            var userId = this.User.Identity.GetUserId();
 
             if (contest.Participants.Any(p => p.Id == userId))
             {
@@ -200,33 +205,33 @@ namespace PhotoContest.App.Controllers
             var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == contestId);
             if (contest == null)
             {
-                ModelState.AddModelError(string.Empty, "Invalid contest id");
+                this.ModelState.AddModelError(string.Empty, "Invalid contest id");
             }
 
             var user = this.Data.Users.All().SingleOrDefault(u => u.UserName == username);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Invalid user id");
+                this.ModelState.AddModelError(string.Empty, "Invalid user id");
             }
 
             if (contest.CreatorId != this.User.Identity.GetUserId())
             {
-                ModelState.AddModelError(string.Empty, "You are not owner of the contest");
+                this.ModelState.AddModelError(string.Empty, "You are not owner of the contest");
             }
 
             if (contest.CreatorId == user.Id)
             {
-                ModelState.AddModelError(string.Empty, "Invalid invitation");
+                this.ModelState.AddModelError(string.Empty, "Invalid invitation");
             }
 
             if (contest.Participants.Contains(user))
             {
-                ModelState.AddModelError(string.Empty, "The user already participants in the contest");
+                this.ModelState.AddModelError(string.Empty, "The user already participants in the contest");
             }
 
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return View();
+                return this.View();
             }
 
             contest.Participants.Add(user);
@@ -235,11 +240,10 @@ namespace PhotoContest.App.Controllers
             return this.RedirectToAction("View", "Contests", new { id = contest.Id });
         }
 
-
         [HttpGet]
         public ActionResult InviteJudge()
         {
-            return View();
+            return this.View();
         }
 
         [HttpGet]
@@ -249,46 +253,44 @@ namespace PhotoContest.App.Controllers
             var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == constestId);
             if (contest == null)
             {
-                ModelState.AddModelError(string.Empty, "Invalid contest id");
+                this.ModelState.AddModelError(string.Empty, "Invalid contest id");
             }
 
             var user = this.Data.Users.All().SingleOrDefault(u => u.UserName == username);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Invalid user id");
+                this.ModelState.AddModelError(string.Empty, "Invalid user id");
             }
             else
             {
                 if (user.Id == this.CurrentUser.Id)
                 {
-                    ModelState.AddModelError(string.Empty, "You cannot invite youself as judge");
+                    this.ModelState.AddModelError(string.Empty, "You cannot invite youself as judge");
                 }
-                
             }
 
             if (contest != null)
             {
                 if (contest.CreatorId != this.User.Identity.GetUserId())
                 {
-                    ModelState.AddModelError(string.Empty, "You are not owner of the contest");
+                    this.ModelState.AddModelError(string.Empty, "You are not owner of the contest");
                 }
 
                 if (contest.Judges.Contains(user))
                 {
-                    ModelState.AddModelError(string.Empty, "The user is already a judge");
-                } 
+                    this.ModelState.AddModelError(string.Empty, "The user is already a judge");
+                }
             }
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 contest.Judges.Add(user);
                 this.Data.SaveChanges();
 
-                return this.RedirectToAction("View", "Contests", new {id = contest.Id});
-
+                return this.RedirectToAction("View", "Contests", new { id = contest.Id });
             }
 
-            return View(ModelState);
+            return this.View(this.ModelState);
         }
 
         [HttpPost]
@@ -298,30 +300,24 @@ namespace PhotoContest.App.Controllers
             var user = this.CurrentUser;
             if (contest == null)
             {
-                ModelState.AddModelError(string.Empty, "Invalid contest id");
+                this.ModelState.AddModelError(string.Empty, "Invalid contest id");
             }
             else
             {
                 if (!contest.Participants.Contains(user))
                 {
-                    ModelState.AddModelError(String.Empty, "You are not participant to this contest");
+                    this.ModelState.AddModelError(string.Empty, "You are not participant to this contest");
                 }
 
                 if (contest.Votes.Any(v => v.User == user))
                 {
-                    ModelState.AddModelError(string.Empty, "You already vote for this picture");
+                    this.ModelState.AddModelError(string.Empty, "You already vote for this picture");
                 }
             }
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                var vote = new Vote()
-                {
-                    Contest = contest,
-                    PhotoId = model.PhotoId,
-                    Stars = model.Stars,
-                    User = user
-                };
+                var vote = new Vote { Contest = contest, PhotoId = model.PhotoId, Stars = model.Stars, User = user };
 
                 contest.Votes.Add(vote);
                 this.Data.SaveChanges();
@@ -349,7 +345,7 @@ namespace PhotoContest.App.Controllers
 
             contest.Status = ContestStatus.Ended;
 
-            var winners = PickWinners(contest);
+            var winners = this.PickWinners(contest);
 
             // TODO: Insert winners into database
             // TODO: Add photo into contest disable
@@ -362,9 +358,7 @@ namespace PhotoContest.App.Controllers
         {
             var averageVoteCount = contest.Photos.Average(p => p.Votes.Count());
             var winners =
-                contest
-                    .Photos
-                    .Where(p => p.Votes.Count() >= averageVoteCount)
+                contest.Photos.Where(p => p.Votes.Count() >= averageVoteCount)
                     .OrderByDescending(p => p.Votes.Average(v => v.Stars))
                     .Take(3)
                     .ToList();
@@ -385,19 +379,16 @@ namespace PhotoContest.App.Controllers
             var userList = new List<User>();
             if (users.Any())
             {
-                users.ForEach(u =>
-                {
-                    var newUser = new User()
-                    {
-                        Id = u.Id,
-                        Username = u.UserName
-                    };
+                users.ForEach(
+                    u =>
+                        {
+                            var newUser = new User { Id = u.Id, Username = u.UserName };
 
-                    userList.Add(newUser);
-                });
+                            userList.Add(newUser);
+                        });
             }
 
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            var serializer = new JavaScriptSerializer();
             return serializer.Serialize(userList);
         }
 
@@ -417,14 +408,14 @@ namespace PhotoContest.App.Controllers
 
             if (contest == null)
             {
-                ModelState.AddModelError(string.Empty, "Invalid contest id");
+                this.ModelState.AddModelError(string.Empty, "Invalid contest id");
             }
 
             var photo = this.CurrentUser.Photos.SingleOrDefault(p => p.Id == photoId);
 
             if (photo == null)
             {
-                ModelState.AddModelError(string.Empty, "Invalid photo id");
+                this.ModelState.AddModelError(string.Empty, "Invalid photo id");
             }
 
             if (contest != null && !contest.Participants.Contains(this.CurrentUser))
@@ -434,13 +425,13 @@ namespace PhotoContest.App.Controllers
 
             if (contest != null && contest.Photos.Contains(photo))
             {
-                ModelState.AddModelError(string.Empty, "The photo is already in the contest");
+                this.ModelState.AddModelError(string.Empty, "The photo is already in the contest");
             }
 
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 var photos = this.CurrentUser.Photos;
-                return View(photos);
+                return this.View(photos);
             }
 
             contest.Photos.Add(photo);

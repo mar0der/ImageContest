@@ -1,7 +1,49 @@
-﻿
+﻿@model List<PhotoContest.Models.Models.Contest>
 @{
     ViewBag.Title = "ViewAll";
 }
 
 <h2>admin contests ViewAll</h2>
 
+<hr />
+
+<div class="container">
+    <div class="row">
+        <table class="table table-fixed">
+            <thead>
+                <tr>
+                    <th class="col-xs-1">Title</th>
+                    <th class="col-xs-1">Status</th>
+                    <th class="col-xs-1">Reward Strategy</th>
+                    <th class="col-xs-1">Deadline Strategy</th>
+                    <th class="col-xs-1">Deadline</th>
+                    <th class="col-xs-1">Creator</th>
+                    <th class="col-xs-1">Finalize</th>
+                    <th class="col-xs-1">Remove Photos</th>
+                    <th class="col-xs-1">Edit</th>
+                    <th class="col-xs-1">Delete</th>
+                 
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var contest in Model)
+                {
+                    <tr>
+                        <td><a href="/Contest/@contest.Id" target="_blank">@contest.Title</a></td>
+                        <td>@contest.Status</td>
+                        <td>@contest.RewardStrategy</td>
+                        <td>@contest.DeadlineStrategy</td>
+                        <td>@contest.Deadline</td>
+                        <td>@contest.Creator.UserName</td>
+                        <td>@Html.ActionLink("Finalize", "Finalize", "Contests", new { id = @contest.Id }, new { @class = "btn btn-success" })</td>
+                        <td>@Html.ActionLink("Remove Photos", "RemovePicture", "Contests", new { id = @contest.Id }, new { @class = "btn btn-success" })</td>
+                        <td>@Html.ActionLink("Edit", "Edit", "Contests", new { id = @contest.Id }, new { @class = "btn btn-success" })</td>
+                        <td>@Html.ActionLink("Delete", "Delete", "Contests", new { id = @contest.Id }, new { @class = "btn btn-success" })</td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

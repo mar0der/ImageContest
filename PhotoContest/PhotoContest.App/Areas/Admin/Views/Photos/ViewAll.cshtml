@@ -3,17 +3,25 @@
         ViewBag.Title = "ViewAll";
     }
     <h2>User photos</h2>
-    <div class="allPhotos">
-        @foreach (var photo in Model)
-        {
-            <div class="image">
-                    <div>@photo.Title</div>
-                    <img src="@photo.PhotoLink" alt="@photo.Title" />
-                @Html.ActionLink("Delete", "Delete", "Photos", new { id = photo.Id, userId = ViewData["id"] }, new { @class = "btn btn-danger confirmDelete" })
-            </div>
-        }
+<div class="allPhotos">
+    @if (Model.Any())
+    {
+        foreach (var photo in Model)
+         {
+             <div class="image">
+                 <div>@photo.Title</div>
+                 <img src="@photo.PhotoLink" alt="@photo.Title"/>
+                 @Html.ActionLink("Delete", "Delete", "Photos", new { id = photo.Id, userId = ViewData["id"] }, new { @class = "btn btn-danger confirmDelete" })
+             </div>
+         }
+    }
+    else
+    {
+        <h3>No photos</h3>
+    }
 
-    </div>
+
+</div>
     @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")
         @Scripts.Render("~/bundles/main")
