@@ -404,6 +404,7 @@
     <Content Include="Views\Contests\Invite.cshtml" />
     <Content Include="Views\Contests\AddPhoto.cshtml" />
     <Content Include="Views\Contests\ViewPhoto.cshtml" />
+    <Content Include="Views\Shared\_Messages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
