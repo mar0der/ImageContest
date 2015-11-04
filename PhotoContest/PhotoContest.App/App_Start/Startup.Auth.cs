@@ -71,9 +71,9 @@
             // consumerKey: "",
             // consumerSecret: "");
 
-            // app.UseFacebookAuthentication(
-            // appId: "",
-            // appSecret: "");
+            app.UseFacebookAuthentication(
+            appId: "699135880221902",
+            appSecret: "5052bbe7f8361adc1c928e5f55da2c73");
 
             // app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             // {
