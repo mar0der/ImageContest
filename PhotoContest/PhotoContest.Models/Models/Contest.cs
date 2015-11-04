@@ -57,6 +57,8 @@
 
         public DeadlineStrategy DeadlineStrategy { get; set; }
 
+        public ICollection<ContestWinner> ContestWinners { get; set; }
+
         [ForeignKey("Creator")]
         public string CreatorId { get; set; }
 

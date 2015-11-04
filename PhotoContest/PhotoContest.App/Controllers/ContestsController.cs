@@ -329,6 +329,7 @@
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Invalid voting data");
         }
 
+        [Route("Contests/FinalizeContest/{contestId}")]
         public ActionResult FinalizeContest(int contestId)
         {
             var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == contestId);
@@ -345,28 +346,57 @@
 
             contest.Status = ContestStatus.Ended;
 
-            var winners = this.PickWinners(contest);
+            var winners = new Dictionary<Places, Photo>();
 
-            // TODO: Insert winners into database
-            // TODO: Add photo into contest disable
-            // TODO: Rating picture disable
+            if (contest.RewardStrategy == RewardStrategy.SingleWinner)
+            {
+                winners = this.PickWinners(contest);
+            }
+            else if (contest.RewardStrategy == RewardStrategy.Top3Prizes)
+            {
+                winners = this.PickWinners(contest, 5);
+            }
+
+            var contestWinners = new List<ContestWinner>();
+            winners.ForEach(winner =>
+            {
+                contestWinners.Add(new ContestWinner()
+                {
+                    Contest = contest,
+                    PhotoId = winner.Value.Id,
+                    Place = winner.Key,
+                });
+                
+            });
+
+            contest.ContestWinners = contestWinners;
+            this.Data.SaveChanges();
 
             return this.View();
         }
 
-        private Dictionary<Places, Photo> PickWinners(Contest contest)
+        private Dictionary<Places, Photo> PickWinners(Contest contest, int winnersCount = 1)
         {
             var averageVoteCount = contest.Photos.Average(p => p.Votes.Count());
             var winners =
                 contest.Photos.Where(p => p.Votes.Count() >= averageVoteCount)
                     .OrderByDescending(p => p.Votes.Average(v => v.Stars))
-                    .Take(3)
+                    .Take(winnersCount)
                     .ToList();
 
             var winnersDict = new Dictionary<Places, Photo>();
-            winnersDict.Add(Places.Gold, winners[0]);
-            winnersDict.Add(Places.Silver, winners[1]);
-            winnersDict.Add(Places.Bronze, winners[2]);
+            if (winners.Count() >= 1)
+            {
+                winnersDict.Add(Places.Gold, winners[0]);
+            }
+            if (winners.Count() >= 2)
+            {
+                winnersDict.Add(Places.Silver, winners[1]);
+            }
+            if (winners.Count() >= 3)
+            {
+                winnersDict.Add(Places.Bronze, winners[2]);
+            }
 
             return winnersDict;
         }

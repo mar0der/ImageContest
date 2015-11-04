@@ -3,6 +3,6 @@
     public enum RewardStrategy
     {
         SingleWinner,
-        Top5Prizes
+        Top3Prizes
     }
 }
