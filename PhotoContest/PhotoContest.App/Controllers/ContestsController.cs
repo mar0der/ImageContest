@@ -39,6 +39,7 @@
             return this.View();
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Add(ContestBindingModel model)
         {
@@ -109,6 +110,7 @@
             return this.View(contest);
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost]
         [Route("Contest/Edit")]
         public ActionResult EditContest(ContestBindingModel updatedContest)
@@ -147,6 +149,7 @@
             return this.View(contestViewModel);
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost]
         [Route("Contests/Delete/{id}")]
         public ActionResult DeleteContest(int id)
@@ -312,6 +315,7 @@
             return this.View(this.ModelState);
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Vote(VoteBindingModel model)
         {

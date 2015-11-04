@@ -8,6 +8,7 @@
 <div class="col-md-8 col-md-offset-8">
     @using (Html.BeginForm("Delete", "Contests", new {area = "Admin" }, FormMethod.Post))
     {
+        @Html.AntiForgeryToken()
         <div class="row">
             <div class="panel panel-primary">
                 <div class="panel-heading"><h3>Information</h3></div>
@@ -18,7 +19,7 @@
                             <div class="list-group-item">
                                 @Html.Label("title", "Title: ")
                                 @Html.TextBoxFor(c => c.Title, null, new { @class = "form-control", disabled = "disabled" })
-                                @Html.HiddenFor(c => c.Id);
+                                @Html.HiddenFor(c => c.Id)
 
                             </div>
                             <div class="list-group-item">

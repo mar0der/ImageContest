@@ -1,4 +1,7 @@
-﻿namespace PhotoContest.App.Areas.Admin.Controllers
+﻿using PhotoContest.Models.Enumerations;
+using WebGrease.Css.Extensions;
+
+namespace PhotoContest.App.Areas.Admin.Controllers
 {
     #region
 
@@ -56,6 +59,7 @@
             return this.View(contest);
         }
 
+        [ValidateAntiForgeryToken]
         [System.Web.Mvc.HttpPost]
         public ActionResult SaveContest(ContestBindingModel updatedContest)
         {
@@ -98,6 +102,7 @@
         }
 
 
+        [ValidateAntiForgeryToken]
         [System.Web.Mvc.HttpPost]
         public ActionResult Delete([FromBody] int? id)
         {
@@ -114,10 +119,86 @@
             return this.RedirectToAction("ViewAll", "Contests", new {area = "Admin"});
         }
 
-        public ActionResult Finalize()
+        [System.Web.Mvc.HttpGet]
+        public ActionResult Finalize(int id)
         {
-            return this.View();
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
+            var contestViewModel = Mapper.Map<Contest, ContestViewModel>(contest);
+            if (contest == null)
+            {
+                return this.RedirectToAction("ViewAll", "Contests");
+            }
+            return this.View(contestViewModel);
         }
+
+        [ValidateAntiForgeryToken]
+        [System.Web.Mvc.HttpPost]
+        public ActionResult Finalize(int? id)
+        {
+            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
+
+            if (contest == null)
+            {
+                throw new ApplicationException("Invalid contest id");
+            }
+
+            contest.Status = ContestStatus.Ended;
+
+            var winners = new Dictionary<Places, Photo>();
+
+            if (contest.RewardStrategy == RewardStrategy.SingleWinner)
+            {
+                winners = this.PickWinners(contest);
+            }
+            else if (contest.RewardStrategy == RewardStrategy.Top3Prizes)
+            {
+                winners = this.PickWinners(contest, 5);
+            }
+
+            var contestWinners = new List<ContestWinner>();
+            winners.ForEach(winner =>
+            {
+                contestWinners.Add(new ContestWinner()
+                {
+                    Contest = contest,
+                    PhotoId = winner.Value.Id,
+                    Place = winner.Key,
+                });
+
+            });
+
+            contest.ContestWinners = contestWinners;
+            this.Data.SaveChanges();
+
+            return this.RedirectToAction("ViewAll", "Contests", new { area = "Admin" });
+        }
+
+        private Dictionary<Places, Photo> PickWinners(Contest contest, int winnersCount = 1)
+        {
+            var averageVoteCount = contest.Photos.Average(p => p.Votes.Count());
+            var winners =
+                contest.Photos.Where(p => p.Votes.Count() >= averageVoteCount)
+                    .OrderByDescending(p => p.Votes.Average(v => v.Stars))
+                    .Take(winnersCount)
+                    .ToList();
+
+            var winnersDict = new Dictionary<Places, Photo>();
+            if (winners.Count() >= 1)
+            {
+                winnersDict.Add(Places.Gold, winners[0]);
+            }
+            if (winners.Count() >= 2)
+            {
+                winnersDict.Add(Places.Silver, winners[1]);
+            }
+            if (winners.Count() >= 3)
+            {
+                winnersDict.Add(Places.Bronze, winners[2]);
+            }
+
+            return winnersDict;
+        }
+
 
         public ActionResult RemovePicture()
         {

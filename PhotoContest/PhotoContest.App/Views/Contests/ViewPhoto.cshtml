@@ -25,7 +25,7 @@
     </p>
 }
 <p>Rating: <span class="photoRatingValue">
-    @if (@Model.Votes.Where(v => v.ContestId == @Model.ContestId).Any())
+    @if (@Model.Votes.Any(v => v.ContestId == @Model.ContestId))
     {
         @(string.Format("{0:F2}", Model.Votes.Where(v => v.ContestId == @Model.ContestId).Average(v => v.Stars)));
     }

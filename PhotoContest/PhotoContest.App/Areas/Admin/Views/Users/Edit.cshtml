@@ -9,6 +9,7 @@
 @Html.AntiForgeryToken()
 @using (Html.BeginForm("EditUser", "Users", new { id = ViewData["id"] }, FormMethod.Post, new { @class = "form-horizontal" }))
 {
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary(null, new { @class = "alert" });
     <div class="col-md-18 personal-info">
        

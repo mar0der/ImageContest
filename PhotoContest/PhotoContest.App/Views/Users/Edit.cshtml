@@ -6,9 +6,9 @@
 }
 <h2 class="text-right">Edit Profile</h2>
 <hr>
-@Html.AntiForgeryToken()
 @using (Html.BeginForm("Edit", "Users", new { @class = "form-horizontal" }))
 {
+    @Html.AntiForgeryToken()
      @Html.ValidationSummary(null, new { @class = "alert" });
      <div class="col-md-6">
         <div class="text-center">

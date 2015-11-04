@@ -44,6 +44,7 @@ namespace PhotoContest.App.Areas.Admin.Controllers
             return this.View(model);
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult EditUser(string id, EditProfileModel model)
         {

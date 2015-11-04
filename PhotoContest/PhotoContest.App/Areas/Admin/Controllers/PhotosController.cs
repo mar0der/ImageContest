@@ -42,6 +42,7 @@
             return this.View("~/Areas/Admin/Views/Photos/ViewAll.cshtml", pictures);
         }
 
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, string userId)
         {
             var user = this.Data.Users.Find(userId);

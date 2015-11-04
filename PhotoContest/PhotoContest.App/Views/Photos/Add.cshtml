@@ -5,7 +5,8 @@
 
 <h2>Add</h2>
 @using (Html.BeginForm("Add", "Photos", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{ 
+{
+    @Html.AntiForgeryToken()
     @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
     <div class="input-group">
         <div class="input-group-addon" id="basic-addon1">Title</div>
@@ -21,7 +22,7 @@
         <p>Preview: </p>
         <img src="http://ctt.trains.com/sitefiles/images/no-preview-available.png" id="uploadPhotoPreview" />
     </div>
-    <br/>
+    <br />
     <input type="submit" class="btn btn-success" value="Add" />
 }
 @section Scripts {

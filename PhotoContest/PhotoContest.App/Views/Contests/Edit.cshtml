@@ -26,6 +26,7 @@
 <div class="col-md-8 col-md-offset-8">
     @using (Html.BeginForm("EditContest", "Contests", FormMethod.Post))
     {
+        @Html.AntiForgeryToken()    
         <div class="row">
             <div class="panel panel-primary">
                 <div class="panel-heading"><h3>Information</h3></div>

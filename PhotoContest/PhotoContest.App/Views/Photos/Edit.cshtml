@@ -5,6 +5,7 @@
 <h2>Add</h2>
 @using (Html.BeginForm("Edit", "Photos", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
+    @Html.AntiForgeryToken()
     @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
     <div class="input-group">
         <div class="input-group-addon" id="basic-addon1">Title</div>
