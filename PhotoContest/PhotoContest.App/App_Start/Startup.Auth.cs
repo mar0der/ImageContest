@@ -8,6 +8,7 @@
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin;
     using Microsoft.Owin.Security.Cookies;
+    using Microsoft.Owin.Security.Google;
 
     using Owin;
 
@@ -75,11 +76,11 @@
             appId: "699135880221902",
             appSecret: "5052bbe7f8361adc1c928e5f55da2c73");
 
-            // app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            // {
-            // ClientId = "",
-            // ClientSecret = ""
-            // });
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "1027644495598-5btun3ioaeg0lnjs6isbh1chv7bcdqe5.apps.googleusercontent.com",
+                ClientSecret = "svZ1ZZClkt4LoMjb0ENQt7El"
+            });
         }
     }
 }
