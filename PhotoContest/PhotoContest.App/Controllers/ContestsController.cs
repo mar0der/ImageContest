@@ -33,6 +33,11 @@
         {
         }
 
+        public ContestsController(IPhotoContestData data, PhotoContest.Models.Models.User user)
+            : base(data, user)
+        {
+        }
+
         [HttpGet]
         public ActionResult Add()
         {
@@ -50,14 +55,14 @@
 
             if (model != null && model.Deadline <= DateTime.Now)
             {
-                this.ModelState.AddModelError("Deadline", "Invalid deadline");
+               this.ModelState.AddModelError("Deadline", "Invalid deadline");
             }
 
             if (this.ModelState.IsValid)
             {
-                var contest = Mapper.Map<ContestBindingModel, Contest>(model);
+                var contest = Mapper.Map<Contest>(model);
                 contest.CreatedAt = DateTime.Now;
-                contest.CreatorId = this.User.Identity.GetUserId();
+                contest.CreatorId = this.CurrentUser.Id;
 
                 this.Data.Contests.Add(contest);
                 this.Data.SaveChanges();
