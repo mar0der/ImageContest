@@ -21,6 +21,12 @@
             this.Data = data;
         }
 
+        public BaseController(IPhotoContestData data, User user)
+        {
+            this.Data = data;
+            this.CurrentUser = this.CurrentUser;
+        }
+
         public IPhotoContestData Data { get; private set; }
 
         public User CurrentUser { get; set; }

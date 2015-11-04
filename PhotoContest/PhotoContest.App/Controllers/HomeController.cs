@@ -26,5 +26,11 @@
         {
             return this.RedirectToAction("ViewAll", "contests");
         }
+
+        [AllowAnonymous]
+        public ActionResult Error()
+        {
+            return this.View();
+        }
     }
 }
