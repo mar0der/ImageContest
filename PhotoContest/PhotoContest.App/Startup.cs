@@ -14,6 +14,7 @@ namespace PhotoContest.App
 
     using Microsoft.AspNet.SignalR;
     using Owin;
+    using PhotoContest.App.Jobs;
 
     #endregion
 
@@ -21,11 +22,13 @@ namespace PhotoContest.App
     {
         public void Configuration(IAppBuilder app)
         {
+            JobScheduler.StartFinilizeContestJob();
             app.Map("/signalr",
                 map =>
                 {
                     map.RunSignalR(new HubConfiguration());
                 });
+            app.MapSignalR();
             this.ConfigureAuth(app);
         }
     }

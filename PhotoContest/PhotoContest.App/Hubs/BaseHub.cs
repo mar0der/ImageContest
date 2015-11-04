@@ -4,9 +4,14 @@ namespace PhotoContest.App.Hubs
 
     public class BaseHub : Hub
     {
-        public string AddMesssage()
+        public BaseHub()
         {
-            return "asd";
+
+        }
+
+        public void AddMessage(string gosho)
+        {
+            this.Clients.Caller.gosho();
         }
     }
 }
