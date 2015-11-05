@@ -94,7 +94,7 @@
         {
             if (this.HttpContext.Cache["contest" + id] == null)
             {
-                var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
+                var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == id);
                 if (contest == null)
                 {
                     return this.RedirectToAction("ViewAll", "Contests");
@@ -125,6 +125,7 @@
             {
                 return this.RedirectToAction("ViewAll", "Contests");
             }
+
             return this.View(contest);
         }
 
@@ -166,6 +167,9 @@
             {
                 return this.RedirectToAction("ViewAll", "Contests");
             }
+
+            this.HttpContext.Cache.Remove("contests");
+
             return this.View(contestViewModel);
         }
 
@@ -219,6 +223,7 @@
 
             contest.Participants.Add(user);
             this.Data.SaveChanges();
+            this.HttpContext.Cache.Remove("contest" + contest.Id);
 
             return this.RedirectToAction("View", "Contests", new { id = contest.Id });
         }
@@ -423,30 +428,37 @@
             contest.ContestWinners = contestWinners;
             this.Data.SaveChanges();
 
-            return this.View();
+
+            this.HttpContext.Cache.Remove("contest" + contest.Id);
+            this.HttpContext.Cache.Remove("contest");
+
+            return this.RedirectToAction("View", "Contests", new { id = contest.Id});
         }
 
         private Dictionary<Places, Photo> PickWinners(Contest contest, int winnersCount = 1)
         {
-            var averageVoteCount = contest.Photos.Average(p => p.Votes.Count());
-            var winners =
-                contest.Photos.Where(p => p.Votes.Count() >= averageVoteCount)
-                    .OrderByDescending(p => p.Votes.Average(v => v.Stars))
-                    .Take(winnersCount)
-                    .ToList();
 
             var winnersDict = new Dictionary<Places, Photo>();
-            if (winners.Count() >= 1)
+            if (contest.Photos.Count() > 0)
             {
-                winnersDict.Add(Places.Gold, winners[0]);
-            }
-            if (winners.Count() >= 2)
-            {
-                winnersDict.Add(Places.Silver, winners[1]);
-            }
-            if (winners.Count() >= 3)
-            {
-                winnersDict.Add(Places.Bronze, winners[2]);
+                var averageVoteCount = contest.Photos.Average(p => p.Votes.Count());
+                var winners =
+                    contest.Photos.Where(p => p.Votes.Count() >= averageVoteCount)
+                        .OrderByDescending(p => p.Votes.Average(v => v.Stars))
+                        .Take(winnersCount)
+                        .ToList();
+                if (winners.Count() >= 1)
+                {
+                    winnersDict.Add(Places.Gold, winners[0]);
+                }
+                if (winners.Count() >= 2)
+                {
+                    winnersDict.Add(Places.Silver, winners[1]);
+                }
+                if (winners.Count() >= 3)
+                {
+                    winnersDict.Add(Places.Bronze, winners[2]);
+                }
             }
 
             return winnersDict;
@@ -524,6 +536,8 @@
             }
 
             contest.Photos.Add(photo);
+
+            this.HttpContext.Cache.Remove("contest" + contest.Id);
             this.Data.SaveChanges();
             return this.RedirectToAction("View", "Contests", new { id = contest.Id });
         }

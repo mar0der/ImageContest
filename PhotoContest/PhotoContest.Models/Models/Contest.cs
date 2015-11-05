@@ -22,16 +22,19 @@
 
         private ICollection<User> judges;
 
+        private ICollection<ContestWinner> contestWinners;
+
         public Contest()
         {
             this.participants = new HashSet<User>();
             this.photos = new HashSet<Photo>();
             this.votes = new HashSet<Vote>();
             this.judges = new HashSet<User>();
+            this.contestWinners = new HashSet<ContestWinner>();
         }
-        
+
         [Key]
-        public int Id { get; set; } 
+        public int Id { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; }
@@ -57,12 +60,23 @@
 
         public DeadlineStrategy DeadlineStrategy { get; set; }
 
-        public ICollection<ContestWinner> ContestWinners { get; set; }
-
         [ForeignKey("Creator")]
         public string CreatorId { get; set; }
 
         public virtual User Creator { get; set; }
+
+        public virtual ICollection<ContestWinner> ContestWinners
+        {
+            get
+            {
+                return this.contestWinners;
+            }
+
+            set
+            {
+                this.contestWinners = value;
+            }
+        }
 
         public virtual ICollection<Photo> Photos
         {

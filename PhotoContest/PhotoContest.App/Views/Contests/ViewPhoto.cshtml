@@ -4,11 +4,10 @@
 <div class="photoContainer">
     <img src="@Model.PhotoLink" alt="@Model.Title" />
 </div>
-@if (Model.Votes.Where(v => v.ContestId == @Model.ContestId).Count(v => v.User.UserName == this.User.Identity.Name) == 0)
+@if (Model.Votes.Where(v => v.ContestId == @Model.ContestId).Count(v => v.User.UserName == this.User.Identity.Name) == 0 && Model.User == null)
 {
     <div id="loading" class="alert alert-info">Loading...</div>
     <div id="voteSuccessfully" class="alert alert-success hidden">You vote successfully.</div>
-    @Html.AntiForgeryToken()
     <p>
         @using (Ajax.BeginForm("Vote", null ,new AjaxOptions()
         {
@@ -17,6 +16,7 @@
             OnSuccess = "voteSuccessfully"
         }, new { id = "ratingForm" }))
             {
+                @Html.AntiForgeryToken()
                 <input type="hidden" name="contestId" value="@Model.ContestId" />
                 <input type="hidden" name="photoId" value="@Model.Id" />
                 <input type="number" name="stars" min="1" max="5" value="5" />

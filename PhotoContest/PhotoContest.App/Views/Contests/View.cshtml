@@ -7,6 +7,19 @@
 }
 <div class="container">
     <div class="row" style="border:solid black">
+        @if (Model.ContestWinners.Count > null)
+        {
+            <h4>Winners</h4>
+            <div class="col-md-14 photoContestContainer">
+                    @foreach (var photo in Model.ContestWinners)
+                    {
+                        <a href="@Url.Action("ViewPhoto", "Contests", new { contestId = Model.Id, photoId = photo.Id })">
+                            <img src="@Model.Photos.FirstOrDefault(p => p.Id == photo.PhotoId).PhotoLink" />
+                        </a>
+                    }
+            </div>
+        }
+        <h4>Photos</h4>
         <div class="col-md-14 photoContestContainer">
             @if (Model.Photos.Count > 0)
             {
@@ -22,6 +35,7 @@
                 @:<p>No photos</p>
                 }
         </div>
+
         <div class="col-md-8 col-md-offset-2">
 
             <div class="row">
@@ -67,8 +81,11 @@
                         {
                             @Html.ActionLink("Invite Judge", "InviteJudge", "Contests", new { id = @Model.Id }, new { @class = "btn btn-success pull-left" })
                         }
+
+                        @Html.ActionLink("Finalize", "FinalizeContest", new { id = @Model.Id }, new { @class = "btn btn-success" })
                     }
                     @Html.ActionLink("Delete", "Delete", "Contests", null, new { @class = "btn btn-danger pull-right" })
+
                     @Html.ActionLink("Edit", "Edit", "Contests", null, new { @class = "btn btn-success pull-left" })
                 }
                 @if ((@Model.Participants.Any(p => p.Id == User.Identity.GetUserId()) ||
