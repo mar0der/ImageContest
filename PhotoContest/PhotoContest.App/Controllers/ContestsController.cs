@@ -33,6 +33,11 @@
         {
         }
 
+        public ContestsController(IPhotoContestData data, PhotoContest.Models.Models.User user)
+            : base(data, user)
+        {
+        }
+
         [HttpGet]
         public ActionResult Add()
         {
@@ -50,17 +55,21 @@
 
             if (model != null && model.Deadline <= DateTime.Now)
             {
-                this.ModelState.AddModelError("Deadline", "Invalid deadline");
+               this.ModelState.AddModelError("Deadline", "Invalid deadline");
             }
 
             if (this.ModelState.IsValid)
             {
-                var contest = Mapper.Map<ContestBindingModel, Contest>(model);
+                var contest = Mapper.Map<Contest>(model);
                 contest.CreatedAt = DateTime.Now;
-                contest.CreatorId = this.User.Identity.GetUserId();
+                contest.CreatorId = this.CurrentUser.Id;
 
                 this.Data.Contests.Add(contest);
                 this.Data.SaveChanges();
+                if (this.HttpContext != null)
+                {
+                    this.HttpContext.Cache.Remove("contests");
+                }
 
                 return this.RedirectToAction("View", "Contests", new { id = contest.Id });
             }
@@ -72,21 +81,30 @@
         [Route("contests")]
         public ActionResult ViewAll()
         {
-            var contests = this.Data.Contests.All().OrderBy(c => c.CreatedAt).ToList();
-            return this.View(contests);
+            if (this.HttpContext.Cache["contests"] == null)
+            {
+                this.HttpContext.Cache.Insert("contests", this.Data.Contests.All().OrderBy(c => c.CreatedAt).ToList(), null, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration);
+            }
+            return this.View(this.HttpContext.Cache["contests"]);
         }
 
         [AllowAnonymous]
         [Route("Contest/{id}")]
         public ActionResult View(int id)
         {
-            var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
-            if (contest == null)
+            if (this.HttpContext.Cache["contest" + id] == null)
             {
-                return this.RedirectToAction("ViewAll", "Contests");
+                var contest = this.Data.Contests.All().SingleOrDefault(c => c.Id == id);
+                if (contest == null)
+                {
+                    return this.RedirectToAction("ViewAll", "Contests");
+                }
+
+                this.HttpContext.Cache.Insert("contest" + id, contest, null, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration);
             }
-            this.CheckContestDeadline(contest);
-            return this.View(contest);
+            this.CheckContestDeadline((Contest)this.HttpContext.Cache["contest" + id]);
+
+            return this.View((Contest)this.HttpContext.Cache["contest" + id]);
         }
 
         private void CheckContestDeadline(Contest contest)
@@ -132,6 +150,8 @@
             contest.VotingStrategy = updatedContest.VotingStrategy;
 
             this.Data.SaveChanges();
+            this.HttpContext.Cache.Remove("contest" + updatedContest.Id);
+            this.HttpContext.Cache.Remove("contests");
 
             return this.RedirectToAction("View", "Contests", new { id = contest.Id });
         }

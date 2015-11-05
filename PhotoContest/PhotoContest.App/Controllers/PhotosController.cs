@@ -91,6 +91,7 @@
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("photos/edit/{id}")]
         public ActionResult Edit(EditPhotoModel model)
         {
